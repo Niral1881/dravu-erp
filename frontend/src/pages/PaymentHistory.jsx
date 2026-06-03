@@ -14,7 +14,7 @@ function PaymentHistory() {
 
         const res =
           await axios.get(
-            "http://localhost:5000/api/payments"
+            `${import.meta.env.VITE_API_URL}/api/payments`
           );
 
         setPayments(

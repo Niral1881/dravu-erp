@@ -34,7 +34,7 @@ function Ledger() {
 
         const res =
           await axios.get(
-            "http://localhost:5000/api/parties"
+            `${import.meta.env.VITE_API_URL}/api/parties`
           );
 
         setParties(res.data);
@@ -62,12 +62,12 @@ function Ledger() {
 
         const invoiceRes =
           await axios.get(
-            "http://localhost:5000/api/invoices"
+            `${import.meta.env.VITE_API_URL}/api/invoices`
           );
 
         const paymentRes =
           await axios.get(
-            "http://localhost:5000/api/payments"
+            `${import.meta.env.VITE_API_URL}/api/payments`
           );
 
         const invoices =

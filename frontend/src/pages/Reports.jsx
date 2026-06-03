@@ -28,27 +28,27 @@ function Reports() {
 
         const invoiceRes =
           await axios.get(
-            "http://localhost:5000/api/invoices"
+            `${import.meta.env.VITE_API_URL}/api/invoices`
           );
 
         const paymentRes =
           await axios.get(
-            "http://localhost:5000/api/payments"
+            `${import.meta.env.VITE_API_URL}/api/payments`
           );
 
         const productRes =
           await axios.get(
-            "http://localhost:5000/api/products"
+            `${import.meta.env.VITE_API_URL}/api/products`
           );
 
         const returnRes =
           await axios.get(
-            "http://localhost:5000/api/returns"
+            `${import.meta.env.VITE_API_URL}/api/returns`
           );
 
         const partyRes =
           await axios.get(
-            "http://localhost:5000/api/parties"
+            `${import.meta.env.VITE_API_URL}/api/parties`
           );
 
         setInvoices(

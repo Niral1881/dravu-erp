@@ -31,7 +31,7 @@ function Products() {
     try {
 
       const res = await axios.get(
-        "http://localhost:5000/api/products"
+        `${import.meta.env.VITE_API_URL}/api/products`
       );
 
       setProducts(res.data);
@@ -61,14 +61,14 @@ function Products() {
       if (editingId) {
 
         await axios.put(
-          `http://localhost:5000/api/products/${editingId}`,
+          `${import.meta.env.VITE_API_URL}/api/products/${editingId}`,
           formData
         );
 
       } else {
 
         await axios.post(
-          "http://localhost:5000/api/products",
+          `${import.meta.env.VITE_API_URL}/api/products`,
           formData
         );
       }
@@ -105,7 +105,7 @@ function Products() {
     try {
 
       await axios.delete(
-        `http://localhost:5000/api/products/${id}`
+        `${import.meta.env.VITE_API_URL}/api/products/${id}`
       );
 
       fetchProducts();

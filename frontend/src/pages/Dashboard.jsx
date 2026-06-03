@@ -21,15 +21,15 @@ function Dashboard() {
     try {
 
       const partyRes = await axios.get(
-        "http://localhost:5000/api/parties"
+        `${import.meta.env.VITE_API_URL} /api/parties`
       );
 
       const productRes = await axios.get(
-        "http://localhost:5000/api/products"
+        `${import.meta.env.VITE_API_URL} /api/products`
       );
 
       const invoiceRes = await axios.get(
-        "http://localhost:5000/api/invoices"
+        `${import.meta.env.VITE_API_URL} /api/invoices`
       );
 
       setParties(partyRes.data);

@@ -32,7 +32,7 @@ function Parties() {
     try {
 
       const res = await axios.get(
-        "http://localhost:5000/api/parties"
+        `${import.meta.env.VITE_API_URL}/api/parties`
       );
 
       setParties(res.data);
@@ -76,14 +76,14 @@ function Parties() {
       if (editId) {
 
         await axios.put(
-          `http://localhost:5000/api/parties/${editId}`,
+          `${import.meta.env.VITE_API_URL}/api/parties/${editId}`,
           formData
         );
 
       } else {
 
         await axios.post(
-          "http://localhost:5000/api/parties",
+          `${import.meta.env.VITE_API_URL}/api/parties`,
           formData
         );
       }
@@ -124,7 +124,7 @@ function Parties() {
     try {
 
       await axios.delete(
-        `http://localhost:5000/api/parties/${id}`
+        `${import.meta.env.VITE_API_URL}/api/parties/${id}`
       );
 
       fetchParties();

@@ -20,7 +20,7 @@ function InvoiceHistory() {
     try {
 
       const res = await axios.get(
-        "http://localhost:5000/api/invoices"
+        `${import.meta.env.VITE_API_URL} /api/invoices`
       );
 
       setInvoices(res.data);
@@ -38,7 +38,7 @@ function InvoiceHistory() {
 
         const res =
           await axios.get(
-            "http://localhost:5000/api/parties"
+            `${import.meta.env.VITE_API_URL} /api/parties`
           );
 
         setParties(

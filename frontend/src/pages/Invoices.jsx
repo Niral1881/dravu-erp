@@ -59,15 +59,15 @@ function Invoices({ isEdit }) {
     try {
 
       const res = await axios.get(
-        "http://localhost:5000/api/products"
+        `${import.meta.env.VITE_API_URL}/api/products`
       );
 
       const partyRes = await axios.get(
-        "http://localhost:5000/api/parties"
+        `${import.meta.env.VITE_API_URL}/api/parties`
       );
 
       const invoiceRes = await axios.get(
-        "http://localhost:5000/api/invoices"
+        `${import.meta.env.VITE_API_URL}/api/invoices`
       );
 
       const invoices = invoiceRes.data;
@@ -107,7 +107,7 @@ function Invoices({ isEdit }) {
     try {
 
       const res = await axios.get(
-        `http://localhost:5000/api/invoices/${id}`
+        `${import.meta.env.VITE_API_URL}/api/invoices/${id}`
       );
 
       const data = res.data;
@@ -289,14 +289,14 @@ function Invoices({ isEdit }) {
       if (isEdit && id) {
 
         res = await axios.put(
-          `http://localhost:5000/api/invoices/${id}`,
+          `${import.meta.env.VITE_API_URL}/api/invoices/${id}`,
           invoiceData
         );
 
       } else {
 
         res = await axios.post(
-          "http://localhost:5000/api/invoices",
+          `${import.meta.env.VITE_API_URL}/api/invoices`,
           invoiceData
         );
       }

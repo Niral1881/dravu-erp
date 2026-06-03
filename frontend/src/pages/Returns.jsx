@@ -40,17 +40,17 @@ function Returns() {
 
         const invoiceRes =
           await axios.get(
-            "http://localhost:5000/api/invoices"
+            `${import.meta.env.VITE_API_URL}/api/invoices`
           );
 
         const productRes =
           await axios.get(
-            "http://localhost:5000/api/products"
+            `${import.meta.env.VITE_API_URL}/api/products`
           );
 
         const returnRes =
           await axios.get(
-            "http://localhost:5000/api/returns"
+            `${import.meta.env.VITE_API_URL}/api/returns`
           );
 
         setReturns(
@@ -138,7 +138,7 @@ function Returns() {
         };
 
         await axios.post(
-          "http://localhost:5000/api/returns",
+          `${import.meta.env.VITE_API_URL}/api/returns`,
           returnData
         );
 

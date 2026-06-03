@@ -40,12 +40,12 @@ function Payments() {
 
         const partyRes =
           await axios.get(
-            "http://localhost:5000/api/parties"
+            `${import.meta.env.VITE_API_URL}/api/parties`
           );
 
         const invoiceRes =
           await axios.get(
-            "http://localhost:5000/api/invoices"
+            `${import.meta.env.VITE_API_URL}/api/invoices`
           );
 
         setParties(
@@ -111,7 +111,7 @@ function Payments() {
         };
 
         await axios.post(
-          "http://localhost:5000/api/payments",
+          `${import.meta.env.VITE_API_URL}/api/payments`,
           paymentData
         );
 

@@ -19,7 +19,7 @@ function StockHistory() {
 
         const res =
           await axios.get(
-            "http://localhost:5000/api/stock-history"
+            `${import.meta.env.VITE_API_URL}/api/stock-history`
           );
 
         setHistory(
