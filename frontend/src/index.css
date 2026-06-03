@@ -1,0 +1,30 @@
+@import "tailwindcss";
+
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+}
+
+input,
+textarea,
+select {
+  text-transform: uppercase;
+}
+
+* {
+  color-scheme: light;
+}
+
+#invoice-print {
+
+  background: white !important;
+
+  color: black !important;
+}
+
+#invoice-print table,
+#invoice-print th,
+#invoice-print td {
+
+  border-color: #d1d5db !important;
+}
