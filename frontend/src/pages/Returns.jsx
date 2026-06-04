@@ -3,6 +3,8 @@ import axios from "axios";
 
 function Returns() {
 
+  const API = import.meta.env.VITE_API_URL;
+
   const [invoices, setInvoices] =
     useState([]);
 
@@ -40,17 +42,17 @@ function Returns() {
 
         const invoiceRes =
           await axios.get(
-            `${import.meta.env.VITE_API_URL}/api/invoices`
+            `${API}/invoices`
           );
 
         const productRes =
           await axios.get(
-            `${import.meta.env.VITE_API_URL}/api/products`
+            `${API}/products`
           );
 
         const returnRes =
           await axios.get(
-            `${import.meta.env.VITE_API_URL}/api/returns`
+            `${API}/returns`
           );
 
         setReturns(
@@ -138,7 +140,7 @@ function Returns() {
         };
 
         await axios.post(
-          `${import.meta.env.VITE_API_URL}/api/returns`,
+          `${API}/returns`,
           returnData
         );
 

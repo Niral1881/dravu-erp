@@ -3,6 +3,8 @@ import axios from "axios";
 
 function Products() {
 
+  const API = import.meta.env.VITE_API_URL;
+
   const [products, setProducts] = useState([]);
 
   const [showModal, setShowModal] = useState(false);
@@ -31,7 +33,7 @@ function Products() {
     try {
 
       const res = await axios.get(
-        `${import.meta.env.VITE_API_URL}/api/products`
+        `${API}/products`
       );
 
       setProducts(res.data);
@@ -61,14 +63,14 @@ function Products() {
       if (editingId) {
 
         await axios.put(
-          `${import.meta.env.VITE_API_URL}/api/products/${editingId}`,
+          `${API}/products/${editingId}`,
           formData
         );
 
       } else {
 
         await axios.post(
-          `${import.meta.env.VITE_API_URL}/api/products`,
+          `${API}/products`,
           formData
         );
       }
@@ -105,7 +107,7 @@ function Products() {
     try {
 
       await axios.delete(
-        `${import.meta.env.VITE_API_URL}/api/products/${id}`
+        `${API}/products/${id}`
       );
 
       fetchProducts();

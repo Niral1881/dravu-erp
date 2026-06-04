@@ -13,6 +13,8 @@ import axios from "axios";
 
 function InvoicePrint() {
 
+  const API = import.meta.env.VITE_API_URL;
+
   const { id } = useParams();
 
   const [invoice, setInvoice] =
@@ -54,7 +56,7 @@ function InvoicePrint() {
 
         const res =
           await axios.get(
-            `${import.meta.env.VITE_API_URL}/api/invoices/${id}`
+            `${API}/invoices/${id}`
           );
 
         setInvoice(res.data);

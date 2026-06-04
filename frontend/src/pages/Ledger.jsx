@@ -3,6 +3,8 @@ import axios from "axios";
 
 function Ledger() {
 
+  const API = import.meta.env.VITE_API_URL;
+
   const [parties, setParties] =
     useState([]);
 
@@ -34,7 +36,7 @@ function Ledger() {
 
         const res =
           await axios.get(
-            `${import.meta.env.VITE_API_URL}/api/parties`
+            `${API}/parties`
           );
 
         setParties(res.data);
@@ -62,12 +64,12 @@ function Ledger() {
 
         const invoiceRes =
           await axios.get(
-            `${import.meta.env.VITE_API_URL}/api/invoices`
+            `${API}/invoices`
           );
 
         const paymentRes =
           await axios.get(
-            `${import.meta.env.VITE_API_URL}/api/payments`
+            `${API}/payments`
           );
 
         const invoices =

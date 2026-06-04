@@ -3,6 +3,8 @@ import axios from "axios";
 
 function Payments() {
 
+  const API = import.meta.env.VITE_API_URL;
+
   const [parties, setParties] =
     useState([]);
 
@@ -40,12 +42,12 @@ function Payments() {
 
         const partyRes =
           await axios.get(
-            `${import.meta.env.VITE_API_URL}/api/parties`
+            `${API}/parties`
           );
 
         const invoiceRes =
           await axios.get(
-            `${import.meta.env.VITE_API_URL}/api/invoices`
+            `${API}/invoices`
           );
 
         setParties(
@@ -111,7 +113,7 @@ function Payments() {
         };
 
         await axios.post(
-          `${import.meta.env.VITE_API_URL}/api/payments`,
+          `${API}/payments`,
           paymentData
         );
 

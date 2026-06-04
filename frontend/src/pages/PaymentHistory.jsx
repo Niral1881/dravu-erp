@@ -3,6 +3,8 @@ import axios from "axios";
 
 function PaymentHistory() {
 
+  const API = import.meta.env.VITE_API_URL;
+
   const [payments, setPayments] =
     useState([]);
 
@@ -14,7 +16,7 @@ function PaymentHistory() {
 
         const res =
           await axios.get(
-            `${import.meta.env.VITE_API_URL}/api/payments`
+            `${API}/payments`
           );
 
         setPayments(

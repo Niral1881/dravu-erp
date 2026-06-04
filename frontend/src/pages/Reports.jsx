@@ -4,6 +4,8 @@ import axios from "axios";
 
 function Reports() {
 
+  const API = import.meta.env.VITE_API_URL;
+
   const [invoices, setInvoices] =
     useState([]);
 
@@ -28,27 +30,27 @@ function Reports() {
 
         const invoiceRes =
           await axios.get(
-            `${import.meta.env.VITE_API_URL}/api/invoices`
+            `${API}/invoices`
           );
 
         const paymentRes =
           await axios.get(
-            `${import.meta.env.VITE_API_URL}/api/payments`
+            `${API}/payments`
           );
 
         const productRes =
           await axios.get(
-            `${import.meta.env.VITE_API_URL}/api/products`
+            `${API}/products`
           );
 
         const returnRes =
           await axios.get(
-            `${import.meta.env.VITE_API_URL}/api/returns`
+            `${API}/returns`
           );
 
         const partyRes =
           await axios.get(
-            `${import.meta.env.VITE_API_URL}/api/parties`
+            `${API}/parties`
           );
 
         setInvoices(

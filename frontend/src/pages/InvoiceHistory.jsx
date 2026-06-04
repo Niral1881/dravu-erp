@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 
 function InvoiceHistory() {
 
+  const API = import.meta.env.VITE_API_URL;
   const [invoices, setInvoices] =
     useState([]);
 
@@ -20,7 +21,7 @@ function InvoiceHistory() {
     try {
 
       const res = await axios.get(
-        `${import.meta.env.VITE_API_URL} /api/invoices`
+        `${API}/invoices`
       );
 
       setInvoices(res.data);
@@ -38,7 +39,7 @@ function InvoiceHistory() {
 
         const res =
           await axios.get(
-            `${import.meta.env.VITE_API_URL} /api/parties`
+            `${API}/parties`
           );
 
         setParties(

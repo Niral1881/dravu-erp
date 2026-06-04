@@ -6,6 +6,8 @@ import { useParams } from "react-router-dom";
 
 function Invoices({ isEdit }) {
 
+  const API = import.meta.env.VITE_API_URL;
+
   const [invoiceNo, setInvoiceNo] =
     useState("");
 
@@ -59,15 +61,15 @@ function Invoices({ isEdit }) {
     try {
 
       const res = await axios.get(
-        `${import.meta.env.VITE_API_URL}/api/products`
+        `${API}/products`
       );
 
       const partyRes = await axios.get(
-        `${import.meta.env.VITE_API_URL}/api/parties`
+        `${API}/parties`
       );
 
       const invoiceRes = await axios.get(
-        `${import.meta.env.VITE_API_URL}/api/invoices`
+        `${API}/invoices`
       );
 
       const invoices = invoiceRes.data;
@@ -107,7 +109,7 @@ function Invoices({ isEdit }) {
     try {
 
       const res = await axios.get(
-        `${import.meta.env.VITE_API_URL}/api/invoices/${id}`
+        `${API}/invoices/${id}`
       );
 
       const data = res.data;

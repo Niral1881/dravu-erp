@@ -7,6 +7,8 @@ import axios from "axios";
 
 function Parties() {
 
+  const API = import.meta.env.VITE_API_URL;
+
   const [parties, setParties] =
     useState([]);
 
@@ -32,7 +34,7 @@ function Parties() {
     try {
 
       const res = await axios.get(
-        `${import.meta.env.VITE_API_URL}/api/parties`
+        `${API}/parties`
       );
 
       setParties(res.data);
@@ -76,14 +78,14 @@ function Parties() {
       if (editId) {
 
         await axios.put(
-          `${import.meta.env.VITE_API_URL}/api/parties/${editId}`,
+          `${API}/parties/${editId}`,
           formData
         );
 
       } else {
 
         await axios.post(
-          `${import.meta.env.VITE_API_URL}/api/parties`,
+          `${API}/parties`,
           formData
         );
       }
@@ -124,7 +126,7 @@ function Parties() {
     try {
 
       await axios.delete(
-        `${import.meta.env.VITE_API_URL}/api/parties/${id}`
+        `${API}/parties/${id}`
       );
 
       fetchParties();

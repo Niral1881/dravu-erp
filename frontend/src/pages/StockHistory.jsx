@@ -7,6 +7,8 @@ import axios from "axios";
 
 function StockHistory() {
 
+  const API = import.meta.env.VITE_API_URL;
+
   const [history, setHistory] =
     useState([]);
 
@@ -19,7 +21,7 @@ function StockHistory() {
 
         const res =
           await axios.get(
-            `${import.meta.env.VITE_API_URL}/api/stock-history`
+            `${API}/stock-history`
           );
 
         setHistory(
