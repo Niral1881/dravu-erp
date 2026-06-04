@@ -4,8 +4,8 @@ import { defineConfig }
 import react
   from "@vitejs/plugin-react";
 
-// import { VitePWA }
-//   from "vite-plugin-pwa";
+import { VitePWA }
+  from "vite-plugin-pwa";
 
 export default defineConfig({
 
@@ -13,52 +13,52 @@ export default defineConfig({
 
     react(),
 
-    // VitePWA({
+    VitePWA({
 
-    //   registerType:
-    //     "autoUpdate",
+      registerType:
+        "autoUpdate",
 
-    //   manifest: {
+      manifest: {
 
-    //     name:
-    //       "Dravu ERP",
+        name:
+          "Dravu ERP",
 
-    //     short_name:
-    //       "Dravu",
+        short_name:
+          "Dravu",
 
-    //     theme_color:
-    //       "#2F9CAF",
+        theme_color:
+          "#2F9CAF",
 
-    //     background_color:
-    //       "#ffffff",
+        background_color:
+          "#ffffff",
 
-    //     display:
-    //       "standalone",
+        display:
+          "standalone",
 
-    //     start_url: "/",
+        start_url: "/",
 
-    //     icons: [
-    //       {
-    //         src: "/logo.png",
+        icons: [
+          {
+            src: "/logo.png",
 
-    //         sizes:
-    //           "192x192",
+            sizes:
+              "192x192",
 
-    //         type:
-    //           "image/png",
-    //       },
+            type:
+              "image/png",
+          },
 
-    //       {
-    //         src: "/logo.png",
+          {
+            src: "/logo.png",
 
-    //         sizes:
-    //           "512x512",
+            sizes:
+              "512x512",
 
-    //         type:
-    //           "image/png",
-    //       },
-    //     ],
-    //   },
-    // }),
+            type:
+              "image/png",
+          },
+        ],
+      },
+    }),
   ],
 });
