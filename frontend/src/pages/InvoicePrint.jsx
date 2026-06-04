@@ -1,4 +1,4 @@
-import logo1 from "../public/logo.png";
+import img from "../public/logo1.png";
 import { useRef } from "react";
 import { useReactToPrint } from "react-to-print";
 import { useEffect, useState } from "react";
@@ -204,7 +204,7 @@ function InvoicePrint() {
           >
             {/* Logo */}
             <img
-              src={logo1}
+              src={img}
               alt="logo"
               style={{
                 width: "250px",
@@ -398,7 +398,7 @@ function InvoicePrint() {
 
             {/* Watermark */}
             <img
-              src={logo1}
+              src={img}
               alt="watermark"
               className="absolute opacity-10 w-[450px] h-[450px] top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 pointer-events-none"
             />
