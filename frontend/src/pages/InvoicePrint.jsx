@@ -1,4 +1,4 @@
-import img from "../public/logo1.png";
+
 import { useRef } from "react";
 import { useReactToPrint } from "react-to-print";
 import { useEffect, useState } from "react";
@@ -12,6 +12,8 @@ import { useParams } from "react-router-dom";
 import axios from "axios";
 
 function InvoicePrint() {
+
+  const img = "/logo1.png";
 
   const API = import.meta.env.VITE_API_URL;
 
