@@ -8,6 +8,7 @@ import axios from "axios";
 
 function Dashboard() {
 
+  const API = import.meta.env.VITE_API_URL;
   const [parties, setParties] =
     useState([]);
 
@@ -21,15 +22,15 @@ function Dashboard() {
     try {
 
       const partyRes = await axios.get(
-        `${import.meta.env.VITE_API_URL} /api/parties`
+        `${API}/parties`
       );
 
       const productRes = await axios.get(
-        `${import.meta.env.VITE_API_URL} /api/products`
+        `${API}/products`
       );
 
       const invoiceRes = await axios.get(
-        `${import.meta.env.VITE_API_URL} /api/invoices`
+        `${API}/invoicest`
       );
 
       setParties(partyRes.data);

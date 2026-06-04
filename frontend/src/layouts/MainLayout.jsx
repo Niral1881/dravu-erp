@@ -1,5 +1,5 @@
 import { Link, Outlet, useLocation } from "react-router-dom";
-import logo from "../assets/logo.jpeg";
+
 import {
   FaHome,
   FaUsers,
@@ -14,6 +14,8 @@ import {
 } from "react-icons/fa";
 
 function MainLayout() {
+
+  const logo = "/logo.jpeg";
 
   const location = useLocation();
 
