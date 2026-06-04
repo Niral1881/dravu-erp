@@ -13,7 +13,7 @@ import axios from "axios";
 
 function InvoicePrint() {
 
-  const img = "/logo1.png";
+  const img = "/logo.png";
 
   const API = import.meta.env.VITE_API_URL;
 
