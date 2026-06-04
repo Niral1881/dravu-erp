@@ -1,4 +1,4 @@
-import logo1 from "../assets/logo1.png";
+import logo1 from "../public/logo.png";
 import { useRef } from "react";
 import { useReactToPrint } from "react-to-print";
 import { useEffect, useState } from "react";
