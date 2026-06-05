@@ -30,7 +30,7 @@ function Dashboard() {
       );
 
       const invoiceRes = await axios.get(
-        `${API}/invoicest`
+        `${API}/invoices`
       );
 
       setParties(partyRes.data);
