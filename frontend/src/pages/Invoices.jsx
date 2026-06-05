@@ -291,14 +291,14 @@ function Invoices({ isEdit }) {
       if (isEdit && id) {
 
         res = await axios.put(
-          `${import.meta.env.VITE_API_URL}/api/invoices/${id}`,
+          `${API}/invoices/${id}`,
           invoiceData
         );
 
       } else {
 
         res = await axios.post(
-          `${import.meta.env.VITE_API_URL}/api/invoices`,
+          `${API}/invoices`,
           invoiceData
         );
       }
