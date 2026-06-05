@@ -25,6 +25,8 @@ app.use(
     origin: [
       "http://localhost:5173",
       "https://dravu-erp-1.onrender.com",
+      "https://dravu-erp.vercel.app",
+      "https://dravu-ob1thfici-niral-s-projects1.vercel.app",
     ],
     credentials: true,
   })
