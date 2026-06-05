@@ -151,10 +151,10 @@ function InvoicePrint() {
 
   return (
 
-    <div className="bg-white p-2 max-w-[900px] mx-auto">
+    <div className="bg-white p-2 md:p-4 max-w-[900px] mx-auto overflow-x-auto">
 
       {/* Buttons */}
-      <div className="flex justify-end gap-2 mb-3">
+      <div className="flex justify-center md:justify-end gap-2 mb-3">
 
         <button
           onClick={handlePrint}
@@ -178,7 +178,8 @@ function InvoicePrint() {
         id="invoice-print"
         className="bg-white p-4"
         style={{
-          width: "760px",
+          width: "100%",
+          maxWidth: "760px",
           minHeight: "1150px",
           margin: "0 auto",
           background: "#fff",
@@ -209,7 +210,8 @@ function InvoicePrint() {
               src={img}
               alt="logo"
               style={{
-                width: "250px",
+                width: "100%",
+                maxWidth: "250px",
                 objectFit: "contain",
               }}
             />
@@ -299,7 +301,7 @@ function InvoicePrint() {
 
           {/* Customer */}
           <div
-            className="grid grid-cols-2 w-full p-2"
+            className="grid grid-cols-1 md:grid-cols-2 w-full p-2"
             style={{
               gap: "50px",
               fontSize: "12px",
@@ -402,183 +404,185 @@ function InvoicePrint() {
             <img
               src={img}
               alt="watermark"
-              className="absolute opacity-10 w-[450px] h-[450px] top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 pointer-events-none"
+              className="absolute opacity-10 w-[250px] md:w-[450px] h-[250px] md:h-[450px] top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 pointer-events-none"
             />
+            <div className="overflow-x-auto">
+              <table
+                className="min-w-[700px] w-full border-t"
+                style={{
+                  borderColor:
+                    "#9ca3af",
+                }}
+              >
 
-            <table
-              className="w-full border-t"
-              style={{
-                borderColor:
-                  "#9ca3af",
-              }}
-            >
+                <thead>
 
-              <thead>
+                  <tr
+                    style={{
+                      backgroundColor:
+                        "#5E7E95",
+                      color:
+                        "#ffffff",
+                    }}
+                  >
 
-                <tr
-                  style={{
-                    backgroundColor:
-                      "#5E7E95",
-                    color:
-                      "#ffffff",
-                  }}
-                >
+                    <th className="border p-1 w-[50px]">
+                      No.
+                    </th>
 
-                  <th className="border p-1 w-[50px]">
-                    No.
-                  </th>
+                    <th className="border p-1 w-[300px]">
+                      Product
+                    </th>
 
-                  <th className="border p-1 w-[300px]">
-                    Product
-                  </th>
+                    <th className="border p-1 w-[90px]">
+                      Qty
+                    </th>
 
-                  <th className="border p-1 w-[90px]">
-                    Qty
-                  </th>
+                    <th className="border p-1 w-[120px]">
+                      Rate
+                    </th>
 
-                  <th className="border p-1 w-[120px]">
-                    Rate
-                  </th>
+                    <th className="border p-1 w-[150px]">
+                      Amount
+                    </th>
 
-                  <th className="border p-1 w-[150px]">
-                    Amount
-                  </th>
+                  </tr>
 
-                </tr>
+                </thead>
 
-              </thead>
+                <tbody>
 
-              <tbody>
+                  {/* Products */}
+                  {invoice.items.map(
+                    (
+                      item,
+                      index
+                    ) => (
 
-                {/* Products */}
-                {invoice.items.map(
-                  (
-                    item,
-                    index
-                  ) => (
-
-                    <tr
-                      key={index}
-                    >
-
-                      <td
-                        style={{
-                          border:
-                            "1px solid #d1d5db",
-                          height:
-                            "30px",
-                          textAlign:
-                            "center",
-                        }}
+                      <tr
+                        key={index}
                       >
-                        {index + 1}
-                      </td>
 
-                      <td
-                        style={{
-                          border:
-                            "1px solid #d1d5db",
-                          padding:
-                            "4px",
-                        }}
-                      >
-                        {
-                          item.product
-                        }
-                      </td>
+                        <td
+                          style={{
+                            border:
+                              "1px solid #d1d5db",
+                            height:
+                              "30px",
+                            textAlign:
+                              "center",
+                          }}
+                        >
+                          {index + 1}
+                        </td>
 
-                      <td
-                        style={{
-                          border:
-                            "1px solid #d1d5db",
-                          padding:
-                            "4px",
-                          textAlign:
-                            "center",
-                        }}
-                      >
-                        {item.qty}
-                      </td>
+                        <td
+                          style={{
+                            border:
+                              "1px solid #d1d5db",
+                            padding:
+                              "4px",
+                          }}
+                        >
+                          {
+                            item.product
+                          }
+                        </td>
 
-                      <td
-                        style={{
-                          border:
-                            "1px solid #d1d5db",
-                          padding:
-                            "4px",
-                          textAlign:
-                            "center",
-                        }}
-                      >
-                        ₹ {item.rate}
-                      </td>
+                        <td
+                          style={{
+                            border:
+                              "1px solid #d1d5db",
+                            padding:
+                              "4px",
+                            textAlign:
+                              "center",
+                          }}
+                        >
+                          {item.qty}
+                        </td>
 
-                      <td
-                        style={{
-                          border:
-                            "1px solid #d1d5db",
-                          padding:
-                            "4px",
-                          textAlign:
-                            "center",
-                        }}
+                        <td
+                          style={{
+                            border:
+                              "1px solid #d1d5db",
+                            padding:
+                              "4px",
+                            textAlign:
+                              "center",
+                          }}
+                        >
+                          ₹ {item.rate}
+                        </td>
+
+                        <td
+                          style={{
+                            border:
+                              "1px solid #d1d5db",
+                            padding:
+                              "4px",
+                            textAlign:
+                              "center",
+                          }}
+                        >
+                          ₹ {
+                            (
+                              item.total ||
+                              0
+                            ).toFixed(
+                              2
+                            )
+                          }
+                        </td>
+
+                      </tr>
+                    )
+                  )}
+
+                  {/* Empty Rows */}
+                  {Array.from({
+                    length:
+                      12 -
+                      invoice.items
+                        .length,
+                  }).map(
+                    (
+                      _,
+                      index
+                    ) => (
+
+                      <tr
+                        key={`empty-${index}`}
                       >
-                        ₹ {
+
+                        {[1, 2, 3, 4, 5].map(
                           (
-                            item.total ||
-                            0
-                          ).toFixed(
-                            2
+                            cell
+                          ) => (
+
+                            <td
+                              key={
+                                cell
+                              }
+                              style={{
+                                border:
+                                  "1px solid #d1d5db",
+                                height:
+                                  "30px",
+                              }}
+                            ></td>
                           )
-                        }
-                      </td>
+                        )}
 
-                    </tr>
-                  )
-                )}
+                      </tr>
+                    )
+                  )}
 
-                {/* Empty Rows */}
-                {Array.from({
-                  length:
-                    12 -
-                    invoice.items
-                      .length,
-                }).map(
-                  (
-                    _,
-                    index
-                  ) => (
+                </tbody>
 
-                    <tr
-                      key={`empty-${index}`}
-                    >
+              </table>
 
-                      {[1, 2, 3, 4, 5].map(
-                        (
-                          cell
-                        ) => (
-
-                          <td
-                            key={
-                              cell
-                            }
-                            style={{
-                              border:
-                                "1px solid #d1d5db",
-                              height:
-                                "30px",
-                            }}
-                          ></td>
-                        )
-                      )}
-
-                    </tr>
-                  )
-                )}
-
-              </tbody>
-
-            </table>
+            </div>
 
           </div>
 

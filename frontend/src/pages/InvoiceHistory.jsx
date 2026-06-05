@@ -87,11 +87,11 @@ function InvoiceHistory() {
     <div>
 
       {/* Header */}
-      <div className="flex justify-between items-center mb-6">
+      <div className="flex flex-col md:flex-row justify-between md:items-center gap-4 mb-6">
 
         <div>
 
-          <h1 className="text-4xl font-bold">
+          <h1 className="text-2xl md:text-4xl font-bold">
             Invoice History
           </h1>
 
@@ -104,9 +104,9 @@ function InvoiceHistory() {
       </div>
 
 
-      <div className="bg-white p-5 rounded-2xl shadow-sm mb-5">
+      <div className="bg-white p-4 md:p-5 rounded-2xl shadow-sm mb-5">
 
-        <h2 className="text-2xl font-bold text-[#2F9CAF]">
+        <h2 className="text-xl md:text-2xl font-bold text-[#2F9CAF] break-words">
 
           Total Sales :
           ₹ {totalSales.toFixed(2)}
@@ -151,9 +151,9 @@ function InvoiceHistory() {
       </div>
 
       {/* Table */}
-      <div className="bg-white rounded-2xl shadow-sm overflow-hidden">
+      <div className="bg-white rounded-2xl shadow-sm overflow-x-auto">
 
-        <table className="w-full">
+        <table className="min-w-[900px] w-full">
 
           <thead className="bg-[#F5F7FA]">
 
@@ -221,7 +221,7 @@ function InvoiceHistory() {
                 <td className="p-4">
 
                   <span
-                    className={`px-3 py-1 rounded-full text-white text-sm font-bold ${invoice.paymentStatus === "PAID"
+                    className={`px-3 py-1 rounded-full text-white text-xs md:text-sm font-bold ${invoice.paymentStatus === "PAID"
                       ? "bg-green-500"
                       : invoice.paymentStatus === "PARTIAL"
                         ? "bg-yellow-500"
@@ -243,7 +243,7 @@ function InvoiceHistory() {
                         `/invoice-print/${invoice._id}`
                       )
                     }
-                    className="bg-[#2F9CAF] cursor-pointer text-white px-4 py-2 rounded-lg"
+                    className="bg-[#2F9CAF] cursor-pointer text-white px-3 md:px-4 py-2 rounded-lg text-sm"
                   >
                     View
                   </button>
@@ -261,6 +261,17 @@ function InvoiceHistory() {
 
               </tr>
             ))}
+
+            {filteredInvoices.length === 0 && (
+              <tr>
+                <td
+                  colSpan="6"
+                  className="text-center p-6 text-gray-500"
+                >
+                  No invoices found
+                </td>
+              </tr>
+            )}
 
           </tbody>
 

@@ -41,12 +41,12 @@ function PaymentHistory() {
 
   return (
 
-    <div className="p-6">
+    <div className="p-3 md:p-6">
 
       {/* Header */}
       <div className="mb-6">
 
-        <h1 className="text-3xl font-bold text-[#2E3A3F]">
+        <h1 className="text-2xl md:text-3xl font-bold text-[#2E3A3F]">
           Payment History
         </h1>
 
@@ -57,9 +57,9 @@ function PaymentHistory() {
       </div>
 
       {/* Table */}
-      <div className="bg-white rounded-2xl shadow-sm overflow-auto">
+      <div className="bg-white rounded-2xl shadow-sm overflow-x-auto">
 
-        <table className="w-full">
+        <table className="min-w-[900px] w-full">
 
           <thead className="bg-gray-100">
 
@@ -146,9 +146,11 @@ function PaymentHistory() {
 
                   <td className="p-4">
 
-                    {
-                      payment.paymentMode
-                    }
+                    <span className="bg-blue-100 text-blue-600 px-3 py-1 rounded-full text-sm font-semibold">
+
+                      {payment.paymentMode}
+
+                    </span>
 
                   </td>
 

@@ -147,12 +147,12 @@ function Payments() {
 
   return (
 
-    <div className="p-6">
+    <div className="p-3 md:p-6">
 
       {/* Header */}
       <div className="mb-6">
 
-        <h1 className="text-3xl font-bold text-[#2E3A3F]">
+        <h1 className="text-2xl md:text-3xl font-bold text-[#2E3A3F]">
           Add Payment
         </h1>
 
@@ -163,7 +163,7 @@ function Payments() {
       </div>
 
       {/* Form */}
-      <div className="bg-white p-6 rounded-2xl shadow-sm grid grid-cols-2 gap-5">
+      <div className="bg-white p-4 md:p-6 rounded-2xl shadow-sm grid grid-cols-1 md:grid-cols-2 gap-5">
 
         {/* Party */}
         <div>
@@ -173,6 +173,8 @@ function Payments() {
           </label>
 
           <select
+
+            className="w-full border border-gray-200 rounded-xl p-3 bg-white"
             value={partyName}
             onChange={(e) => {
 

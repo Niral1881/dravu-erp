@@ -141,10 +141,10 @@ function Parties() {
     <div>
 
       {/* Header */}
-      <div className="flex justify-between items-center mb-6">
+      <div className="flex flex-col md:flex-row justify-between md:items-center gap-4 mb-6">
 
         <div>
-          <h1 className="text-3xl font-bold text-[#2E3A3F]">
+          <h1 className="text-2xl md:text-3xl font-bold text-[#2E3A3F]">
             Parties
           </h1>
 
@@ -155,7 +155,7 @@ function Parties() {
 
         <button
           onClick={() => setShowModal(true)}
-          className="bg-[#2F9CAF] cursor-pointer text-white px-5 py-3 rounded-xl hover:bg-[#238293]"
+          className="bg-[#2F9CAF] cursor-pointer text-white px-5 py-3 rounded-xl hover:bg-[#238293] w-full md:w-auto"
         >
           {editId ? "Edit Party" : "Add Party"}
         </button>
@@ -174,9 +174,9 @@ function Parties() {
       </div>
 
       {/* Table */}
-      <div className="bg-white rounded-2xl shadow-sm overflow-hidden">
+      <div className="bg-white rounded-2xl shadow-sm overflow-x-auto">
 
-        <table className="w-full">
+        <table className="min-w-[900px] w-full">
 
           <thead className="bg-gray-100">
 
@@ -286,7 +286,7 @@ function Parties() {
 
           <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-50">
 
-            <div className="bg-white p-6 rounded-2xl w-[500px]">
+            <div className="bg-white p-4 md:p-6 rounded-2xl w-[95%] md:w-[500px] max-h-[90vh] overflow-auto">
 
               <h2 className="text-2xl font-bold mb-5">
                 Add Party
@@ -294,7 +294,7 @@ function Parties() {
 
               <form onSubmit={handleSubmit}>
 
-                <div className="grid grid-cols-2 gap-4">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
 
                   <input
                     type="text"

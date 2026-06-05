@@ -177,7 +177,7 @@ function Returns() {
       {/* Header */}
       <div className="mb-6">
 
-        <h1 className="text-3xl font-bold text-[#2E3A3F]">
+        <h1 className="text-2xl md:text-3xl font-bold text-[#2E3A3F]">
           Product Return
         </h1>
 
@@ -188,7 +188,7 @@ function Returns() {
       </div>
 
       {/* Form */}
-      <div className="bg-white p-6 rounded-2xl shadow-sm grid grid-cols-2 gap-5">
+      <div className="bg-white p-6 rounded-2xl shadow-sm grid grid-cols-1 md:grid-cols-2 gap-5">
 
         {/* Invoice */}
         <div>
@@ -396,7 +396,7 @@ function Returns() {
           Save Return
         </button>
 
-        <div className="bg-white mt-8 rounded-2xl shadow-sm overflow-auto">
+        <div className="bg-white mt-8 rounded-2xl shadow-sm overflow-x-auto">
 
           <div className="p-5 border-b">
 

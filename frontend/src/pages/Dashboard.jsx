@@ -55,6 +55,12 @@ function Dashboard() {
 
     loadProducts();
 
+    const interval = setInterval(() => {
+      fetchDashboardData();
+    }, 5000);
+
+    return () => clearInterval(interval);
+
   }, []);
 
   // Total Sales
@@ -84,7 +90,7 @@ function Dashboard() {
       {/* Header */}
       <div className="mb-8">
 
-        <h1 className="text-4xl font-bold">
+        <h1 className="text-2xl md:text-4xl font-bold">
           Dashboard
         </h1>
 
@@ -95,16 +101,35 @@ function Dashboard() {
       </div>
 
       {/* Cards */}
-      <div className="grid grid-cols-4 gap-6 mb-8">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+
+        <div className="bg-white rounded-2xl p-6 shadow-sm">
+          <h2 className="text-xl font-bold mb-4">
+            Recent Invoices
+          </h2>
+
+          {invoices.slice(0, 5).map((invoice) => (
+            <div
+              key={invoice._id}
+              className="flex justify-between border-b py-3"
+            >
+              <span>{invoice.invoiceNo}</span>
+
+              <span>
+                ₹ {invoice.roundedTotal}
+              </span>
+            </div>
+          ))}
+        </div>
 
         {/* Sales */}
-        <div className="bg-white p-6 rounded-2xl shadow-sm">
+        <div className="bg-white p-4 md:p-6 rounded-2xl shadow-sm">
 
           <p className="text-gray-500">
             Total Sales
           </p>
 
-          <h2 className="text-4xl font-bold mt-3 text-[#2F9CAF]">
+          <h2 className="text-2xl md:text-4xl font-bold mt-3 text-[#2F9CAF]">
             ₹ {totalSales.toFixed(2)}
           </h2>
 

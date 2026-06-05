@@ -322,10 +322,10 @@ function Invoices({ isEdit }) {
     <div>
 
       {/* Header */}
-      <div className="flex justify-between items-center mb-6">
+      <div className="flex flex-col md:flex-row justify-between md:items-center gap-4 mb-6">
 
         <div>
-          <h1 className="text-3xl font-bold text-[#2E3A3F]">
+          <h1 className="text-2xl md:text-3xl font-bold text-[#2E3A3F]">
             Create Invoice
           </h1>
 
@@ -336,7 +336,7 @@ function Invoices({ isEdit }) {
 
         <button
           onClick={handleSaveInvoice}
-          className="bg-[#2F9CAF] cursor-pointer text-white px-5 py-3 rounded-xl hover:bg-[#238293]"
+          className="bg-[#2F9CAF] cursor-pointer text-white px-5 py-3 rounded-xl hover:bg-[#238293] w-full md:w-auto"
         >
           Save Invoice
         </button>
@@ -344,10 +344,10 @@ function Invoices({ isEdit }) {
       </div>
 
       {/* Invoice Form */}
-      <div className="bg-white rounded-2xl shadow-sm p-6">
+      <div className="bg-white rounded-2xl shadow-sm p-4 md:p-6">
 
         {/* Top Form */}
-        <div className="grid grid-cols-3 gap-5 mb-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 mb-6">
 
           <div>
             <label className="block mb-2 font-medium">
@@ -383,7 +383,7 @@ function Invoices({ isEdit }) {
 
                 setSelectedParty(party);
               }}
-              className="w-full border border-gray-200 rounded-xl p-3 outline-none focus:border-[#2F9CAF]"
+              className="w-full border border-gray-200 rounded-xl p-3 outline-none autoFocus focus:border-[#2F9CAF]"
             >
 
               <option value="">
@@ -506,7 +506,7 @@ function Invoices({ isEdit }) {
         {/* Items Table */}
         <div className="overflow-auto">
 
-          <table className="w-full mb-5">
+          <table className="min-w-[700px] w-full mb-5">
 
             <thead className="bg-gray-100">
 
@@ -557,7 +557,7 @@ function Invoices({ isEdit }) {
 
                         setItems(updatedItems);
                       }}
-                      className="w-full border border-gray-200 rounded-lg p-2"
+                      className="w-full border border-gray-200 rounded-lg p-2 md:p-3"
                     >
 
                       <option value="">
@@ -587,7 +587,7 @@ function Invoices({ isEdit }) {
                           (e.target.value)
                         )
                       }
-                      className="w-full border border-gray-200 rounded-lg p-2"
+                      className="w-full border border-gray-200 rounded-lg p-2 md:p-3"
                     />
                   </td>
 
@@ -602,7 +602,7 @@ function Invoices({ isEdit }) {
                           (e.target.value)
                         )
                       }
-                      className="w-full border border-gray-200 rounded-lg p-2"
+                      className="w-full border border-gray-200 rounded-lg p-2 md:p-3"
                     />
                   </td>
 
@@ -635,7 +635,7 @@ function Invoices({ isEdit }) {
         {/* Summary */}
         <div className="flex justify-end">
 
-          <div className="w-96 bg-gray-50 rounded-2xl p-5">
+          <div className="w-full md:w-96 bg-gray-50 rounded-2xl p-5">
 
             {/* Discount */}
             <div className="mb-4">
@@ -652,7 +652,7 @@ function Invoices({ isEdit }) {
                     (e.target.value)
                   )
                 }
-                className="w-full border border-gray-200 rounded-lg p-2"
+                className="p-2 md:p-3"
               />
 
             </div>
@@ -672,7 +672,7 @@ function Invoices({ isEdit }) {
                     (e.target.value)
                   )
                 }
-                className="w-full border border-gray-200 rounded-lg p-2"
+                className="w-full border border-gray-200 rounded-lg p-2 md:p-3"
               />
 
             </div>

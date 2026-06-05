@@ -22,7 +22,7 @@ function MainLayout() {
   return (
     <div className="flex h-screen overflow-hidden bg-[#F5F7FA]">
       {/* Sidebar */}
-      <div className="w-64 h-screen bg-gradient-to-b from-[#2E3A3F] to-[#1F272B] text-white p-5">
+      <div className="w-16 lg:w-64 h-screen bg-gradient-to-b from-[#2E3A3F] to-[#1F272B] text-white p-3 lg:p-5">
 
         {/* Logo */}
         <div className="flex items-center gap-3 mb-10">
@@ -33,11 +33,10 @@ function MainLayout() {
             className="w-12 h-12 rounded-full object-cover bg-white p-1"
           />
 
-          <div>
+          <div className="hidden lg:block">
             <h1 className="text-xl font-bold text-[#2F9CAF]">
               Dravu Fashion Hub
             </h1>
-
           </div>
 
         </div>
@@ -53,8 +52,11 @@ function MainLayout() {
                 : "hover:bg-[#2F9CAF]"
                 }`}
             >
-              <FaHome />
-              Dashboard
+              <FaHome className="text-xl" />
+
+              <span className="hidden lg:block">
+                Dashboard
+              </span>
             </Link>
           </li>
 
@@ -66,8 +68,11 @@ function MainLayout() {
                 : "hover:bg-[#2F9CAF]"
                 }`}
             >
-              <FaUsers />
-              Parties
+              <FaUsers className="text-xl" />
+
+              <span className="hidden lg:block">
+                Parties
+              </span>
             </Link>
           </li>
 
@@ -79,8 +84,11 @@ function MainLayout() {
                 : "hover:bg-[#2F9CAF]"
                 }`}
             >
-              <FaBox />
-              Products
+              <FaBox className="text-xl" />
+
+              <span className="hidden lg:block">
+                Products
+              </span>
             </Link>
           </li>
 
@@ -92,8 +100,11 @@ function MainLayout() {
                 : "hover:bg-[#2F9CAF]"
                 }`}
             >
-              <FaFileInvoice />
-              Invoices
+              <FaFileInvoice className="text-xl" />
+
+              <span className="hidden lg:block">
+                Invoices
+              </span>
             </Link>
           </li>
 
@@ -102,8 +113,10 @@ function MainLayout() {
               to="/invoices-history"
               className="flex items-center gap-3 p-3 rounded-xl hover:bg-[#2F9CAF] transition"
             >
-              <FaFileInvoice />
-              Invoice History
+              <FaHistory className="text-xl" />
+              <span className="hidden lg:block">
+                Invoice History
+              </span>
             </Link>
           </li>
 
@@ -115,8 +128,10 @@ function MainLayout() {
                 : "hover:bg-[#2F9CAF]"
                 }`}
             >
-              <FaMoneyBill />
-              Payments
+              <FaMoneyBill className="text-xl" />
+              <span className="hidden lg:block">
+                Payments
+              </span>
             </Link>
           </li>
 
@@ -129,10 +144,12 @@ function MainLayout() {
                 : "hover:bg-[#2F9CAF]"
                 }`}
             >
+              <FaUndo className="text-xl" />
 
-              <FaUndo />
+              <span className="hidden lg:block">
 
-              Returns
+                Returns
+              </span>
 
             </Link>
 
@@ -145,8 +162,10 @@ function MainLayout() {
                 : "hover:bg-[#2F9CAF]"
                 }`}
             >
-              <FaBook />
-              Ledger
+              <FaBook className="text-xl" />
+              <span className="hidden lg:block">
+                Ledger
+              </span>
             </Link>
           </li>
 
@@ -159,10 +178,12 @@ function MainLayout() {
                 : "hover:bg-[#2F9CAF]"
                 }`}
             >
+              <FaMoneyBill className="text-xl" />
 
-              <FaMoneyBill />
+              <span className="hidden lg:block">
 
-              Payment History
+                Payment History
+              </span>
 
             </Link>
 
@@ -177,8 +198,10 @@ function MainLayout() {
                 : "hover:bg-[#2F9CAF]"
                 }`}
             >
-              <FaHistory />
-              Stock History
+              <FaHistory className="text-xl" />
+              <span className="hidden lg:block">
+                Stock History
+              </span>
 
             </Link>
 
@@ -192,8 +215,10 @@ function MainLayout() {
                 : "hover:bg-[#2F9CAF]"
                 }`}
             >
-              <FaChartBar />
-              Reports
+              <FaChartBar className="text-xl" />
+              <span className="hidden lg:block">
+                Reports
+              </span>
             </Link>
           </li>
 
@@ -205,8 +230,11 @@ function MainLayout() {
                 : "hover:bg-[#2F9CAF]"
                 }`}
             >
-              <FaCog />
-              Settings
+              <FaCog className="text-xl" />
+              <span className="hidden lg:block">
+
+                Settings
+              </span>
             </Link>
           </li>
 
@@ -214,7 +242,7 @@ function MainLayout() {
       </div>
 
       {/* Main Content */}
-      <div className="flex-1 p-6 overflow-auto">
+      <div className="flex-1 p-3 md:p-6 overflow-auto">
         <Outlet />
       </div>
 
