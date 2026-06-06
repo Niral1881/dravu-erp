@@ -31,24 +31,34 @@ function InvoicePrint() {
       documentTitle:
         invoice?.invoiceNo || "Invoice",
 
+
       pageStyle: `
-      @page {
-        size: A4;
-        margin: 0;
-      }
+  @page {
+    size: A4;
+    margin: 0;
+  }
 
-      @media print {
+  @media print {
 
-        body {
-          margin: 0;
-          -webkit-print-color-adjust: exact;
-        }
+    html,
+    body {
+      width: 210mm;
+      height: 297mm;
+      margin: 0;
+      padding: 0;
+    }
 
-        html, body {
-          height: auto;
-        }
-      }
-    `,
+    body {
+      -webkit-print-color-adjust: exact;
+      print-color-adjust: exact;
+    }
+
+    #invoice-print {
+      width: 794px !important;
+      min-height: 1123px !important;
+    }
+  }
+`,
     });
 
   const fetchInvoice =
@@ -108,25 +118,25 @@ function InvoicePrint() {
 
         const opt = {
 
-          margin: 5,
+          margin: 0,
 
           filename:
             `${invoice.invoiceNo}.pdf`,
 
           image: {
-            type: "png",
+            type: "jpeg",
             quality: 1,
           },
 
           html2canvas: {
-            scale: 2,
+            scale: 3,
             useCORS: true,
             scrollY: 0,
           },
 
           jsPDF: {
             unit: "mm",
-            format: [210, 297],
+            format: "a4",
             orientation:
               "portrait",
           },
@@ -179,8 +189,8 @@ function InvoicePrint() {
         className="bg-white p-4"
         style={{
           width: "100%",
-          maxWidth: "760px",
-          minHeight: "1150px",
+          maxWidth: "794px",
+          minHeight: "1123px",
           margin: "0 auto",
           background: "#fff",
         }}
@@ -301,7 +311,7 @@ function InvoicePrint() {
 
           {/* Customer */}
           <div
-            className="grid grid-cols-1 md:grid-cols-2 w-full p-2"
+            className="grid grid-cols-2 w-full p-2"
             style={{
               gap: "50px",
               fontSize: "12px",
@@ -404,14 +414,15 @@ function InvoicePrint() {
             <img
               src={img}
               alt="watermark"
-              className="absolute opacity-10 w-[250px] md:w-[450px] h-[250px] md:h-[450px] top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 pointer-events-none"
+              className="absolute opacity-10 w-[550px] md:w-[450px] h-[550px] md:h-[450px] top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 pointer-events-none"
             />
-            <div className="overflow-x-auto">
+            <div className="w-full border-t">
               <table
-                className="min-w-[900px] w-full border-t"
+                className="w-full border-t"
                 style={{
                   borderColor:
                     "#9ca3af",
+                  tableLayout: "fixed",
                 }}
               >
 
