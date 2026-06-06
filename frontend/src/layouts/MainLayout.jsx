@@ -110,6 +110,22 @@ function MainLayout() {
 
           <li>
             <Link
+              to="/invoices-gst"
+              className={`flex items-center gap-3 p-3 rounded-xl transition ${location.pathname === "/invoices-gst"
+                ? "bg-[#2F9CAF]"
+                : "hover:bg-[#2F9CAF]"
+                }`}
+            >
+              <FaFileInvoice className="text-xl" />
+
+              <span className="hidden lg:flex items-center gap-3">
+                Invoices GST
+              </span>
+            </Link>
+          </li>
+
+          <li>
+            <Link
               to="/invoices-history"
               className={`flex items-center gap-3 p-3 rounded-xl transition ${location.pathname === "/invoices-history"
                 ? "bg-[#2F9CAF]"

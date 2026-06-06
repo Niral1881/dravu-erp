@@ -6,6 +6,7 @@ import Dashboard from "./pages/Dashboard";
 import Parties from "./pages/Parties";
 import Products from "./pages/Products";
 import Invoices from "./pages/Invoices";
+import Invoices1 from "./pages/invoice1";
 import Payments from "./pages/Payments";
 import Reports from "./pages/Reports";
 import Settings from "./pages/Settings";
@@ -52,6 +53,11 @@ function App() {
             path="invoices"
             element={<Invoices />}
           />
+          <Route
+            path="invoices-gst"
+            element={<Invoices1 />}
+          />
+
           <Route
             path="invoices-history"
             element={<InvoiceHistory />}

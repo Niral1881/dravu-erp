@@ -4,7 +4,7 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { useParams } from "react-router-dom";
 
-function Invoices({ isEdit }) {
+function Invoices1({ isEdit }) {
 
   const API = import.meta.env.VITE_API_URL;
 
@@ -72,23 +72,9 @@ function Invoices({ isEdit }) {
         `${API}/invoices`
       );
 
-      const invoices = invoiceRes.data
-        .filter(
-          (inv) =>
-            inv.invoiceType === "NORMAL" ||
-            !inv.invoiceType
-        )
-        .sort((a, b) => {
-          const aNo = Number(
-            a.invoiceNo.split("-")[1]
-          );
-
-          const bNo = Number(
-            b.invoiceNo.split("-")[1]
-          );
-
-          return aNo - bNo;
-        });
+      const invoices = invoiceRes.data.filter(
+        (inv) => inv.invoiceType === "GST"
+      );
 
       if (invoices.length > 0) {
 
@@ -101,14 +87,15 @@ function Invoices({ isEdit }) {
           );
 
         const nextNumber =
-          lastNumber + 1;
+          String(lastNumber + 1).padStart(4, "0");
 
-        setInvoiceNo(`INV-${nextNumber}`);
+        setInvoiceNo(`GST-${nextNumber}`);
 
       } else {
 
-        setInvoiceNo("INV-151");
+        setInvoiceNo("GST-0001");
       }
+
       setParties(partyRes.data);
 
       setProducts(res.data);
@@ -249,7 +236,7 @@ function Invoices({ isEdit }) {
 
         invoiceNo,
 
-        invoiceType: "NORMAL",
+        invoiceType: "GST",
 
         partyName,
 
@@ -343,7 +330,7 @@ function Invoices({ isEdit }) {
 
         <div>
           <h1 className="text-2xl md:text-3xl font-bold text-[#2E3A3F]">
-            Create Invoice
+            Create GST Invoice
           </h1>
 
           <p className="text-gray-500">
@@ -756,4 +743,4 @@ function Invoices({ isEdit }) {
   );
 }
 
-export default Invoices;
+export default Invoices1;
