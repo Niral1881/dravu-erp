@@ -506,7 +506,7 @@ function Invoices({ isEdit }) {
         {/* Items Table */}
         <div className="overflow-auto">
 
-          <table className="min-w-[700px] w-full mb-5">
+          <table className="min-w-[900px] w-full mb-5">
 
             <thead className="bg-gray-100">
 

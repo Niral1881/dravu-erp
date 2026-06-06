@@ -20,9 +20,9 @@ function MainLayout() {
   const location = useLocation();
 
   return (
-    <div className="flex h-screen overflow-hidden bg-[#F5F7FA]">
+    <div className="flex min-h-screen overflow-hidden bg-[#F5F7FA]">
       {/* Sidebar */}
-      <div className="w-16 lg:w-64 h-screen bg-gradient-to-b from-[#2E3A3F] to-[#1F272B] text-white p-3 lg:p-5">
+      <div className="w-16 md:w-20 lg:w-64 min-h-screen bg-gradient-to-b from-[#2E3A3F] to-[#1F272B] text-white p-2 md:p-5">
 
         {/* Logo */}
         <div className="flex items-center gap-3 mb-10">
@@ -54,7 +54,7 @@ function MainLayout() {
             >
               <FaHome className="text-xl" />
 
-              <span className="hidden lg:block">
+              <span className="hidden lg:flex items-center gap-3">
                 Dashboard
               </span>
             </Link>
@@ -70,7 +70,7 @@ function MainLayout() {
             >
               <FaUsers className="text-xl" />
 
-              <span className="hidden lg:block">
+              <span className="hidden lg:flex items-center gap-3">
                 Parties
               </span>
             </Link>
@@ -86,7 +86,7 @@ function MainLayout() {
             >
               <FaBox className="text-xl" />
 
-              <span className="hidden lg:block">
+              <span className="hidden lg:flex items-center gap-3">
                 Products
               </span>
             </Link>
@@ -102,7 +102,7 @@ function MainLayout() {
             >
               <FaFileInvoice className="text-xl" />
 
-              <span className="hidden lg:block">
+              <span className="hidden lg:flex items-center gap-3">
                 Invoices
               </span>
             </Link>
@@ -111,10 +111,13 @@ function MainLayout() {
           <li>
             <Link
               to="/invoices-history"
-              className="flex items-center gap-3 p-3 rounded-xl hover:bg-[#2F9CAF] transition"
+              className={`flex items-center gap-3 p-3 rounded-xl transition ${location.pathname === "/invoices-history"
+                ? "bg-[#2F9CAF]"
+                : "hover:bg-[#2F9CAF]"
+                }`}
             >
               <FaHistory className="text-xl" />
-              <span className="hidden lg:block">
+              <span className="hidden lg:flex items-center gap-3">
                 Invoice History
               </span>
             </Link>
@@ -129,7 +132,7 @@ function MainLayout() {
                 }`}
             >
               <FaMoneyBill className="text-xl" />
-              <span className="hidden lg:block">
+              <span className="hidden lg:flex items-center gap-3">
                 Payments
               </span>
             </Link>
@@ -146,7 +149,7 @@ function MainLayout() {
             >
               <FaUndo className="text-xl" />
 
-              <span className="hidden lg:block">
+              <span className="hidden lg:flex items-center gap-3">
 
                 Returns
               </span>
@@ -163,7 +166,7 @@ function MainLayout() {
                 }`}
             >
               <FaBook className="text-xl" />
-              <span className="hidden lg:block">
+              <span className="hidden lg:flex items-center gap-3">
                 Ledger
               </span>
             </Link>
@@ -180,7 +183,7 @@ function MainLayout() {
             >
               <FaMoneyBill className="text-xl" />
 
-              <span className="hidden lg:block">
+              <span className="hidden lg:flex items-center gap-3">
 
                 Payment History
               </span>
@@ -199,7 +202,7 @@ function MainLayout() {
                 }`}
             >
               <FaHistory className="text-xl" />
-              <span className="hidden lg:block">
+              <span className="hidden lg:flex items-center gap-3">
                 Stock History
               </span>
 
@@ -216,7 +219,7 @@ function MainLayout() {
                 }`}
             >
               <FaChartBar className="text-xl" />
-              <span className="hidden lg:block">
+              <span className="hidden lg:flex items-center gap-3">
                 Reports
               </span>
             </Link>
@@ -231,7 +234,7 @@ function MainLayout() {
                 }`}
             >
               <FaCog className="text-xl" />
-              <span className="hidden lg:block">
+              <span className="hidden lg:flex items-center gap-3">
 
                 Settings
               </span>
@@ -242,7 +245,7 @@ function MainLayout() {
       </div>
 
       {/* Main Content */}
-      <div className="flex-1 p-3 md:p-6 overflow-auto">
+      <div className="flex-1 p-3 md:p-6 overflow-x-auto">
         <Outlet />
       </div>
 

@@ -129,6 +129,8 @@ function Reports() {
         item.stock < 10
     );
 
+
+
   return (
 
     <div className="p-6">
@@ -136,7 +138,7 @@ function Reports() {
       {/* Header */}
       <div className="mb-6">
 
-        <h1 className="text-3xl font-bold text-[#2E3A3F]">
+        <h1 className="text-2xl md:text-3xl font-bold text-[#2E3A3F]">
           Reports Dashboard
         </h1>
 
@@ -147,10 +149,10 @@ function Reports() {
       </div>
 
       {/* TOP CARDS */}
-      <div className="grid grid-cols-4 gap-5 mb-6">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 mb-6">
 
         {/* Total Sales */}
-        <div className="bg-white p-5 rounded-2xl shadow-sm">
+        <div className="bg-white p-5 rounded-2xl shadow-sm hover:shadow-lg transition">
 
           <p className="text-gray-500 mb-2">
             Total Sales
@@ -218,7 +220,7 @@ function Reports() {
       </div>
 
       {/* SECOND ROW */}
-      <div className="grid grid-cols-4 gap-5 mb-6">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 mb-6">
 
         {/* Products */}
         <div className="bg-white p-5 rounded-2xl shadow-sm">
@@ -285,7 +287,7 @@ function Reports() {
       </div>
 
       {/* LOW STOCK TABLE */}
-      <div className="bg-white rounded-2xl shadow-sm overflow-auto">
+      <div className="bg-white rounded-2xl shadow-sm overflow-x-auto">
 
         <div className="p-5 border-b">
 
@@ -297,7 +299,7 @@ function Reports() {
 
         </div>
 
-        <table className="w-full">
+        <table className="min-w-[900px] w-full">
 
           <thead className="bg-gray-100">
 

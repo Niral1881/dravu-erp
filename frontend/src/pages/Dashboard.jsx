@@ -103,24 +103,7 @@ function Dashboard() {
       {/* Cards */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
 
-        <div className="bg-white rounded-2xl p-6 shadow-sm">
-          <h2 className="text-xl font-bold mb-4">
-            Recent Invoices
-          </h2>
 
-          {invoices.slice(0, 5).map((invoice) => (
-            <div
-              key={invoice._id}
-              className="flex justify-between border-b py-3"
-            >
-              <span>{invoice.invoiceNo}</span>
-
-              <span>
-                ₹ {invoice.roundedTotal}
-              </span>
-            </div>
-          ))}
-        </div>
 
         {/* Sales */}
         <div className="bg-white p-4 md:p-6 rounded-2xl shadow-sm">

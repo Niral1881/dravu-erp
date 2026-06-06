@@ -184,12 +184,12 @@ function Ledger() {
 
   return (
 
-    <div className="p-6">
+    <div className="p-3 md:p-6">
 
       {/* Header */}
       <div className="mb-6">
 
-        <h1 className="text-3xl font-bold text-[#2E3A3F]">
+        <h1 className="text-2xl md:text-3xl font-bold text-[#2E3A3F]">
           Party Ledger
         </h1>
 
@@ -241,7 +241,7 @@ function Ledger() {
 
       </div>
 
-      <div className="grid grid-cols-2 gap-5 mt-5">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-5 mt-5">
 
         <div>
 
@@ -284,7 +284,7 @@ function Ledger() {
       </div>
 
       {/* Summary */}
-      <div className="grid grid-cols-3 gap-5 mb-6">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-5 mb-6">
 
         <div className="bg-white p-5 rounded-2xl shadow-sm">
 
@@ -292,7 +292,7 @@ function Ledger() {
             Total Invoice
           </h3>
 
-          <p className="text-3xl font-bold text-red-500">
+          <p className="text-2xl md:text-3xl font-bold text-red-500">
             ₹ {
               summary.totalInvoice.toFixed(
                 2
@@ -308,7 +308,7 @@ function Ledger() {
             Total Payment
           </h3>
 
-          <p className="text-3xl font-bold text-green-600">
+          <p className="text-2xl md:text-3xl font-bold text-green-600">
             ₹ {
               summary.totalPayment.toFixed(
                 2
@@ -324,7 +324,7 @@ function Ledger() {
             Pending Amount
           </h3>
 
-          <p className="text-3xl font-bold text-[#2F9CAF]">
+          <p className="text-2xl md:text-3xl font-bold text-[#2F9CAF]">
             ₹ {
               summary.balance.toFixed(
                 2
@@ -338,13 +338,13 @@ function Ledger() {
 
       <div className="bg-white p-5 rounded-2xl shadow-sm mb-5">
 
-        <h2 className="text-2xl font-bold text-[#2F9CAF]">
+        <h2 className="text-xl md:text-2xl font-bold text-[#2F9CAF]">
 
           {selectedParty}
 
         </h2>
 
-        <div className="grid grid-cols-3 gap-5 mt-4">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-5 mt-4">
 
           <div>
 
@@ -352,7 +352,7 @@ function Ledger() {
               Total Invoice
             </p>
 
-            <h3 className="text-2xl font-bold text-red-500">
+            <h3 className="text-2xl md:text-3xl font-bold text-red-500">
 
               ₹ {
                 summary.totalInvoice.toFixed(2)
@@ -368,7 +368,7 @@ function Ledger() {
               Total Payment
             </p>
 
-            <h3 className="text-2xl font-bold text-green-600">
+            <h3 className="text-2xl md:text-3xl font-bold text-green-600">
 
               ₹ {
                 summary.totalPayment.toFixed(2)
@@ -384,7 +384,7 @@ function Ledger() {
               Pending Amount
             </p>
 
-            <h3 className="text-2xl font-bold text-[#2F9CAF]">
+            <h3 className="text-2xl md:text-3xl font-bold text-[#2F9CAF]">
 
               ₹ {
                 summary.balance.toFixed(2)
@@ -399,9 +399,9 @@ function Ledger() {
       </div>
 
       {/* Ledger Table */}
-      <div className="bg-white rounded-2xl shadow-sm overflow-auto">
+      <div className="bg-white rounded-2xl shadow-sm overflow-x-auto">
 
-        <table className="w-full">
+        <table className="min-w-[900px] w-full">
 
           <thead className="bg-gray-100">
 

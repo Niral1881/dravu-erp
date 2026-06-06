@@ -155,7 +155,7 @@ function Parties() {
 
         <button
           onClick={() => setShowModal(true)}
-          className="bg-[#2F9CAF] cursor-pointer text-white px-5 py-3 rounded-xl hover:bg-[#238293] w-full md:w-auto"
+          className="bg-[#2F9CAF] cursor-pointer text-white px-4 md:px-5 py-2 md:my-3 text-sm md:text-base  rounded-xl hover:bg-[#238293] w-full md:w-auto"
         >
           {editId ? "Edit Party" : "Add Party"}
         </button>

@@ -408,7 +408,7 @@ function InvoicePrint() {
             />
             <div className="overflow-x-auto">
               <table
-                className="min-w-[700px] w-full border-t"
+                className="min-w-[900px] w-full border-t"
                 style={{
                   borderColor:
                     "#9ca3af",

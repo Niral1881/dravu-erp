@@ -172,7 +172,7 @@ function Products() {
       {/* Table */}
       <div className="bg-white rounded-2xl shadow-sm overflow-x-auto">
 
-        <table className="w-full">
+        <table className="min-w-[900px] w-full">
 
           <thead className="bg-gray-100">
 
@@ -226,7 +226,7 @@ function Products() {
                 </td>
 
                 <td className="p-4 font-semibold">
-                  {product.rate}
+                  ₹ {product.rate}
                 </td>
 
                 <td className="p-4">

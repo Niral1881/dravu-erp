@@ -406,7 +406,7 @@ function Returns() {
 
           </div>
 
-          <table className="w-full">
+          <table className="min-w-[900px] w-full">
 
             <thead className="bg-gray-100">
 

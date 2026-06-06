@@ -48,13 +48,13 @@ function StockHistory() {
 
     <div className="p-6">
 
-      <h1 className="text-3xl font-bold mb-6">
+      <h1 className="text-2xl md:text-3xl font-bold mb-6">
         Stock History
       </h1>
 
-      <div className="bg-white rounded-2xl shadow-sm overflow-auto">
+      <div className="bg-white rounded-2xl shadow-sm overflow-x-auto">
 
-        <table className="w-full">
+        <table className="min-w-[900px] w-full">
 
           <thead className="bg-gray-100">
 
@@ -99,7 +99,7 @@ function StockHistory() {
 
                 <tr
                   key={item._id}
-                  className="border-b"
+                  className="border-b hover:bg-gray-50 transition"
                 >
 
                   <td className="p-4">
@@ -125,7 +125,10 @@ function StockHistory() {
                   <td className="p-4">
 
                     <span
-                      className="bg-red-100 text-red-600 px-3 py-1 rounded-full"
+                      className={`px-3 py-1 rounded-full text-sm font-bold ${item.type === "IN"
+                        ? "bg-green-100 text-green-600"
+                        : "bg-red-100 text-red-600"
+                        }`}
                     >
 
                       {item.type}
