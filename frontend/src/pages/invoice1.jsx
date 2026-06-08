@@ -89,11 +89,11 @@ function Invoices1({ isEdit }) {
         const nextNumber =
           String(lastNumber + 1).padStart(4, "0");
 
-        setInvoiceNo(`GST-${nextNumber}`);
+        setInvoiceNo(`INV-${nextNumber}`);
 
       } else {
 
-        setInvoiceNo("GST-0001");
+        setInvoiceNo("INV-0001");
       }
 
       setParties(partyRes.data);
