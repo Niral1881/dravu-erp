@@ -314,6 +314,24 @@ function Invoices({ isEdit }) {
 
       } else {
 
+        for (const item of items) {
+
+          const product = products.find(
+            (p) => p._id === item.productId
+          );
+
+          if (!product) continue;
+
+          if (Number(item.qty) > Number(product.stock)) {
+
+            alert(
+              `${product.name} only ${product.stock} pcs available`
+            );
+
+            return;
+          }
+        }
+
         res = await axios.post(
           `${API}/invoices`,
           invoiceData

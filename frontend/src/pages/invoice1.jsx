@@ -656,7 +656,7 @@ function Invoices1({ isEdit }) {
                     (e.target.value)
                   )
                 }
-                className="p-2 md:p-3"
+                className="w-full border border-gray-200 rounded-lg p-2 md:p-3"
               />
 
             </div>
