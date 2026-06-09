@@ -394,15 +394,18 @@ function Invoices1({ isEdit }) {
                 Select Party
               </option>
 
-              {parties.map((party) => (
-
-                <option
-                  key={party._id}
-                  value={party._id}
-                >
-                  {party.name}
-                </option>
-              ))}
+              {parties
+                .sort((a, b) =>
+                  a.name.localeCompare(b.name)
+                )
+                .map((party) => (
+                  <option
+                    key={party._id}
+                    value={party._id}
+                  >
+                    {party.name}
+                  </option>
+                ))}
 
             </select>
 

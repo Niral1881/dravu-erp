@@ -191,16 +191,19 @@ function Payments() {
               Select Party
             </option>
 
-            {parties.map((party) => (
+            {parties
+              .sort((a, b) =>
+                a.name.localeCompare(b.name)
+              )
+              .map((party) => (
+                <option
+                  key={party._id}
+                  value={party.name}
+                >
+                  {party.name}
+                </option>
 
-              <option
-                key={party._id}
-                value={party.name}
-              >
-                {party.name}
-              </option>
-
-            ))}
+              ))}
 
           </select>
 

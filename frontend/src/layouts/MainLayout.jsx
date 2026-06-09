@@ -20,9 +20,9 @@ function MainLayout() {
   const location = useLocation();
 
   return (
-    <div className="flex min-h-screen overflow-hidden bg-[#F5F7FA]">
+    <div className="flex h-screen overflow-hidden bg-[#F5F7FA]">
       {/* Sidebar */}
-      <div className="w-16 md:w-20 lg:w-64 min-h-screen bg-gradient-to-b from-[#2E3A3F] to-[#1F272B] text-white p-2 md:p-5">
+      <div className="w-16 md:w-20 lg:w-64 h-screen fixed left-0 top-0 overflow-y-auto bg-gradient-to-b from-[#2E3A3F] to-[#1F272B] text-white p-2 md:p-5">
 
         {/* Logo */}
         <div className="flex items-center gap-3 mb-10">
@@ -261,7 +261,7 @@ function MainLayout() {
       </div>
 
       {/* Main Content */}
-      <div className="flex-1 p-3 md:p-6 overflow-x-auto">
+      <div className="flex-1 ml-16 md:ml-20 lg:ml-64 h-screen p-3 md:p-6 overflow-y-auto">
         <Outlet />
       </div>
 

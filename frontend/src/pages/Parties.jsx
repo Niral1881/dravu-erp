@@ -202,78 +202,82 @@ function Parties() {
 
           <tbody>
 
-            {parties.map((party) => (
-              <tr
-                key={party._id}
-                className="border-b hover:bg-gray-50 transition"
-              >
+            {parties
+              .sort((a, b) =>
+                a.name.localeCompare(b.name)
+              )
+              .map((party) => (
+                <tr
+                  key={party._id}
+                  className="border-b hover:bg-gray-50 transition"
+                >
 
-                <td className="p-4 font-medium">
-                  {party.name}
-                </td>
+                  <td className="p-4 font-medium">
+                    {party.name}
+                  </td>
 
-                <td className="p-4">
-                  {party.agent}
-                </td>
+                  <td className="p-4">
+                    {party.agent}
+                  </td>
 
-                <td className="p-4">
-                  {party.mobile}
-                </td>
+                  <td className="p-4">
+                    {party.mobile}
+                  </td>
 
-                <td className="p-4">
-                  {party.city}
-                </td>
+                  <td className="p-4">
+                    {party.city}
+                  </td>
 
-                <td className="p-4">
-                  {party.state}
-                </td>
+                  <td className="p-4">
+                    {party.state}
+                  </td>
 
-                <td className="p-4">
-                  {party.pincode}
-                </td>
+                  <td className="p-4">
+                    {party.pincode}
+                  </td>
 
 
-                <td className="p-4">
+                  <td className="p-4">
 
-                  <div className="flex gap-2">
+                    <div className="flex gap-2">
 
-                    <button
-                      onClick={() => {
+                      <button
+                        onClick={() => {
 
-                        setEditId(party._id);
+                          setEditId(party._id);
 
-                        setFormData({
-                          name: party.name || "",
-                          gstin: party.gstin || "",
-                          mobile: party.mobile || "",
-                          address: party.address || "",
-                          city: party.city || "",
-                          state: party.state || "",
-                          pincode: party.pincode || "",
-                        });
+                          setFormData({
+                            name: party.name || "",
+                            gstin: party.gstin || "",
+                            mobile: party.mobile || "",
+                            address: party.address || "",
+                            city: party.city || "",
+                            state: party.state || "",
+                            pincode: party.pincode || "",
+                          });
 
-                        setShowModal(true);
-                      }}
-                      className="bg-blue-100 cursor-pointer text-blue-600 px-4 py-2 rounded-lg"
-                    >
-                      Edit
-                    </button>
+                          setShowModal(true);
+                        }}
+                        className="bg-blue-100 cursor-pointer text-blue-600 px-4 py-2 rounded-lg"
+                      >
+                        Edit
+                      </button>
 
-                    <button
-                      onClick={() =>
-                        handleDelete(party._id)
-                      }
-                      className="bg-red-100 cursor-pointer text-red-600 px-4 py-2 rounded-lg"
-                    >
-                      Delete
-                    </button>
+                      <button
+                        onClick={() =>
+                          handleDelete(party._id)
+                        }
+                        className="bg-red-100 cursor-pointer text-red-600 px-4 py-2 rounded-lg"
+                      >
+                        Delete
+                      </button>
 
-                  </div>
+                    </div>
 
-                </td>
+                  </td>
 
-              </tr>
-            ))}
+                </tr>
+              ))}
 
           </tbody>
 

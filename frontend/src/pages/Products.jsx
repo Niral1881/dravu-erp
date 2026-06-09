@@ -190,69 +190,73 @@ function Products() {
 
           <tbody>
 
-            {products.map((product) => (
-              <tr
-                key={product.id}
-                className="border-b hover:bg-gray-50 transition"
-              >
+            {products
+              .sort((a, b) =>
+                a.name.localeCompare(b.name)
+              )
+              .map((product) => (
+                <tr
+                  key={product.id}
+                  className="border-b hover:bg-gray-50 transition"
+                >
 
-                <td className="p-4 font-medium">
-                  {product.design}
-                </td>
+                  <td className="p-4 font-medium">
+                    {product.design}
+                  </td>
 
-                <td className="p-4">
-                  {product.name}
-                </td>
+                  <td className="p-4">
+                    {product.name}
+                  </td>
 
-                <td className="p-4">
-                  {product.size}
-                </td>
+                  <td className="p-4">
+                    {product.size}
+                  </td>
 
-                <td className="p-4">
-                  {product.color}
-                </td>
+                  <td className="p-4">
+                    {product.color}
+                  </td>
 
-                <td className="p-4">
+                  <td className="p-4">
 
-                  <span
-                    className={`px-3 py-1 rounded-full text-sm ${product.stock < 50
-                      ? "bg-red-100 text-red-600"
-                      : "bg-green-100 text-green-600"
-                      }`}
-                  >
-                    {product.stock} pcs
-                  </span>
-
-                </td>
-
-                <td className="p-4 font-semibold">
-                  ₹ {product.rate}
-                </td>
-
-                <td className="p-4">
-
-                  <div className="flex gap-2">
-
-                    <button
-                      onClick={() => handleEdit(product)}
-                      className="bg-blue-100 cursor-pointer text-blue-600 px-4 py-2 rounded-lg"
+                    <span
+                      className={`px-3 py-1 rounded-full text-sm ${product.stock < 50
+                        ? "bg-red-100 text-red-600"
+                        : "bg-green-100 text-green-600"
+                        }`}
                     >
-                      Edit
-                    </button>
+                      {product.stock} pcs
+                    </span>
 
-                    <button
-                      onClick={() => handleDelete(product._id)}
-                      className="bg-red-100 cursor-pointer text-red-600 px-4 py-2 rounded-lg"
-                    >
-                      Delete
-                    </button>
+                  </td>
 
-                  </div>
+                  <td className="p-4 font-semibold">
+                    ₹ {product.rate}
+                  </td>
 
-                </td>
+                  <td className="p-4">
 
-              </tr>
-            ))}
+                    <div className="flex gap-2">
+
+                      <button
+                        onClick={() => handleEdit(product)}
+                        className="bg-blue-100 cursor-pointer text-blue-600 px-4 py-2 rounded-lg"
+                      >
+                        Edit
+                      </button>
+
+                      <button
+                        onClick={() => handleDelete(product._id)}
+                        className="bg-red-100 cursor-pointer text-red-600 px-4 py-2 rounded-lg"
+                      >
+                        Delete
+                      </button>
+
+                    </div>
+
+                  </td>
+
+                </tr>
+              ))}
 
           </tbody>
 
