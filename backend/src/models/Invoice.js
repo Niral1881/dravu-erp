@@ -7,6 +7,11 @@ const invoiceSchema = new mongoose.Schema(
       required: true,
     },
 
+    invoiceType: {
+      type: String,
+      default: "NORMAL",
+    },
+
     partyName: {
       type: String,
       required: true,

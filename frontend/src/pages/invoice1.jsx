@@ -72,9 +72,13 @@ function Invoices1({ isEdit }) {
         `${API}/invoices`
       );
 
+      console.log(invoiceRes.data);
+
       const invoices = invoiceRes.data.filter(
         (inv) => inv.invoiceType === "GST"
       );
+
+      console.log("GST Invoices:", invoices);
 
       if (invoices.length > 0) {
 
@@ -82,6 +86,8 @@ function Invoices1({ isEdit }) {
           const num = parseInt(inv.invoiceNo.replace("INV-", "")) || 0;
           return num > max ? num : max;
         }, 0);
+
+        console.log("Highest:", highestInvoice);
 
         setInvoiceNo(`INV-${highestInvoice + 1}`);
 
