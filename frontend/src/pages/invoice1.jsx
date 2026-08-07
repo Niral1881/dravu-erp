@@ -78,22 +78,17 @@ function Invoices1({ isEdit }) {
 
       if (invoices.length > 0) {
 
-        const lastInvoice =
-          invoices[invoices.length - 1];
+        const highestInvoice = invoices.reduce((max, inv) => {
+          const num = parseInt(inv.invoiceNo.replace("INV-", "")) || 0;
+          return num > max ? num : max;
+        }, 0);
 
-        const lastNumber =
-          Number(
-            lastInvoice.invoiceNo.split("-")[1]
-          );
-
-        const nextNumber =
-          String(lastNumber + 1).padStart(4, "0");
-
-        setInvoiceNo(`INV-${nextNumber}`);
+        setInvoiceNo(`INV-${highestInvoice + 1}`);
 
       } else {
 
         setInvoiceNo("INV-13");
+
       }
 
       setParties(partyRes.data);
