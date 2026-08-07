@@ -63,6 +63,21 @@ const invoiceSchema = new mongoose.Schema(
 
     discountAmount: Number,
 
+    cgstAmount: {
+      type: Number,
+      default: 0,
+    },
+
+    sgstAmount: {
+      type: Number,
+      default: 0,
+    },
+
+    igstAmount: {
+      type: Number,
+      default: 0,
+    },
+
     gstAmount: Number,
 
     roundOff: Number,

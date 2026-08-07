@@ -717,27 +717,68 @@ function InvoicePrint() {
                   justifyContent: "space-between",
                   padding: "4px 6px",
                   alignItems: "center",
-                  borderBottom:
-                    "1px solid #d1d5db",
+                  borderBottom: "1px solid #d1d5db",
                 }}
               >
-
                 <span>
-                  GST (
-                  {
-                    invoice.gstPercent
-                  }
-                  %)
+                  CGST ({(invoice.gstPercent / 2).toFixed(1)}%)
                 </span>
 
                 <span>
-                  ₹ {
-                    invoice.gstAmount?.toFixed(
-                      2
-                    )
-                  }
+                  ₹ {(invoice.cgstAmount || 0).toFixed(2)}
+                </span>
+              </div>
+
+              <div
+                style={{
+                  display: "flex",
+                  justifyContent: "space-between",
+                  padding: "4px 6px",
+                  alignItems: "center",
+                  borderBottom: "1px solid #d1d5db",
+                }}
+              >
+                <span>
+                  SGST ({(invoice.gstPercent / 2).toFixed(1)}%)
                 </span>
 
+                <span>
+                  ₹ {(invoice.sgstAmount || 0).toFixed(2)}
+                </span>
+              </div>
+
+              <div
+                style={{
+                  display: "flex",
+                  justifyContent: "space-between",
+                  padding: "4px 6px",
+                  alignItems: "center",
+                  borderBottom: "1px solid #d1d5db",
+                }}
+              >
+                <span>IGST</span>
+
+                <span>
+                  ₹ {(invoice.igstAmount || 0).toFixed(2)}
+                </span>
+              </div>
+
+              <div
+                style={{
+                  display: "flex",
+                  justifyContent: "space-between",
+                  padding: "4px 6px",
+                  alignItems: "center",
+                  borderBottom: "1px solid #d1d5db",
+                  fontWeight: "700",
+                  color: "#15803d",
+                }}
+              >
+                <span>Total GST</span>
+
+                <span>
+                  ₹ {(invoice.gstAmount || 0).toFixed(2)}
+                </span>
               </div>
 
               <div

@@ -5,10 +5,16 @@ import StockHistory
 
 export const createInvoice = async (req, res) => {
   try {
+    console.log("========= REQUEST BODY =========");
+    console.log(req.body);
 
     const invoice = await Invoice.create(
       req.body
     );
+
+    console.log("========= SAVED INVOICE =========");
+    console.log(invoice);
+
 
 
 

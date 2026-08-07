@@ -93,7 +93,7 @@ function Invoices1({ isEdit }) {
 
       } else {
 
-        setInvoiceNo("INV-0001");
+        setInvoiceNo("INV-13");
       }
 
       setParties(partyRes.data);
@@ -214,6 +214,19 @@ function Invoices1({ isEdit }) {
   const gstAmount =
     (afterDiscount * gstPercent) / 100;
 
+  const cgstAmount =
+    gstPercent > 0 ? gstAmount / 2 : 0;
+
+  const sgstAmount =
+    gstPercent > 0 ? gstAmount / 2 : 0;
+
+  const igstAmount = 0;
+
+  // If you later support interstate invoices,
+  // use:
+  // const igstAmount = gstAmount;
+  // const cgstAmount = 0;
+  // const sgstAmount = 0;
 
   const grandTotal =
     afterDiscount + gstAmount;
@@ -272,6 +285,12 @@ function Invoices1({ isEdit }) {
 
         discountAmount,
 
+        cgstAmount,
+
+        sgstAmount,
+
+        igstAmount,
+
         gstAmount,
 
         roundOff,
@@ -306,6 +325,7 @@ function Invoices1({ isEdit }) {
           invoiceData
         );
       }
+      console.log(invoiceData);
 
       navigate(
         `/invoice-print/${res.data._id}`
@@ -399,6 +419,7 @@ function Invoices1({ isEdit }) {
                   a.name.localeCompare(b.name)
                 )
                 .map((party) => (
+
                   <option
                     key={party._id}
                     value={party._id}
@@ -702,14 +723,24 @@ function Invoices1({ isEdit }) {
 
             </div>
 
-            <div className="flex justify-between mb-3 text-green-600">
+            <div className="flex justify-between mb-2">
+              <span>CGST ({gstPercent / 2}%)</span>
+              <span>₹ {cgstAmount.toFixed(2)}</span>
+            </div>
 
-              <span>GST</span>
+            <div className="flex justify-between mb-2">
+              <span>SGST ({gstPercent / 2}%)</span>
+              <span>₹ {sgstAmount.toFixed(2)}</span>
+            </div>
 
-              <span>
-                ₹ {gstAmount.toFixed(2)}
-              </span>
+            <div className="flex justify-between mb-2">
+              <span>IGST</span>
+              <span>₹ {igstAmount.toFixed(2)}</span>
+            </div>
 
+            <div className="flex justify-between mb-3 text-green-600 font-semibold border-t pt-2">
+              <span>Total GST</span>
+              <span>₹ {gstAmount.toFixed(2)}</span>
             </div>
 
             <div className="flex justify-between mb-3 text-gray-500">
