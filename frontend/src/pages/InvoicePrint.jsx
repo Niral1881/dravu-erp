@@ -28,8 +28,10 @@ function InvoicePrint() {
     useReactToPrint({
       contentRef: invoiceRef,
 
-      documentTitle:
-        invoice?.invoiceNo || "Invoice",
+      documentTitle: `${invoice?.partyName
+        ?.replace(/[\\/:*?"<>|]/g, "")
+        .replace(/\s+/g, "_")}_${invoice?.invoiceNo}`,
+
 
 
       pageStyle: `
@@ -120,8 +122,9 @@ function InvoicePrint() {
 
           margin: 0,
 
-          filename:
-            `${invoice.invoiceNo}.pdf`,
+          filename: `${invoice.partyName
+            .replace(/[\\/:*?"<>|]/g, "")
+            .replace(/\s+/g, "_")}_${invoice.invoiceNo}.pdf`,
 
           image: {
             type: "jpeg",
@@ -327,6 +330,11 @@ function InvoicePrint() {
               </p>
 
               <p>
+                P.GSTIN :
+                {invoice.partyGstin}
+              </p>
+
+              <p>
                 Mobile :
                 {invoice.partyMobile}
               </p>
@@ -346,10 +354,7 @@ function InvoicePrint() {
                 {invoice.partyState}
               </p>
 
-              <p>
-                Pincode :
-                {invoice.partyPincode}
-              </p>
+
 
             </div>
 
@@ -395,9 +400,10 @@ function InvoicePrint() {
               </p>
 
               <p>
-                P.GSTIN :
-                {invoice.partyGstin}
+                Pincode :
+                {invoice.partyPincode}
               </p>
+
 
               <p>
                 State Code : 24
