@@ -554,55 +554,55 @@ function Invoices1({ isEdit }) {
                 <tr key={index} className="border-b">
 
                   <td className="p-4">
-                    <select
-                      value={item.productId}
+                    <input
+                      list={`products-${index}`}
+                      value={item.product || ""}
                       onChange={(e) => {
+                        const value = e.target.value;
 
                         const selectedProduct = products.find(
-                          (p) => p._id === e.target.value
+                          (p) => p.name === value
                         );
-
-                        if (!selectedProduct) return;
 
                         const updatedItems = [...items];
 
-                        updatedItems[index].productId =
-                          selectedProduct._id;
+                        updatedItems[index].product = value;
 
-                        updatedItems[index].product =
-                          selectedProduct.name;
+                        // If selecting an existing product,
+                        // automatically keep productId and rate.
+                        if (selectedProduct) {
+                          updatedItems[index].productId =
+                            selectedProduct._id;
 
-                        updatedItems[index].rate =
-                          selectedProduct.rate;
+                          updatedItems[index].rate =
+                            selectedProduct.rate;
+                        }
 
                         const qty =
                           Number(updatedItems[index].qty) || 0;
 
                         const rate =
-                          Number(selectedProduct.rate) || 0;
+                          Number(updatedItems[index].rate) || 0;
 
                         updatedItems[index].total =
                           qty * rate;
 
                         setItems(updatedItems);
                       }}
+                      placeholder="Select / Type Product"
                       className="w-full border border-gray-200 rounded-lg p-2 md:p-3"
-                    >
+                    />
 
-                      <option value="">
-                        Select Product
-                      </option>
-
+                    <datalist id={`products-${index}`}>
                       {products.map((product) => (
                         <option
                           key={product._id}
-                          value={product._id}
+                          value={product.name}
                         >
-                          {product.name} ({product.size})
+                          {product.name}
                         </option>
                       ))}
-
-                    </select>
+                    </datalist>
                   </td>
 
                   <td className="p-4">
