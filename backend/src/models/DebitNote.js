@@ -105,6 +105,16 @@ const debitNoteSchema = new mongoose.Schema(
       default: 0,
     },
 
+    roundOff: {
+      type: Number,
+      default: 0,
+    },
+
+    roundedTotal: {
+      type: Number,
+      default: 0,
+    },
+
     grandTotal: {
       type: Number,
       default: 0,

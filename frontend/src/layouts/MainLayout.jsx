@@ -157,6 +157,21 @@ function MainLayout() {
 
           <li>
             <Link
+              to="/debit-note-history"
+              className={`flex items-center gap-3 p-3 rounded-xl transition ${location.pathname === "/debit-note-history"
+                ? "bg-[#2F9CAF]"
+                : "hover:bg-[#2F9CAF]"
+                }`}
+            >
+              <FaHistory className="text-xl" />
+              <span className="hidden lg:flex items-center gap-3">
+                Debit Note History
+              </span>
+            </Link>
+          </li>
+
+          <li>
+            <Link
               to="/payments"
               className={`flex items-center gap-3 p-3 rounded-xl transition ${location.pathname === "/payments"
                 ? "bg-[#2F9CAF]"

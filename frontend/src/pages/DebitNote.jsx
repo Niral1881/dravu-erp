@@ -402,14 +402,14 @@ function DebitNote() {
     );
   };
 
+
   // ======================================
   // TOTALS
   // ======================================
 
   const subtotal = items.reduce(
     (sum, item) =>
-      sum +
-      Number(item.total || 0),
+      sum + Number(item.total || 0),
     0
   );
 
@@ -422,21 +422,25 @@ function DebitNote() {
   let igstAmount = 0;
 
   if (taxType === "CGST_SGST") {
-    cgstAmount =
-      gstAmount / 2;
-
-    sgstAmount =
-      gstAmount / 2;
+    cgstAmount = gstAmount / 2;
+    sgstAmount = gstAmount / 2;
   }
 
   if (taxType === "IGST") {
-    igstAmount =
-      gstAmount;
+    igstAmount = gstAmount;
   }
 
+  // Total before round off
   const grandTotal =
-    subtotal +
-    gstAmount;
+    subtotal + gstAmount;
+
+  const roundedTotal =
+    Math.ceil(grandTotal || 0);
+
+  const roundOff =
+    Number(
+      (roundedTotal - grandTotal).toFixed(2)
+    );
 
   // ======================================
   // SAVE DEBIT NOTE
@@ -548,13 +552,20 @@ function DebitNote() {
 
         cgstAmount,
 
+
         sgstAmount,
 
         igstAmount,
 
         gstAmount,
 
-        grandTotal,
+        // ROUND OFF
+        roundOff,
+
+        roundedTotal,
+
+        // FINAL TOTAL
+        grandTotal: roundedTotal,
 
         note,
       };
@@ -1110,14 +1121,26 @@ function DebitNote() {
           )}
 
 
+          {/* ROUND OFF */}
+
+          <div className="flex justify-between py-2">
+            <span>Round Off</span>
+
+            <span>
+              ₹ {roundOff.toFixed(2)}
+            </span>
+          </div>
+
+
+          {/* FINAL TOTAL */}
+
           <div className="border-t mt-3 pt-3 flex justify-between text-xl font-bold">
             <span>
-              Grand Total
+              Debit Total
             </span>
 
             <span>
-              ₹{" "}
-              {grandTotal.toFixed(2)}
+              ₹ {roundedTotal.toFixed(2)}
             </span>
           </div>
 

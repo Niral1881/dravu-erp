@@ -215,6 +215,26 @@ function DebitNotePrint() {
       );
     };
 
+  const subtotalValue = Number(
+    debitNote.subtotal || 0
+  );
+
+  const gstValue = Number(
+    debitNote.gstAmount || 0
+  );
+
+  const totalBeforeRound =
+    subtotalValue + gstValue;
+
+  const finalDebitTotal =
+    debitNote.roundedTotal != null
+      ? Number(debitNote.roundedTotal)
+      : Math.ceil(totalBeforeRound);
+
+  const finalRoundOff =
+    Number(
+      (finalDebitTotal - totalBeforeRound).toFixed(2)
+    );
 
   return (
 
@@ -322,8 +342,8 @@ function DebitNotePrint() {
               padding:
                 "12px",
 
-              minHeight:
-                "105px",
+              maxHeight:
+                "130px",
 
             }}
           >
@@ -334,11 +354,9 @@ function DebitNotePrint() {
 
               alt="Dravu Fashion Hub"
               style={{
-                width:
-                  "250px",
-
-                objectFit:
-                  "contain",
+                width: "100%",
+                maxWidth: "250px",
+                objectFit: "contain",
               }}
             />
 
@@ -374,7 +392,7 @@ function DebitNotePrint() {
                 }}
               >
 
-                PURCHASE DEBIT NOTE
+                DEBIT NOTE
 
               </div>
 
@@ -494,8 +512,13 @@ function DebitNotePrint() {
             <div>
 
               <p>
-                <b>Purchase Party :</b>{" "}
+                <b>Party Name :</b>{" "}
                 {debitNote.supplierName}
+              </p>
+
+              <p>
+                <b>P.GSTIN :</b>{" "}
+                {debitNote.supplierGstin}
               </p>
 
 
@@ -517,22 +540,6 @@ function DebitNotePrint() {
               </p>
 
 
-              <p>
-                <b>State :</b>{" "}
-                {debitNote.supplierState}
-              </p>
-
-
-              <p>
-                <b>Pincode :</b>{" "}
-                {debitNote.supplierPincode}
-              </p>
-
-
-              <p>
-                <b>GSTIN :</b>{" "}
-                {debitNote.supplierGstin}
-              </p>
 
             </div>
 
@@ -563,13 +570,17 @@ function DebitNotePrint() {
 
               </p>
 
+              <p>
+                <b>State :</b>{" "}
+                {debitNote.supplierState}
+              </p>
+
 
               <p>
-
-                <b>Reason :</b>{" "}
-                {debitNote.reason}
-
+                <b>Pincode :</b>{" "}
+                {debitNote.supplierPincode}
               </p>
+
 
             </div>
 
@@ -713,6 +724,8 @@ function DebitNotePrint() {
 
                         height:
                           "28px",
+                        fontWeight:
+                          "600",
                       }}
                     >
                       {index + 1}
@@ -726,6 +739,8 @@ function DebitNotePrint() {
 
                         padding:
                           "7px",
+                        fontWeight:
+                          "600",
                       }}
                     >
                       {item.product}
@@ -742,6 +757,8 @@ function DebitNotePrint() {
 
                         textAlign:
                           "center",
+                        fontWeight:
+                          "600",
                       }}
                     >
                       {item.qty}
@@ -757,7 +774,9 @@ function DebitNotePrint() {
                           "7px",
 
                         textAlign:
-                          "right",
+                          "center",
+                        fontWeight:
+                          "600",
                       }}
                     >
                       ₹{" "}
@@ -776,7 +795,9 @@ function DebitNotePrint() {
                           "7px",
 
                         textAlign:
-                          "right",
+                          "center",
+                        fontWeight:
+                          "600",
                       }}
                     >
                       ₹{" "}
@@ -944,6 +965,8 @@ function DebitNotePrint() {
 
                   borderBottom:
                     "1px solid #d1d5db",
+                  fontWeight:
+                    "600",
                 }}
               >
 
@@ -1121,6 +1144,46 @@ function DebitNotePrint() {
 
               </div>
 
+              <div
+                style={{
+                  display: "flex",
+                  justifyContent: "space-between",
+                  padding: "7px",
+                  borderBottom: "1px solid #d1d5db",
+                }}
+              >
+                <span>
+                  Round Off
+                </span>
+
+                <span>
+                  ₹ {finalRoundOff.toFixed(2)}
+                </span>
+              </div>
+
+
+
+              {/* <div className="summary-row">
+                <span>Round Off</span>
+
+                <span>
+                  ₹ {Number(debitNote.roundOff || 0).toFixed(2)}
+                </span>
+              </div>
+
+              <div className="summary-row total">
+                <span>Debit Total</span>
+
+                <span>
+                  ₹{" "}
+                  {Number(
+                    debitNote.roundedTotal ??
+                    debitNote.grandTotal ??
+                    0
+                  ).toFixed(2)}
+                </span>
+              </div> */}
+
 
               <div
                 style={{
@@ -1146,11 +1209,7 @@ function DebitNotePrint() {
                 </span>
 
                 <span>
-                  ₹{" "}
-                  {Number(
-                    debitNote.grandTotal ||
-                    0
-                  ).toFixed(2)}
+                  ₹ {finalDebitTotal.toFixed(2)}
                 </span>
 
               </div>
