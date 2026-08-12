@@ -215,7 +215,7 @@ function InvoicePrint() {
               justifyContent: "space-between",
               alignItems: "center",
               padding: "12px",
-              maxHeight: "115px",
+              maxHeight: "130px",
             }}
           >
             {/* Logo */}
@@ -318,6 +318,8 @@ function InvoicePrint() {
             style={{
               gap: "50px",
               fontSize: "12px",
+              fontWeight:
+                "600",
             }}
           >
 
@@ -325,33 +327,27 @@ function InvoicePrint() {
             <div className="space-y-1">
 
               <p>
-                Name :
-                {invoice.partyName}
+                <b>Name</b> : {invoice.partyName}
               </p>
 
               <p>
-                P.GSTIN :
-                {invoice.partyGstin}
+                <b>P.GSTIN</b> : {invoice.partyGstin}
               </p>
 
               <p>
-                Mobile :
-                {invoice.partyMobile}
+                <b>Mobile</b> : {invoice.partyMobile}
               </p>
 
               <p>
-                Address :
-                {invoice.partyAddress}
+                <b>Address</b> : {invoice.partyAddress}
               </p>
 
               <p>
-                City :
-                {invoice.partyCity}
+                <b>City</b> : {invoice.partyCity}
               </p>
 
               <p>
-                State :
-                {invoice.partyState}
+                <b>State</b> : {invoice.partyState}
               </p>
 
 
@@ -369,13 +365,11 @@ function InvoicePrint() {
             >
 
               <p>
-                Bill No :
-                {invoice.invoiceNo}
+                <b>Bill No</b> : {invoice.invoiceNo}
               </p>
 
               <p>
-                Date :
-                {
+                <b>Date</b> : {
                   invoice.date
                     ? new Date(
                       invoice.date
@@ -387,8 +381,7 @@ function InvoicePrint() {
               </p>
 
               <p>
-                Date of Supply :
-                {
+                <b>Date of Supply</b> : {
                   invoice.dateOfSupply
                     ? new Date(
                       invoice.dateOfSupply
@@ -400,13 +393,12 @@ function InvoicePrint() {
               </p>
 
               <p>
-                Pincode :
-                {invoice.partyPincode}
+                <b>Pincode</b> : {invoice.partyPincode}
               </p>
 
 
               <p>
-                State Code : 24
+                <b>State Code</b> : 24
               </p>
 
             </div>
@@ -420,7 +412,7 @@ function InvoicePrint() {
             <img
               src={img}
               alt="watermark"
-              className="absolute opacity-10 w-[550px] md:w-[450px] h-[550px] md:h-[450px] top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 pointer-events-none"
+              className="absolute opacity-15 w-[550px] md:w-[450px] h-[550px] md:h-[450px] top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 pointer-events-none"
             />
             <div className="w-full border-t">
               <table
@@ -437,7 +429,7 @@ function InvoicePrint() {
                   <tr
                     style={{
                       backgroundColor:
-                        "#5E7E95",
+                        "#2F9CAF",
                       color:
                         "#ffffff",
                     }}
@@ -488,6 +480,7 @@ function InvoicePrint() {
                               "30px",
                             textAlign:
                               "center",
+
                           }}
                         >
                           {index + 1}
@@ -620,6 +613,8 @@ function InvoicePrint() {
                   "#9ca3af",
                 fontSize:
                   "12px",
+                fontWeight:
+                  "600",
               }}
             >
 
@@ -634,22 +629,22 @@ function InvoicePrint() {
               </h3>
 
               <p className="mt-1">
-                Bank Name :
+                <b>Bank Name</b> :
                 IDBI BANK
               </p>
 
               <p className="mt-1">
-                A/c No :
+                <b>A/c No</b> :
                 0290102000131568
               </p>
 
               <p className="mt-1">
-                IFSC Code :
+                <b>IFSC Code</b> :
                 IBKL0000290
               </p>
 
               <p className="mt-1">
-                Branch :
+                <b>Branch</b> :
                 Varachha Road
                 Branch,
                 Surat
@@ -673,6 +668,8 @@ function InvoicePrint() {
                   alignItems: "center",
                   borderBottom:
                     "1px solid #d1d5db",
+                  fontWeight:
+                    "600",
                 }}
               >
                 <span>
@@ -696,6 +693,8 @@ function InvoicePrint() {
                   alignItems: "center",
                   borderBottom:
                     "1px solid #d1d5db",
+                  fontWeight:
+                    "600",
                 }}
               >
 
