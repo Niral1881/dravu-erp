@@ -59,6 +59,17 @@ function InvoicePrint() {
       width: 794px !important;
       min-height: 1123px !important;
     }
+
+    #invoice-print table,
+#invoice-print th,
+#invoice-print td {
+  border: 1px solid black !important;
+  border-collapse: collapse !important;
+}
+
+#invoice-print table {
+  border-collapse: collapse !important;
+}
   }
 `,
     });
@@ -202,7 +213,7 @@ function InvoicePrint() {
         <div
           style={{
             border:
-              "2px solid #9ca3af",
+              "2px solid black",
             width: "100%",
             boxSizing: "border-box",
           }}
@@ -414,13 +425,19 @@ function InvoicePrint() {
               alt="watermark"
               className="absolute opacity-15 w-[550px] md:w-[450px] h-[550px] md:h-[450px] top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 pointer-events-none"
             />
-            <div className="w-full border-t">
+            <div
+              className="w-full"
+              style={{
+                borderTop: "2px solid black",
+                borderBottom: "2px solid black",
+              }}
+            >
               <table
-                className="w-full border-t"
+                className="w-full"
                 style={{
-                  borderColor:
-                    "#9ca3af",
                   tableLayout: "fixed",
+                  borderCollapse: "collapse",
+
                 }}
               >
 
@@ -435,23 +452,53 @@ function InvoicePrint() {
                     }}
                   >
 
-                    <th className="border p-1 w-[50px]">
+                    <th
+                      style={{
+                        border: "1px solid black",
+                        padding: "4px",
+                        width: "50px",
+                      }}
+                    >
                       No.
                     </th>
 
-                    <th className="border p-1 w-[300px]">
+                    <th
+                      style={{
+                        border: "1px solid black",
+                        padding: "4px",
+                        width: "300px",
+                      }}
+                    >
                       Product
                     </th>
 
-                    <th className="border p-1 w-[90px]">
+                    <th
+                      style={{
+                        border: "1px solid black",
+                        padding: "4px",
+                        width: "90px",
+                      }}
+                    >
                       Qty
                     </th>
 
-                    <th className="border p-1 w-[120px]">
+                    <th
+                      style={{
+                        border: "1px solid black",
+                        padding: "4px",
+                        width: "120px",
+                      }}
+                    >
                       Rate
                     </th>
 
-                    <th className="border p-1 w-[150px]">
+                    <th
+                      style={{
+                        border: "1px solid black",
+                        padding: "4px",
+                        width: "150px",
+                      }}
+                    >
                       Amount
                     </th>
 
@@ -475,7 +522,7 @@ function InvoicePrint() {
                         <td
                           style={{
                             border:
-                              "1px solid #d1d5db",
+                              "1px solid black",
                             height:
                               "30px",
                             textAlign:
@@ -489,7 +536,7 @@ function InvoicePrint() {
                         <td
                           style={{
                             border:
-                              "1px solid #d1d5db",
+                              "1px solid black",
                             padding:
                               "4px",
                           }}
@@ -502,7 +549,7 @@ function InvoicePrint() {
                         <td
                           style={{
                             border:
-                              "1px solid #d1d5db",
+                              "1px solid black",
                             padding:
                               "4px",
                             textAlign:
@@ -515,7 +562,7 @@ function InvoicePrint() {
                         <td
                           style={{
                             border:
-                              "1px solid #d1d5db",
+                              "1px solid black",
                             padding:
                               "4px",
                             textAlign:
@@ -528,7 +575,7 @@ function InvoicePrint() {
                         <td
                           style={{
                             border:
-                              "1px solid #d1d5db",
+                              "1px solid black",
                             padding:
                               "4px",
                             textAlign:
@@ -576,7 +623,7 @@ function InvoicePrint() {
                               }
                               style={{
                                 border:
-                                  "1px solid #d1d5db",
+                                  "1px solid black",
                                 height:
                                   "30px",
                               }}
@@ -607,10 +654,10 @@ function InvoicePrint() {
 
             {/* Bank */}
             <div
-              className="p-3 border-r min-h-[110px]"
+              className="p-3 border-r  min-h-[110px]"
               style={{
                 borderColor:
-                  "#9ca3af",
+                  "black",
                 fontSize:
                   "12px",
                 fontWeight:
@@ -667,7 +714,7 @@ function InvoicePrint() {
                   padding: "4px 6px",
                   alignItems: "center",
                   borderBottom:
-                    "1px solid #d1d5db",
+                    "1px solid black",
                   fontWeight:
                     "600",
                 }}
@@ -692,7 +739,7 @@ function InvoicePrint() {
                   padding: "4px 6px",
                   alignItems: "center",
                   borderBottom:
-                    "1px solid #d1d5db",
+                    "1px solid black",
                   fontWeight:
                     "600",
                 }}
@@ -722,7 +769,7 @@ function InvoicePrint() {
                   justifyContent: "space-between",
                   padding: "4px 6px",
                   alignItems: "center",
-                  borderBottom: "1px solid #d1d5db",
+                  borderBottom: "1px solid black",
                 }}
               >
                 <span>
@@ -740,7 +787,7 @@ function InvoicePrint() {
                   justifyContent: "space-between",
                   padding: "4px 6px",
                   alignItems: "center",
-                  borderBottom: "1px solid #d1d5db",
+                  borderBottom: "1px solid black",
                 }}
               >
                 <span>
@@ -758,7 +805,7 @@ function InvoicePrint() {
                   justifyContent: "space-between",
                   padding: "4px 6px",
                   alignItems: "center",
-                  borderBottom: "1px solid #d1d5db",
+                  borderBottom: "1px solid black",
                 }}
               >
                 <span>IGST</span>
@@ -774,7 +821,7 @@ function InvoicePrint() {
                   justifyContent: "space-between",
                   padding: "4px 6px",
                   alignItems: "center",
-                  borderBottom: "1px solid #d1d5db",
+                  borderBottom: "1px solid black",
                   fontWeight: "700",
                   color: "#15803d",
                 }}
@@ -793,7 +840,7 @@ function InvoicePrint() {
                   padding: "4px 6px",
                   alignItems: "center",
                   borderBottom:
-                    "1px solid #d1d5db",
+                    "1px solid black",
                 }}
               >
 
@@ -816,7 +863,7 @@ function InvoicePrint() {
                 className="flex justify-between p-1 font-bold"
                 style={{
                   borderBottom:
-                    "1px solid #d1d5db",
+                    "",
                   fontSize:
                     "15px",
                   textAlign: "center",
@@ -846,7 +893,7 @@ function InvoicePrint() {
             className="flex justify-between items-end p-2 min-h-[40px]"
             style={{
               borderTop:
-                "1px solid #9ca3af",
+                "1px solid black",
             }}
           >
 
