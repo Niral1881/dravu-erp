@@ -18,6 +18,9 @@ import PaymentHistory from "./pages/PaymentHistory";
 import StockHistory
   from "./pages/StockHistory";
 import Returns from "./pages/Returns";
+import DebitNote from "./pages/DebitNote";
+import DebitNotePrint from "./pages/DebitNotePrint";
+import PurchaseParty from "./pages/PurchaseParty";
 
 
 function App() {
@@ -70,6 +73,21 @@ function App() {
           <Route
             path="stock-history"
             element={<StockHistory />}
+          />
+
+          <Route
+            path="/debit-note"
+            element={<DebitNote />}
+          />
+
+          <Route
+            path="/debit-note-print/:id"
+            element={<DebitNotePrint />}
+          />
+
+          <Route
+            path="/purchase-party"
+            element={<PurchaseParty />}
           />
 
 

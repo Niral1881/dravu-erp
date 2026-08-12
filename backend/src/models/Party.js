@@ -20,6 +20,17 @@ const partySchema = new mongoose.Schema(
     state: String,
 
     pincode: String,
+
+    partyType: {
+      type: String,
+      enum: ["SALES", "PURCHASE"],
+      default: "SALES",
+    },
+
+    openingBalance: {
+      type: Number,
+      default: 0,
+    },
   },
   {
     timestamps: true,

@@ -10,6 +10,7 @@ import partyRoutes from "./routes/party.routes.js";
 import paymentRoutes from "./routes/payment.routes.js";
 import stockHistoryRoutes from "./routes/stockHistory.routes.js";
 import returnRoutes from "./routes/return.routes.js";
+import debitNoteRoutes from "./routes/debitNote.routes.js";
 
 dotenv.config();
 
@@ -34,6 +35,10 @@ app.use("/api/parties", partyRoutes);
 app.use("/api/payments", paymentRoutes);
 app.use("/api/stock-history", stockHistoryRoutes);
 app.use("/api/returns", returnRoutes);
+app.use(
+  "/api/debit-notes",
+  debitNoteRoutes
+);
 
 // Test Route
 app.get("/", (req, res) => {
