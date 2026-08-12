@@ -21,6 +21,7 @@ import Returns from "./pages/Returns";
 import DebitNote from "./pages/DebitNote";
 import DebitNotePrint from "./pages/DebitNotePrint";
 import PurchaseParty from "./pages/PurchaseParty";
+import DebitNoteHistory from "./pages/DebitNoteHistory";
 
 
 function App() {
@@ -88,6 +89,11 @@ function App() {
           <Route
             path="/purchase-party"
             element={<PurchaseParty />}
+          />
+
+          <Route
+            path="/debit-note-history"
+            element={<DebitNoteHistory />}
           />
 
 
