@@ -394,7 +394,7 @@ function Invoices1({ isEdit }) {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 mb-6">
 
           <div>
-            <label className="block mb-2 font-medium">
+            <label className="block mb-2 font-bold ">
               Invoice No
             </label>
 
@@ -402,12 +402,12 @@ function Invoices1({ isEdit }) {
               type="text"
               value={invoiceNo}
               readOnly
-              className="w-full border border-gray-200 rounded-xl p-3 outline-none"
+              className="w-full border bg-[#2F9CAF] text-white border-gray-200 rounded-xl p-3 outline-none"
             />
           </div>
 
           <div>
-            <label className="block mb-2 font-medium">
+            <label className="block mb-2 font-bold">
               Party Name
             </label>
 
@@ -427,7 +427,7 @@ function Invoices1({ isEdit }) {
 
                 setSelectedParty(party);
               }}
-              className="w-full border border-gray-200 rounded-xl p-3 outline-none autoFocus focus:border-[#2F9CAF]"
+              className="w-full border bg-[#2F9CAF] text-white border-gray-200 rounded-xl p-3 outline-none autoFocus focus:border-[#2F9CAF]"
             >
 
               <option value="">
@@ -453,7 +453,7 @@ function Invoices1({ isEdit }) {
             {
               selectedParty && (
 
-                <div className="bg-white p-4 rounded-xl border mt-4 space-y-2">
+                <div className="bg-[#2F9CAF] text-white p-4 rounded-xl border mt-4 space-y-2">
 
                   <p>
                     <span className="font-bold">
@@ -517,7 +517,7 @@ function Invoices1({ isEdit }) {
           </div>
 
           <div>
-            <label className="block mb-2 font-medium">
+            <label className="block mb-2 font-bold">
               Date
             </label>
 
@@ -527,14 +527,14 @@ function Invoices1({ isEdit }) {
               onChange={(e) =>
                 setInvoiceDate(e.target.value)
               }
-              className="w-full border border-gray-200 rounded-xl p-3 outline-none"
+              className="w-full border bg-[#2F9CAF] text-white border-gray-200 rounded-xl p-3 outline-none"
             />
 
           </div>
 
           <div className="mt-4">
 
-            <label className="block mb-2 font-medium">
+            <label className="block mb-2 font-bold">
               Date Of Supply
             </label>
 
@@ -544,7 +544,7 @@ function Invoices1({ isEdit }) {
               onChange={(e) =>
                 setDateOfSupply(e.target.value)
               }
-              className="w-full border border-gray-200 rounded-xl p-3 outline-none"
+              className="w-full border bg-[#2F9CAF] text-white border-gray-200 rounded-xl p-3 outline-none"
             />
 
           </div>
@@ -556,11 +556,11 @@ function Invoices1({ isEdit }) {
 
           <table className="min-w-[900px] w-full mb-5">
 
-            <thead className="bg-gray-100">
+            <thead className="bg-white">
 
               <tr>
                 <th className="text-left p-4">Product</th>
-                <th className="text-left p-4">Qty</th>
+                <th className="text-left p-4 ">Qty</th>
                 <th className="text-left p-4">Rate</th>
                 <th className="text-left p-4">Total</th>
                 <th className="text-center p-4">Action</th>
@@ -610,7 +610,7 @@ function Invoices1({ isEdit }) {
                         setItems(updatedItems);
                       }}
                       placeholder="Select / Type Product"
-                      className="w-full border border-gray-200 rounded-lg p-2 md:p-3"
+                      className="w-full border bg-[#2F9CAF] text-white border-gray-200 rounded-lg p-2 md:p-3"
                     />
 
                     <datalist id={`products-${index}`}>
@@ -636,7 +636,7 @@ function Invoices1({ isEdit }) {
                           (e.target.value)
                         )
                       }
-                      className="w-full border border-gray-200 rounded-lg p-2 md:p-3"
+                      className="w-full border bg-[#2F9CAF] text-white border-gray-200 rounded-lg p-2 md:p-3"
                     />
                   </td>
 
@@ -651,7 +651,7 @@ function Invoices1({ isEdit }) {
                           (e.target.value)
                         )
                       }
-                      className="w-full border border-gray-200 rounded-lg p-2 md:p-3"
+                      className="w-full border bg-[#2F9CAF] text-white border-gray-200 rounded-lg p-2 md:p-3"
                     />
                   </td>
 
@@ -694,7 +694,7 @@ function Invoices1({ isEdit }) {
         {/* Summary */}
         <div className="flex justify-end">
 
-          <div className="w-full md:w-96 bg-gray-50 rounded-2xl p-5">
+          <div className="w-full md:w-96 bg-[#8de8f8] rounded-2xl p-5">
 
             {/* Discount */}
             <div className="mb-4">
