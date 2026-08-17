@@ -213,6 +213,25 @@ function Invoices({ isEdit }) {
     ]);
   };
 
+  const removeRow = (index) => {
+    // Keep at least one item row
+    if (items.length === 1) {
+      setItems([
+        {
+          productId: "",
+          product: "",
+          qty: "",
+          rate: "",
+          total: 0,
+        },
+      ]);
+      return;
+    }
+
+    const updatedItems = items.filter((_, i) => i !== index);
+    setItems(updatedItems);
+  };
+
   const subtotal = items.reduce(
     (acc, item) => acc + item.total,
     0
@@ -573,6 +592,7 @@ function Invoices({ isEdit }) {
                 <th className="text-left p-4">Qty</th>
                 <th className="text-left p-4">Rate</th>
                 <th className="text-left p-4">Total</th>
+                <th className="text-center p-4">Action</th>
               </tr>
 
             </thead>
@@ -673,6 +693,16 @@ function Invoices({ isEdit }) {
                     ₹ {item.total}
                   </td>
 
+                  <td className="p-4 text-center">
+                    <button
+                      type="button"
+                      onClick={() => removeRow(index)}
+                      className="bg-red-500 hover:bg-red-600 text-white px-3 py-2 rounded-lg text-sm"
+                    >
+                      Remove
+                    </button>
+                  </td>
+
                 </tr>
               ))}
 
@@ -689,6 +719,7 @@ function Invoices({ isEdit }) {
         >
           + Add Item
         </button>
+
 
         {/* Summary */}
         <div className="flex justify-end">
