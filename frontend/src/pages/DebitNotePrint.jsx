@@ -123,6 +123,13 @@ function DebitNotePrint() {
             display: none !important;
           }
 
+    //       #debit-note-print table .empty-row td {
+    //   border-left: none !important;
+    //   border-right: none !important;
+    //   border-top: 1px solid #d1d5db !important;
+    //   border-bottom: 1px solid #d1d5db !important;
+    // }
+
         }
 
       `,
@@ -313,7 +320,7 @@ function DebitNotePrint() {
           style={{
 
             border:
-              "2px solid #9ca3af",
+              "1px solid black",
 
             width:
               "100%",
@@ -591,16 +598,14 @@ function DebitNotePrint() {
 
           <table
             style={{
-
-              width:
-                "100%",
-
-              borderCollapse:
-                "collapse",
-
-              fontSize:
-                "12px",
-
+              width: "100%",
+              borderCollapse: "collapse",
+              fontSize: "12px",
+              // borderLeft: "none",
+              // borderRight: "none",
+              // borderTop: "1px solid black",
+              // borderBottom: "1px solid black",
+              border: "1px solid #9ca3af ",
             }}
           >
 
@@ -620,8 +625,10 @@ function DebitNotePrint() {
 
                 <th
                   style={{
-                    border:
-                      "1px solid #9ca3af",
+                    borderTop: "1px solid #9ca3af",
+                    borderBottom: "1px solid #9ca3af",
+                    borderRight: "1px solid #9ca3af",
+                    borderLeft: "none",
 
                     padding:
                       "7px",
@@ -684,8 +691,12 @@ function DebitNotePrint() {
 
                 <th
                   style={{
-                    border:
-                      "1px solid #9ca3af",
+                    // borderTop: "1px solid #9ca3af",
+                    // borderBottom: "1px solid #9ca3af",
+                    // borderLeft: "1px solid #9ca3af",
+                    // borderRight: "none",
+                    border: "1px solid #9ca3af",
+
 
                     padding:
                       "7px",
@@ -788,8 +799,11 @@ function DebitNotePrint() {
 
                     <td
                       style={{
-                        border:
-                          "1px solid #d1d5db",
+                        // borderRight: "none",
+                        // borderLeft: "1px solid #d1d5db",
+                        // borderTop: "1px solid #d1d5db",
+                        // borderBottom: "1px solid #d1d5db",
+                        border: "1px solid #d1d5db",
 
                         padding:
                           "7px",
@@ -831,6 +845,7 @@ function DebitNotePrint() {
                     key={
                       `empty-${index}`
                     }
+                    className="empty-row"
                   >
 
                     {[1, 2, 3, 4, 5].map(
@@ -839,11 +854,13 @@ function DebitNotePrint() {
                         <td
                           key={cell}
                           style={{
-                            border:
-                              "1px solid #d1d5db",
-
-                            height:
-                              "28px",
+                            // borderTop: "1px solid #d1d5db",
+                            // borderBottom: "1px solid #d1d5db",
+                            // borderLeft: "none",
+                            // borderRight: "none",
+                            border: "1px solid #d1d5db",
+                            height: "28px",
+                            padding: 0,
                           }}
                         />
 
@@ -887,7 +904,10 @@ function DebitNotePrint() {
                   "12px",
 
                 borderRight:
-                  "1px solid #9ca3af",
+                  "1px solid black",
+                borderTop:
+                  "1px solid black",
+                borderBottom: "1px solid black",
 
                 fontSize:
                   "12px",
@@ -902,6 +922,8 @@ function DebitNotePrint() {
 
                   fontWeight:
                     "700",
+
+
 
                 }}
               >
@@ -964,7 +986,9 @@ function DebitNotePrint() {
                     "7px",
 
                   borderBottom:
-                    "1px solid #d1d5db",
+                    "1px solid black",
+                  borderTop:
+                    "1px solid black",
                   fontWeight:
                     "600",
                 }}
@@ -1002,7 +1026,7 @@ function DebitNotePrint() {
                           "7px",
 
                         borderBottom:
-                          "1px solid #d1d5db",
+                          "1px solid black",
                       }}
                     >
 
@@ -1040,7 +1064,7 @@ function DebitNotePrint() {
                           "7px",
 
                         borderBottom:
-                          "1px solid #d1d5db",
+                          "1px solid black",
                       }}
                     >
 
@@ -1085,7 +1109,7 @@ function DebitNotePrint() {
                         "7px",
 
                       borderBottom:
-                        "1px solid #d1d5db",
+                        "1px solid black",
                     }}
                   >
 
@@ -1123,7 +1147,7 @@ function DebitNotePrint() {
                     "7px",
 
                   borderBottom:
-                    "1px solid #d1d5db",
+                    "1px solid black",
 
                   fontWeight:
                     "600",
@@ -1149,7 +1173,7 @@ function DebitNotePrint() {
                   display: "flex",
                   justifyContent: "space-between",
                   padding: "7px",
-                  borderBottom: "1px solid #d1d5db",
+                  borderBottom: "1px solid black",
                 }}
               >
                 <span>
@@ -1201,6 +1225,7 @@ function DebitNotePrint() {
 
                   fontWeight:
                     "700",
+                  borderBottom: "1px solid black",
                 }}
               >
 

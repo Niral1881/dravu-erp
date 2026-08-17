@@ -454,7 +454,7 @@ function InvoicePrint() {
 
                     <th
                       style={{
-                        border: "1px solid black",
+                        borderRight: "1px solid black",
                         padding: "4px",
                         width: "50px",
                       }}
