@@ -37,6 +37,9 @@ function DebitNote() {
   const [selectedSupplier, setSelectedSupplier] =
     useState(null);
 
+  const [discountPercent, setDiscountPercent] =
+    useState(0);
+
   const [gstPercent, setGstPercent] =
     useState(0);
 
@@ -413,9 +416,25 @@ function DebitNote() {
     0
   );
 
-  const gstAmount =
+  // ======================================
+  // DISCOUNT
+  // ======================================
+
+  const discountAmount =
     subtotal *
-    (Number(gstPercent) / 100);
+    (Number(discountPercent || 0) / 100);
+
+  // AMOUNT AFTER DISCOUNT
+  const taxableAmount =
+    subtotal - discountAmount;
+
+  // ======================================
+  // GST
+  // ======================================
+
+  const gstAmount =
+    taxableAmount *
+    (Number(gstPercent || 0) / 100);
 
   let cgstAmount = 0;
   let sgstAmount = 0;
@@ -430,12 +449,19 @@ function DebitNote() {
     igstAmount = gstAmount;
   }
 
-  // Total before round off
+  // ======================================
+  // GRAND TOTAL BEFORE ROUND OFF
+  // ======================================
+
   const grandTotal =
-    subtotal + gstAmount;
+    taxableAmount + gstAmount;
+
+  // ======================================
+  // ROUND OFF
+  // ======================================
 
   const roundedTotal =
-    Math.ceil(grandTotal || 0);
+    Math.round(grandTotal || 0);
 
   const roundOff =
     Number(
@@ -546,6 +572,13 @@ function DebitNote() {
         ),
 
         subtotal,
+
+        discountPercent:
+          Number(discountPercent),
+
+        discountAmount,
+
+        taxableAmount,
 
         gstPercent:
           Number(gstPercent),
@@ -986,7 +1019,25 @@ function DebitNote() {
 
         {/* GST */}
 
-        <div className="mt-8 grid grid-cols-1 md:grid-cols-3 gap-5">
+        <div className="mt-8 grid grid-cols-1 md:grid-cols-4 gap-5">
+
+          <div>
+            <label className="block mb-2 font-medium">
+              Discount %
+            </label>
+
+            <input
+              type="number"
+              min="0"
+              max="100"
+              step="0.01"
+              value={discountPercent}
+              onChange={(e) =>
+                setDiscountPercent(e.target.value)
+              }
+              className="w-full border rounded-xl p-3"
+            />
+          </div>
 
           <div>
             <label className="block mb-2 font-medium">
@@ -1055,67 +1106,91 @@ function DebitNote() {
 
         <div className="mt-8 ml-auto max-w-md">
 
+          {/* SUBTOTAL */}
+
           <div className="flex justify-between py-2">
             <span>Subtotal</span>
+
             <span>
               ₹ {subtotal.toFixed(2)}
             </span>
           </div>
 
 
+          {/* DISCOUNT */}
+
+          <div className="flex justify-between py-2 text-red-600">
+            <span>
+              Discount ({Number(discountPercent)}%)
+            </span>
+
+            <span>
+              - ₹ {discountAmount.toFixed(2)}
+            </span>
+          </div>
+
+
+          {/* TAXABLE AMOUNT */}
+
+          <div className="flex justify-between py-2 font-semibold">
+            <span>Taxable Amount</span>
+
+            <span>
+              ₹ {taxableAmount.toFixed(2)}
+            </span>
+          </div>
+
+
+          {/* GST */}
+
           <div className="flex justify-between py-2">
             <span>
               GST ({Number(gstPercent)}%)
             </span>
+
             <span>
               ₹ {gstAmount.toFixed(2)}
             </span>
           </div>
 
 
-          {taxType ===
-            "CGST_SGST" && (
-              <>
-                <div className="flex justify-between py-2">
-                  <span>
-                    CGST
-                  </span>
+          {/* CGST + SGST */}
 
-                  <span>
-                    ₹{" "}
-                    {cgstAmount.toFixed(
-                      2
-                    )}
-                  </span>
-                </div>
+          {taxType === "CGST_SGST" && (
+            <>
+              <div className="flex justify-between py-2">
+                <span>
+                  CGST ({Number(gstPercent) / 2}%)
+                </span>
 
-                <div className="flex justify-between py-2">
-                  <span>
-                    SGST
-                  </span>
+                <span>
+                  ₹ {cgstAmount.toFixed(2)}
+                </span>
+              </div>
 
-                  <span>
-                    ₹{" "}
-                    {sgstAmount.toFixed(
-                      2
-                    )}
-                  </span>
-                </div>
-              </>
-            )}
+              <div className="flex justify-between py-2">
+                <span>
+                  SGST ({Number(gstPercent) / 2}%)
+                </span>
 
+                <span>
+                  ₹ {sgstAmount.toFixed(2)}
+                </span>
+              </div>
+            </>
+          )}
+
+
+          {/* IGST */}
 
           {taxType === "IGST" && (
             <div className="flex justify-between py-2">
               <span>
-                IGST
+                IGST ({Number(gstPercent)}%)
               </span>
 
               <span>
-                ₹{" "}
-                {igstAmount.toFixed(
-                  2
-                )}
+                ₹ {igstAmount.toFixed(2)}
               </span>
             </div>
           )}
@@ -1123,7 +1198,7 @@ function DebitNote() {
 
           {/* ROUND OFF */}
 
-          <div className="flex justify-between py-2">
+          <div className="flex justify-between py-2 border-t">
             <span>Round Off</span>
 
             <span>
@@ -1134,7 +1209,7 @@ function DebitNote() {
 
           {/* FINAL TOTAL */}
 
-          <div className="border-t mt-3 pt-3 flex justify-between text-xl font-bold">
+          <div className="border-t-2 mt-3 pt-3 flex justify-between text-xl font-bold">
             <span>
               Debit Total
             </span>
@@ -1148,7 +1223,7 @@ function DebitNote() {
 
       </div>
 
-    </div>
+    </div >
   );
 }
 

@@ -226,22 +226,44 @@ function DebitNotePrint() {
     debitNote.subtotal || 0
   );
 
+  const discountPercentValue = Number(
+    debitNote.discountPercent || 0
+  );
+
+  const discountAmountValue = Number(
+    debitNote.discountAmount || 0
+  );
+
+  // Amount after discount
+  const taxableAmountValue =
+    debitNote.taxableAmount != null
+      ? Number(debitNote.taxableAmount)
+      : subtotalValue - discountAmountValue;
+
   const gstValue = Number(
     debitNote.gstAmount || 0
   );
 
+  // Total before round off
   const totalBeforeRound =
-    subtotalValue + gstValue;
+    taxableAmountValue + gstValue;
 
+  // Final rounded total
   const finalDebitTotal =
     debitNote.roundedTotal != null
       ? Number(debitNote.roundedTotal)
-      : Math.ceil(totalBeforeRound);
+      : Math.round(totalBeforeRound);
 
+  // Round off
   const finalRoundOff =
-    Number(
-      (finalDebitTotal - totalBeforeRound).toFixed(2)
-    );
+    debitNote.roundOff != null
+      ? Number(debitNote.roundOff)
+      : Number(
+        (
+          finalDebitTotal -
+          totalBeforeRound
+        ).toFixed(2)
+      );
 
   return (
 
@@ -1006,6 +1028,46 @@ function DebitNotePrint() {
                   ).toFixed(2)}
                 </span>
 
+              </div>
+
+              {/* DISCOUNT */}
+
+              <div
+                style={{
+                  display: "flex",
+                  justifyContent: "space-between",
+                  padding: "7px",
+                  borderBottom: "1px solid black",
+                }}
+              >
+                <span>
+                  Discount ({discountPercentValue.toFixed(2)}%)
+                </span>
+
+                <span>
+                  - ₹ {discountAmountValue.toFixed(2)}
+                </span>
+              </div>
+
+
+              {/* TAXABLE AMOUNT */}
+
+              <div
+                style={{
+                  display: "flex",
+                  justifyContent: "space-between",
+                  padding: "7px",
+                  borderBottom: "1px solid black",
+                  fontWeight: "600",
+                }}
+              >
+                <span>
+                  Taxable Amount
+                </span>
+
+                <span>
+                  ₹ {taxableAmountValue.toFixed(2)}
+                </span>
               </div>
 
 

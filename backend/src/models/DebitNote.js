@@ -80,6 +80,21 @@ const debitNoteSchema = new mongoose.Schema(
       default: 0,
     },
 
+    discountPercent: {
+      type: Number,
+      default: 0,
+    },
+
+    discountAmount: {
+      type: Number,
+      default: 0,
+    },
+
+    taxableAmount: {
+      type: Number,
+      default: 0,
+    },
+
     gstPercent: {
       type: Number,
       default: 0,
