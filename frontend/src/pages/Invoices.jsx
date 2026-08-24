@@ -382,10 +382,19 @@ function Invoices({ isEdit }) {
 
 
     } catch (error) {
+      console.error("========== INVOICE SAVE ERROR ==========");
+      console.error("STATUS:", error.response?.status);
+      console.error("DATA:", error.response?.data);
+      console.error("MESSAGE:", error.message);
+      console.error("FULL ERROR:", error);
+      console.error("========================================");
 
-      console.log(error);
-
-      alert("Invoice save failed");
+      alert(
+        error.response?.data?.message ||
+        error.response?.data?.error ||
+        error.message ||
+        "Invoice save failed"
+      );
     }
   };
 
