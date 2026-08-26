@@ -407,18 +407,22 @@ function InvoiceHistory() {
   // FILTER
   // ======================================
 
-  const filteredInvoices = invoices.filter(
-    (invoice) => {
+  const filteredInvoices = invoices
+    .filter((invoice) => {
+
       if (!selectedParty) {
         return true;
       }
 
+      return invoice.partyName === selectedParty;
+
+    })
+    .sort((a, b) => {
       return (
-        invoice.partyName ===
-        selectedParty
+        new Date(b.createdAt) -
+        new Date(a.createdAt)
       );
-    }
-  );
+    });
 
   // ======================================
   // TOTAL SALES
