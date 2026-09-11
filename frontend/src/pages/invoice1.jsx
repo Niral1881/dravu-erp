@@ -168,6 +168,33 @@ function Invoices1({ isEdit }) {
 
   }, []);
 
+  const getQtyFromProductName = (productName) => {
+    if (!productName) return 0;
+
+    const text = String(productName);
+
+    // Take everything after the first "("
+    const bracketIndex = text.indexOf("(");
+
+    if (bracketIndex === -1) {
+      return 0;
+    }
+
+    const qtyPart = text.substring(bracketIndex + 1);
+
+    // Get all numbers after "("
+    const numbers = qtyPart.match(/\d+(?:\.\d+)?/g);
+
+    if (!numbers) {
+      return 0;
+    }
+
+    return numbers.reduce(
+      (sum, num) => sum + Number(num),
+      0
+    );
+  };
+
   const handleChange = (index, field, value) => {
 
     const updatedItems = [...items];
@@ -643,57 +670,77 @@ function Invoices1({ isEdit }) {
 
               {items.map((item, index) => (
                 <tr key={index} className="border-b">
-
                   <td className="p-4">
+
                     <input
                       list={`products-${index}`}
                       value={item.product || ""}
+
                       onChange={(e) => {
                         const value = e.target.value;
 
                         const selectedProduct = products.find(
-                          (p) => p.name === value
+                          (p) =>
+                            String(p.name).trim().toLowerCase() ===
+                            String(value).trim().toLowerCase()
                         );
 
-                        const updatedItems = [...items];
+                        setItems((prevItems) => {
+                          const updatedItems = [...prevItems];
 
-                        updatedItems[index].product = value;
+                          const productName = selectedProduct
+                            ? selectedProduct.name
+                            : value;
 
-                        // If selecting an existing product,
-                        // automatically keep productId and rate.
-                        if (selectedProduct) {
-                          updatedItems[index].productId =
-                            selectedProduct._id;
+                          const qty = getQtyFromProductName(productName);
 
-                          updatedItems[index].rate =
-                            selectedProduct.rate;
-                        }
+                          const rate = selectedProduct
+                            ? Number(selectedProduct.rate) || 0
+                            : Number(updatedItems[index].rate) || 0;
 
-                        const qty =
-                          Number(updatedItems[index].qty) || 0;
+                          updatedItems[index] = {
+                            ...updatedItems[index],
 
-                        const rate =
-                          Number(updatedItems[index].rate) || 0;
+                            product: productName,
 
-                        updatedItems[index].total =
-                          qty * rate;
+                            productId:
+                              selectedProduct?._id ||
+                              updatedItems[index].productId,
 
-                        setItems(updatedItems);
+                            qty: qty,
+
+                            rate: rate,
+
+                            total: qty * rate,
+                          };
+
+                          console.log("PRODUCT:", productName);
+                          console.log("QTY:", qty);
+                          console.log("RATE:", rate);
+                          console.log("TOTAL:", qty * rate);
+
+                          return updatedItems;
+                        });
                       }}
+
                       placeholder="Select / Type Product"
+
                       className="w-full border bg-[#2F9CAF] text-white border-gray-200 rounded-lg p-2 md:p-3"
                     />
 
                     <datalist id={`products-${index}`}>
+
                       {products.map((product) => (
+
                         <option
                           key={product._id}
                           value={product.name}
-                        >
-                          {product.name}
-                        </option>
+                        />
+
                       ))}
+
                     </datalist>
+
                   </td>
 
                   <td className="p-4">
