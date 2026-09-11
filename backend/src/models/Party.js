@@ -19,6 +19,11 @@ const partySchema = new mongoose.Schema(
 
     state: String,
 
+    stateCode: {
+      type: String,
+      default: "",
+    },
+
     pincode: String,
 
     partyType: {

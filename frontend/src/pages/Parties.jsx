@@ -24,6 +24,7 @@ function Parties() {
       address: "",
       city: "",
       state: "",
+      stateCode: "",
       pincode: "",
     });
 
@@ -104,6 +105,7 @@ function Parties() {
         address: "",
         city: "",
         state: "",
+        stateCode: "",
         pincode: "",
       });
 
@@ -192,6 +194,7 @@ function Parties() {
                 State
               </th>
 
+
               <th className="text-left p-4">
                 Pincode
               </th>
@@ -232,6 +235,7 @@ function Parties() {
                     {party.state}
                   </td>
 
+
                   <td className="p-4">
                     {party.pincode}
                   </td>
@@ -253,6 +257,7 @@ function Parties() {
                             address: party.address || "",
                             city: party.city || "",
                             state: party.state || "",
+                            stateCode: party.stateCode || "",
                             pincode: party.pincode || "",
                           });
 
@@ -358,6 +363,15 @@ function Parties() {
                     name="state"
                     placeholder="State"
                     value={formData.state}
+                    onChange={handleChange}
+                    className="border p-3 rounded-xl uppercase"
+                  />
+
+                  <input
+                    type="text"
+                    name="stateCode"
+                    placeholder="State Code"
+                    value={formData.stateCode}
                     onChange={handleChange}
                     className="border p-3 rounded-xl uppercase"
                   />
