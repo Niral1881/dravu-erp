@@ -1,3 +1,4 @@
+import mongoose from "mongoose";
 import Payment from "../models/Payment.js";
 
 // CREATE PAYMENT
@@ -66,6 +67,7 @@ export const updatePayment = async (req, res) => {
 };
 
 // DELETE PAYMENT
+// DELETE PAYMENT
 export const deletePayment = async (req, res) => {
   try {
     const { id } = req.params;
@@ -85,15 +87,13 @@ export const deletePayment = async (req, res) => {
       });
     }
 
-    const payment = await Payment.findById(id);
+    const deletedPayment = await Payment.findByIdAndDelete(id);
 
-    if (!payment) {
+    if (!deletedPayment) {
       return res.status(404).json({
         message: "Payment not found in database",
       });
     }
-
-    await Payment.findByIdAndDelete(id);
 
     console.log("PAYMENT DELETED:", id);
 
@@ -106,7 +106,6 @@ export const deletePayment = async (req, res) => {
     return res.status(500).json({
       message: "Backend delete error",
       error: error.message,
-      stack: error.stack,
     });
   }
 };
