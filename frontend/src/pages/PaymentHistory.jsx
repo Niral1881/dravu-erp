@@ -1,5 +1,4 @@
-
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import axios from "axios";
 
 function PaymentHistory() {
@@ -9,15 +8,15 @@ function PaymentHistory() {
   const [editingPayment, setEditingPayment] = useState(null);
   const [loading, setLoading] = useState(false);
 
-  const fetchPayments = async () => {
+  const fetchPayments = useCallback(async () => {
     try {
       const res = await axios.get(`${API}/payments`);
       setPayments(res.data);
     } catch (error) {
-      console.log(error);
+      console.error("FETCH PAYMENTS ERROR:", error);
       alert("Failed to load payments");
     }
-  };
+  }, [API]);
 
   useEffect(() => {
 
@@ -49,15 +48,18 @@ function PaymentHistory() {
 
       alert("Payment deleted successfully");
     } catch (error) {
-      console.error("DELETE PAYMENT ERROR:", error.response?.data || error);
+      console.error("DELETE PAYMENT ERROR:", error);
 
       alert(
-        error.response?.data?.message ||
+        `Delete failed\nStatus: ${error.response?.status || "No response"
+        }\nURL: ${error.config?.url || "Unknown URL"
+        }\nMessage: ${error.response?.data?.message ||
         error.response?.data?.error ||
-        "Failed to delete payment"
+        error.message
+        }`
       );
     }
-  };
+  }; // IMPORTANT: THIS WAS MISSING
 
   // OPEN EDIT FORM
   const handleEdit = (payment) => {
@@ -76,7 +78,10 @@ function PaymentHistory() {
   const handleUpdate = async (e) => {
     e.preventDefault();
 
-    if (!editingPayment) return;
+    if (!editingPayment?._id) {
+      alert("Payment ID is missing");
+      return;
+    }
 
     setLoading(true);
 
@@ -90,23 +95,24 @@ function PaymentHistory() {
         note: editingPayment.note,
       };
 
-      const res = await axios.put(
-        `${API}/payments/${id}`,
-        updatedData
-      );
+      const res = await axios.put(`${API}/payments/${id}`, updatedData);
 
-      setPayments((prev) =>
-        prev.map((payment) =>
+      setPayments((previousPayments) =>
+        previousPayments.map((payment) =>
           payment._id === id ? res.data : payment
         )
       );
 
       setEditingPayment(null);
-
       alert("Payment updated successfully");
     } catch (error) {
-      console.log(error);
-      alert("Failed to update payment");
+      console.error("UPDATE PAYMENT ERROR:", error);
+
+      alert(
+        error.response?.data?.message ||
+        error.response?.data?.error ||
+        "Failed to update payment"
+      );
     } finally {
       setLoading(false);
     }
@@ -365,5 +371,6 @@ function PaymentHistory() {
     </div>
   );
 }
+
 
 export default PaymentHistory;
