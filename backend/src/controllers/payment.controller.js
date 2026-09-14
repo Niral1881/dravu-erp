@@ -1,91 +1,112 @@
 import Payment from "../models/Payment.js";
-import Invoice from "../models/Invoice.js";
 
-export const createPayment =
-  async (req, res) => {
+// CREATE PAYMENT
+export const createPayment = async (req, res) => {
+  try {
+    const payment = await Payment.create(req.body);
 
-    try {
+    res.status(201).json(payment);
+  } catch (error) {
+    console.error("CREATE PAYMENT ERROR:", error);
 
-      const payment =
-        await Payment.create(
-          req.body
-        );
+    res.status(500).json({
+      message: "Failed to create payment",
+      error: error.message,
+    });
+  }
+};
 
-      const invoice =
-        await Invoice.findById(
-          req.body.invoiceId
-        );
+// GET ALL PAYMENTS
+export const getPayments = async (req, res) => {
+  try {
+    const payments = await Payment.find().sort({
+      createdAt: -1,
+    });
 
-      if (invoice) {
+    res.status(200).json(payments);
+  } catch (error) {
+    console.error("GET PAYMENTS ERROR:", error);
 
-        invoice.paidAmount =
-          (
-            invoice.paidAmount || 0
-          ) +
-          Number(req.body.amount);
+    res.status(500).json({
+      message: "Failed to fetch payments",
+      error: error.message,
+    });
+  }
+};
 
-        invoice.pendingAmount =
-          (
-            invoice.roundedTotal ||
-            invoice.grandTotal
-          ) -
-          invoice.paidAmount;
+// UPDATE PAYMENT
+export const updatePayment = async (req, res) => {
+  try {
+    const { id } = req.params;
 
-        // PAYMENT STATUS
-        if (
-          invoice.pendingAmount <= 0
-        ) {
-
-          invoice.paymentStatus =
-            "PAID";
-
-        } else if (
-          invoice.paidAmount > 0
-        ) {
-
-          invoice.paymentStatus =
-            "PARTIAL";
-
-        } else {
-
-          invoice.paymentStatus =
-            "UNPAID";
-        }
-
-        await invoice.save();
+    const updatedPayment = await Payment.findByIdAndUpdate(
+      id,
+      req.body,
+      {
+        new: true,
+        runValidators: true,
       }
+    );
 
-      res.status(201).json(
-        payment
-      );
-
-    } catch (error) {
-
-      res.status(500).json({
-        message:
-          error.message,
+    if (!updatedPayment) {
+      return res.status(404).json({
+        message: "Payment not found",
       });
     }
-  };
 
-export const getPayments =
-  async (req, res) => {
+    res.status(200).json(updatedPayment);
+  } catch (error) {
+    console.error("UPDATE PAYMENT ERROR:", error);
 
-    try {
+    res.status(500).json({
+      message: "Failed to update payment",
+      error: error.message,
+    });
+  }
+};
 
-      const payments =
-        await Payment.find()
-          .sort({
-            createdAt: -1,
-          });
+// DELETE PAYMENT
+export const deletePayment = async (req, res) => {
+  try {
+    const { id } = req.params;
 
-      res.json(payments);
+    console.log("DELETE REQUEST RECEIVED");
+    console.log("PAYMENT ID:", id);
 
-    } catch (error) {
-
-      res.status(500).json({
-        message:
-          error.message,
+    if (!id) {
+      return res.status(400).json({
+        message: "Payment ID is missing",
       });
     }
-  };
+
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+      return res.status(400).json({
+        message: `Invalid Payment ID: ${id}`,
+      });
+    }
+
+    const payment = await Payment.findById(id);
+
+    if (!payment) {
+      return res.status(404).json({
+        message: "Payment not found in database",
+      });
+    }
+
+    await Payment.findByIdAndDelete(id);
+
+    console.log("PAYMENT DELETED:", id);
+
+    return res.status(200).json({
+      message: "Payment deleted successfully",
+    });
+  } catch (error) {
+    console.error("DELETE PAYMENT BACKEND ERROR:", error);
+
+    return res.status(500).json({
+      message: "Backend delete error",
+      error: error.message,
+      stack: error.stack,
+    });
+  }
+};

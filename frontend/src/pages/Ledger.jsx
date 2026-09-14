@@ -1,3 +1,5 @@
+import jsPDF from "jspdf";
+import autoTable from "jspdf-autotable";
 import { useEffect, useState } from "react";
 import axios from "axios";
 
@@ -182,11 +184,211 @@ function Ledger() {
       }
     };
 
+  const generateLedgerPDF = () => {
+    if (!selectedParty) {
+      alert("Please select a party first.");
+      return;
+    }
+
+    if (ledger.length === 0) {
+      alert("No transactions available for PDF.");
+      return;
+    }
+
+    const doc = new jsPDF("p", "mm", "a4");
+
+    const pageWidth = doc.internal.pageSize.getWidth();
+
+    // Company Header
+    doc.setFillColor(31, 41, 55);
+    doc.rect(0, 0, pageWidth, 38, "F");
+
+    doc.setTextColor(255, 255, 255);
+    doc.setFontSize(20);
+    doc.setFont("helvetica", "bold");
+    doc.text("DRAVU FASHION HUB", 14, 15);
+
+    doc.setFontSize(10);
+    doc.setFont("helvetica", "normal");
+    doc.text("Party Ledger Report", 14, 23);
+    doc.text("Generated on: " + new Date().toLocaleDateString("en-GB"), 14, 30);
+
+    // Party Details
+    doc.setTextColor(31, 41, 55);
+    doc.setFontSize(13);
+    doc.setFont("helvetica", "bold");
+    doc.text("PARTY DETAILS", 14, 50);
+
+    doc.setFontSize(11);
+    doc.setFont("helvetica", "normal");
+    doc.text("Party Name: " + selectedParty, 14, 59);
+
+    doc.text(
+      "Period: " +
+      (fromDate || "All Dates") +
+      " to " +
+      (toDate || "All Dates"),
+      14,
+      67
+    );
+
+    // Summary Boxes
+    const boxY = 76;
+    const boxWidth = 58;
+    const boxHeight = 22;
+
+    const summaryBoxes = [
+      {
+        x: 14,
+        title: "Total Invoice",
+        value: summary.totalInvoice,
+        color: [220, 38, 38],
+      },
+      {
+        x: 76,
+        title: "Total Payment",
+        value: summary.totalPayment,
+        color: [22, 163, 74],
+      },
+      {
+        x: 138,
+        title: "Pending Amount",
+        value: summary.balance,
+        color: [37, 150, 175],
+      },
+    ];
+
+    summaryBoxes.forEach((box) => {
+      doc.setDrawColor(220, 220, 220);
+      doc.setFillColor(248, 250, 252);
+      doc.roundedRect(box.x, boxY, boxWidth, boxHeight, 2, 2, "FD");
+
+      doc.setFontSize(8);
+      doc.setTextColor(100, 100, 100);
+      doc.text(box.title, box.x + 4, boxY + 7);
+
+      doc.setFontSize(11);
+      doc.setFont("helvetica", "bold");
+      doc.setTextColor(...box.color);
+      doc.text(
+        "Rs. " + Number(box.value || 0).toFixed(2),
+        box.x + 4,
+        boxY + 16
+      );
+    });
+
+    // Ledger Table
+    const tableRows = ledger.map((item) => [
+      new Date(item.date).toLocaleDateString("en-GB"),
+      item.type,
+      item.invoiceNo || "-",
+      item.debit > 0
+        ? "Rs. " + Number(item.debit).toFixed(2)
+        : "-",
+      item.credit > 0
+        ? "Rs. " + Number(item.credit).toFixed(2)
+        : "-",
+      "Rs. " + Number(item.balance || 0).toFixed(2),
+    ]);
+
+    autoTable(doc, {
+      startY: 108,
+      head: [
+        [
+          "Date",
+          "Type",
+          "Invoice No",
+          "Debit",
+          "Credit",
+          "Balance",
+        ],
+      ],
+      body: tableRows,
+
+      theme: "grid",
+
+      headStyles: {
+        fillColor: [31, 41, 55],
+        textColor: [255, 255, 255],
+        fontStyle: "bold",
+        halign: "center",
+      },
+
+      bodyStyles: {
+        fontSize: 9,
+        textColor: [40, 40, 40],
+      },
+
+      alternateRowStyles: {
+        fillColor: [248, 250, 252],
+      },
+
+      columnStyles: {
+        0: { cellWidth: 25 },
+        1: { cellWidth: 25 },
+        2: { cellWidth: 35 },
+        3: { halign: "right" },
+        4: { halign: "right" },
+        5: { halign: "right" },
+      },
+
+      margin: {
+        left: 14,
+        right: 14,
+      },
+
+      didDrawPage: () => {
+        const pageHeight = doc.internal.pageSize.getHeight();
+
+        doc.setFontSize(8);
+        doc.setTextColor(120, 120, 120);
+
+        doc.text(
+          "Dravu Fashion Hub | Party Ledger",
+          14,
+          pageHeight - 10
+        );
+
+        doc.text(
+          "Page " + doc.internal.getNumberOfPages(),
+          pageWidth - 30,
+          pageHeight - 10
+        );
+      },
+    });
+
+    // Save PDF
+    const fileName =
+      selectedParty.replace(/[^a-zA-Z0-9]/g, "_") +
+      "_Ledger_Report.pdf";
+
+    doc.save(fileName);
+  };
+
   return (
 
     <div className="p-3 md:p-6">
 
       {/* Header */}
+      <div className="flex flex-wrap items-center justify-between gap-4 mb-6">
+        <div>
+          <h1 className="text-2xl md:text-3xl font-bold text-[#2E3A3F]">
+            Party Ledger
+          </h1>
+
+          <p className="text-gray-500">
+            View party balance and transactions
+          </p>
+        </div>
+
+        <button
+          onClick={generateLedgerPDF}
+          disabled={!selectedParty || ledger.length === 0}
+          className="bg-[#2F9CAF] hover:bg-[#25879A] text-white px-5 py-3 rounded-xl font-semibold disabled:opacity-50"
+        >
+          Download PDF
+        </button>
+      </div>
       <div className="mb-6">
 
         <h1 className="text-2xl md:text-3xl font-bold text-[#2E3A3F]">
