@@ -1,9 +1,11 @@
 import { useCallback, useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import jsPDF from "jspdf";
 import autoTable from "jspdf-autotable";
 
 function Ledger() {
+  const navigate = useNavigate();
   const API = import.meta.env.VITE_API_URL;
 
   const [parties, setParties] = useState([]);
@@ -819,6 +821,8 @@ function Ledger() {
     }
   };
 
+
+
   // =========================================================
   // RENDER
   // =========================================================
@@ -991,15 +995,47 @@ function Ledger() {
 
             <button
               type="button"
-              onClick={handlePrint}
-              disabled={
-                !selectedParty ||
-                ledger.length === 0 ||
-                loading
-              }
-              className="px-5 py-3 rounded-xl bg-gray-800 text-white font-semibold shadow-sm hover:bg-gray-900 disabled:opacity-50"
+              onClick={() => {
+                if (!selectedParty) {
+                  alert("Please select a party first.");
+                  return;
+                }
+
+                navigate("/ledger-print", {
+                  state: {
+                    party: {
+                      name: selectedParty,
+                    },
+
+                    transactions: ledger || [],
+
+                    openingBalance: Number(
+                      summary.openingBalance || 0
+                    ),
+
+                    totalDebit: Number(
+                      summary.totalDebit || 0
+                    ),
+
+                    totalCredit: Number(
+                      summary.totalCredit || 0
+                    ),
+
+                    closingBalance: Number(
+                      summary.closingBalance || 0
+                    ),
+
+                    reportPeriod:
+                      fromDate || toDate
+                        ? `${fromDate || "Beginning"} to ${toDate || "Today"
+                        }`
+                        : "All Transactions",
+                  },
+                });
+              }}
+              className="rounded-lg bg-teal-700 px-5 py-3 font-semibold text-white"
             >
-              🖨️ Print PDF
+              Print Ledger
             </button>
 
             <button
@@ -1416,13 +1452,13 @@ function Ledger() {
                         Total
                       </td>
 
-                      <td className="p-4 text-right text-red-600">
+                      <td className="p-4 text-left text-red-600">
                         {money(
                           summary.totalDebit
                         )}
                       </td>
 
-                      <td className="p-4 text-right text-green-600">
+                      <td className="p-4 text-left text-green-600">
                         {money(
                           summary.totalCredit
                         )}

@@ -1,0 +1,521 @@
+* {
+  box-sizing: border-box;
+}
+
+.ledger-print-screen {
+  min-height: 100vh;
+  background: #f1f5f9;
+  padding: 24px;
+  color: #172033;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+.print-toolbar {
+  width: 210mm;
+  max-width: 100%;
+  margin: 0 auto 18px;
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.toolbar-btn {
+  border: 0;
+  border-radius: 7px;
+  padding: 11px 20px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.toolbar-btn.primary {
+  background: #0f766e;
+  color: white;
+}
+
+.toolbar-btn.secondary {
+  background: #334155;
+  color: white;
+}
+
+.ledger-page {
+  width: 210mm;
+  min-height: 297mm;
+  max-width: 100%;
+  margin: 0 auto;
+  padding: 10mm;
+  background: white;
+  box-shadow: 0 2px 12px rgba(15, 23, 42, 0.12);
+}
+
+/* HEADER */
+
+.company-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 18px;
+  border: 1px solid #dce3ea;
+  border-radius: 12px;
+  padding: 16px;
+  margin-bottom: 14px;
+}
+
+.company-left {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  min-width: 0;
+}
+
+.company-logo-box {
+  width: 76px;
+  height: 76px;
+  flex-shrink: 0;
+  border: 1px solid #e2e8f0;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.company-logo {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.company-details {
+  min-width: 0;
+}
+
+.company-details h1 {
+  margin: 0 0 5px;
+  font-size: 22px;
+  color: #16324f;
+}
+
+.company-details p {
+  margin: 3px 0;
+  font-size: 11px;
+  line-height: 1.45;
+  color: #334155;
+}
+
+.report-heading {
+  text-align: right;
+  flex-shrink: 0;
+}
+
+.report-heading h2 {
+  margin: 0 0 5px;
+  font-size: 20px;
+  color: #2698ad;
+}
+
+.report-heading p {
+  margin: 4px 0;
+  font-size: 11px;
+  color: #64748b;
+}
+
+/* PARTY */
+
+.party-section {
+  display: flex;
+  justify-content: space-between;
+  gap: 20px;
+  border: 1px solid #dce3ea;
+  border-radius: 12px;
+  padding: 15px;
+  margin-bottom: 14px;
+}
+
+.party-info {
+  min-width: 0;
+}
+
+.section-label {
+  display: block;
+  margin-bottom: 5px;
+  color: #64748b;
+  font-size: 10px;
+  letter-spacing: 0.4px;
+  text-transform: uppercase;
+}
+
+.party-info h2 {
+  margin: 0 0 6px;
+  font-size: 19px;
+  color: #178da3;
+}
+
+.party-info p {
+  margin: 3px 0;
+  font-size: 11px;
+  color: #475569;
+}
+
+.period-info {
+  text-align: right;
+  flex-shrink: 0;
+}
+
+.period-info strong {
+  display: block;
+  font-size: 13px;
+  color: #111827;
+}
+
+/* SUMMARY */
+
+.summary-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 12px;
+  margin-bottom: 14px;
+}
+
+.summary-card {
+  min-width: 0;
+  border: 1px solid #dce3ea;
+  border-radius: 12px;
+  padding: 14px;
+}
+
+.summary-card span {
+  display: block;
+  color: #64748b;
+  font-size: 11px;
+  margin-bottom: 7px;
+}
+
+.summary-card strong {
+  display: block;
+  font-size: 17px;
+  white-space: nowrap;
+}
+
+.black-value {
+  color: #172033;
+}
+
+.debit-value {
+  color: #ef2424;
+}
+
+.credit-value {
+  color: #00a13a;
+}
+
+.balance-value {
+  color: #2698ad;
+}
+
+/* TABLE */
+
+.table-wrapper {
+  width: 100%;
+  overflow: visible;
+  border: 1px solid #dce3ea;
+  border-radius: 12px;
+}
+
+.ledger-table {
+  width: 100%;
+  table-layout: fixed;
+  border-collapse: collapse;
+  font-size: 10px;
+}
+
+.ledger-table th {
+  background: #1f2937;
+  color: white;
+  text-align: left;
+  padding: 9px 7px;
+  font-weight: 700;
+  border-right: 1px solid #cbd5e1;
+}
+
+.ledger-table td {
+  padding: 9px 7px;
+  border-bottom: 1px solid #dce3ea;
+  color: #111827;
+  vertical-align: middle;
+  overflow-wrap: anywhere;
+}
+
+.ledger-table th:last-child,
+.ledger-table td:last-child {
+  border-right: 0;
+}
+
+.ledger-table tbody tr:last-child td {
+  border-bottom: 0;
+}
+
+.date-column {
+  width: 15%;
+}
+
+.type-column {
+  width: 15%;
+}
+
+.invoice-column {
+  width: 20%;
+}
+
+.amount-column {
+  width: 16.66%;
+  text-align: right !important;
+}
+
+.ledger-table td:nth-child(4),
+.ledger-table td:nth-child(5),
+.ledger-table td:nth-child(6) {
+  text-align: right;
+}
+
+.opening-row {
+  background: #f8fafc;
+  font-weight: 700;
+}
+
+.invoice-type {
+  color: #ef2424 !important;
+  font-weight: 700;
+}
+
+.payment-type {
+  color: #00a13a !important;
+  font-weight: 700;
+}
+
+.debit-cell {
+  color: #ef2424 !important;
+  font-weight: 700;
+}
+
+.credit-cell {
+  color: #00a13a !important;
+  font-weight: 700;
+}
+
+.balance-cell {
+  color: #2698ad !important;
+  font-weight: 700;
+}
+
+.ledger-table tfoot td {
+  background: #f1f5f9;
+  border-top: 1px solid #cbd5e1;
+  border-bottom: 0;
+  padding: 10px 7px;
+  font-weight: 700;
+}
+
+.total-label {
+  text-align: right;
+  color: #111827 !important;
+}
+
+.total-cell {
+  font-size: 10px;
+}
+
+.empty-row {
+  text-align: center;
+  padding: 25px !important;
+  color: #64748b !important;
+}
+
+/* FOOTER */
+
+.report-footer {
+  display: flex;
+  justify-content: space-between;
+  gap: 25px;
+  border: 1px solid #dce3ea;
+  border-radius: 12px;
+  padding: 17px;
+  margin-top: 14px;
+}
+
+.footer-note {
+  flex: 1;
+}
+
+.footer-note h3,
+.signature-box h3 {
+  margin: 0 0 12px;
+  font-size: 14px;
+  color: #172033;
+}
+
+.footer-note p {
+  margin: 0;
+  max-width: 390px;
+  font-size: 11px;
+  line-height: 1.6;
+  color: #64748b;
+}
+
+.signature-box {
+  min-width: 210px;
+  text-align: right;
+}
+
+.signature-line {
+  width: 100%;
+  margin-top: 42px;
+  border-top: 1px solid #94a3b8;
+}
+
+.signature-box p {
+  margin: 10px 0 0;
+  font-size: 12px;
+  color: #111827;
+}
+
+.page-footer {
+  display: flex;
+  justify-content: space-between;
+  gap: 15px;
+  border-top: 1px solid #dce3ea;
+  margin-top: 18px;
+  padding-top: 10px;
+  color: #94a3b8;
+  font-size: 10px;
+}
+
+/* PRINT */
+
+@page {
+  size: A4 portrait;
+  margin: 8mm;
+}
+
+@media print {
+
+  html,
+  body {
+    margin: 0;
+    padding: 0;
+    background: white !important;
+  }
+
+  .no-print {
+    display: none !important;
+  }
+
+  .ledger-print-screen {
+    padding: 0;
+    margin: 0;
+    background: white;
+  }
+
+  .ledger-page {
+    width: 100%;
+    max-width: none;
+    min-height: auto;
+    margin: 0;
+    padding: 0;
+    box-shadow: none;
+  }
+
+  .company-header,
+  .party-section,
+  .summary-card,
+  .table-wrapper,
+  .report-footer {
+    break-inside: avoid;
+    page-break-inside: avoid;
+  }
+
+  .ledger-table {
+    page-break-inside: auto;
+  }
+
+  .ledger-table tr {
+    page-break-inside: avoid;
+    page-break-after: auto;
+  }
+
+  .ledger-table thead {
+    display: table-header-group;
+  }
+
+  .ledger-table tfoot {
+    display: table-footer-group;
+  }
+
+  .ledger-table th,
+  .ledger-table td {
+    font-size: 9px;
+    padding: 6px 5px;
+  }
+
+  .summary-grid {
+    gap: 8px;
+  }
+
+  .summary-card {
+    padding: 10px;
+  }
+
+  .summary-card strong {
+    font-size: 14px;
+  }
+
+  .company-details h1 {
+    font-size: 19px;
+  }
+
+  .report-heading h2 {
+    font-size: 17px;
+  }
+
+  .party-info h2 {
+    font-size: 17px;
+  }
+
+  .page-footer {
+    margin-top: 10px;
+  }
+}
+
+@media screen and (max-width: 800px) {
+  .ledger-print-screen {
+    padding: 10px;
+  }
+
+  .company-header,
+  .party-section,
+  .report-footer {
+    flex-direction: column;
+  }
+
+  .report-heading,
+  .period-info,
+  .signature-box {
+    text-align: left;
+  }
+
+  .summary-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .ledger-page {
+    padding: 12px;
+  }
+
+  .table-wrapper {
+    overflow-x: auto;
+  }
+
+  .ledger-table {
+    min-width: 650px;
+  }
+}
