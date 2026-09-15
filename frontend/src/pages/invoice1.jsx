@@ -23,7 +23,7 @@ function Invoices1({ isEdit }) {
 
   const [items, setItems] = useState([
     {
-      productId: "",
+      productId: null,
       product: "",
       qty: "",
       rate: "",
@@ -219,7 +219,7 @@ function Invoices1({ isEdit }) {
       ...items,
 
       {
-        productId: "",
+        productId: null,
         product: "",
         qty: "",
         rate: "",
@@ -233,7 +233,7 @@ function Invoices1({ isEdit }) {
     if (items.length === 1) {
       setItems([
         {
-          productId: "",
+          productId: null,
           product: "",
           qty: "",
           rate: "",
@@ -342,6 +342,14 @@ function Invoices1({ isEdit }) {
 
     try {
 
+      const cleanedItems = items.map((item) => ({
+        productId: item.productId || null,
+        product: String(item.product || "").trim(),
+        qty: Number(item.qty) || 0,
+        rate: Number(item.rate) || 0,
+        total: Number(item.total) || 0,
+      }));
+
       const invoiceData = {
 
         invoiceNo,
@@ -376,7 +384,7 @@ function Invoices1({ isEdit }) {
 
         dateOfSupply,
 
-        items,
+        items: cleanedItems,
 
         subtotal,
 
@@ -705,7 +713,7 @@ function Invoices1({ isEdit }) {
 
                             productId:
                               selectedProduct?._id ||
-                              updatedItems[index].productId,
+                              null,
 
                             qty: qty,
 

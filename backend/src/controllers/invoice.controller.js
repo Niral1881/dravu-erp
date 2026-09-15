@@ -1,3 +1,4 @@
+import mongoose from "mongoose";
 import Invoice from "../models/Invoice.js";
 import Product from "../models/Product.js";
 import StockHistory
@@ -5,6 +6,7 @@ import StockHistory
 
 export const createInvoice = async (req, res) => {
   try {
+
     console.log("========= REQUEST BODY =========");
     console.log(req.body);
 
