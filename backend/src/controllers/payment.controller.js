@@ -1,16 +1,101 @@
 import mongoose from "mongoose";
 import Payment from "../models/Payment.js";
+import Invoice from "../models/Invoice.js";
+
 
 // CREATE PAYMENT
 export const createPayment = async (req, res) => {
   try {
-    const payment = await Payment.create(req.body);
+    const {
+      partyName,
+      invoiceNo,
+      invoiceId,
+      amount,
+      paymentMode,
+      paymentDate,
+      note,
+    } = req.body;
 
-    res.status(201).json(payment);
+    if (!invoiceId) {
+      return res.status(400).json({
+        message: "Invoice ID is required",
+      });
+    }
+
+    if (!amount || Number(amount) <= 0) {
+      return res.status(400).json({
+        message: "Please enter a valid payment amount",
+      });
+    }
+
+    // Create payment
+    const payment = await Payment.create({
+      partyName,
+      invoiceNo,
+      invoiceId,
+      amount: Number(amount),
+      paymentMode,
+      paymentDate,
+      note,
+    });
+
+    // Find invoice
+    const invoice = await Invoice.findById(invoiceId);
+
+    if (!invoice) {
+      return res.status(404).json({
+        message: "Invoice not found",
+      });
+    }
+
+    // Calculate all payments for this invoice
+    const paymentSummary = await Payment.aggregate([
+      {
+        $match: {
+          invoiceId: invoice._id,
+        },
+      },
+      {
+        $group: {
+          _id: null,
+          totalPaid: {
+            $sum: "$amount",
+          },
+        },
+      },
+    ]);
+
+    const totalPaid = Number(
+      paymentSummary[0]?.totalPaid || 0
+    );
+
+    const invoiceTotal = Number(
+      invoice.roundedTotal ??
+      invoice.grandTotal ??
+      0
+    );
+
+    const pendingAmount = Math.max(
+      invoiceTotal - totalPaid,
+      0
+    );
+
+    // Update invoice payment values
+    invoice.paidAmount = totalPaid;
+    invoice.pendingAmount = pendingAmount;
+
+    await invoice.save();
+
+    return res.status(201).json({
+      message: "Payment added successfully",
+      payment,
+      paidAmount: totalPaid,
+      pendingAmount,
+    });
   } catch (error) {
     console.error("CREATE PAYMENT ERROR:", error);
 
-    res.status(500).json({
+    return res.status(500).json({
       message: "Failed to create payment",
       error: error.message,
     });

@@ -17,8 +17,11 @@ function Parties() {
 
   const [formData, setFormData] =
     useState({
-      name: "",
+
       agent: "",
+
+      // BILLING ADDRESS
+      name: "",
       gstin: "",
       mobile: "",
       address: "",
@@ -26,6 +29,16 @@ function Parties() {
       state: "",
       stateCode: "",
       pincode: "",
+
+      // DELIVERY ADDRESS
+      deliveryName: "",
+      deliveryGstin: "",
+      deliveryMobile: "",
+      deliveryAddress: "",
+      deliveryCity: "",
+      deliveryState: "",
+      deliveryStateCode: "",
+      deliveryPincode: "",
     });
 
   const [editId, setEditId] =
@@ -107,6 +120,12 @@ function Parties() {
         state: "",
         stateCode: "",
         pincode: "",
+        deliveryName: "",
+        deliveryGstin: "",
+        deliveryMobile: "",
+        deliveryAddress: "",
+        deliveryCity: "",
+        deliveryState: "",
       });
 
     } catch (error) {
@@ -259,6 +278,13 @@ function Parties() {
                             state: party.state || "",
                             stateCode: party.stateCode || "",
                             pincode: party.pincode || "",
+                            deliveryName: party.deliveryName || "",
+                            deliveryGstin: party.deliveryGstin || "",
+                            deliveryMobile: party.deliveryMobile || "",
+                            deliveryAddress: party.deliveryAddress || "",
+                            deliveryCity: party.deliveryCity || "",
+                            deliveryState: party.deliveryState || "",
+
                           });
 
                           setShowModal(true);
@@ -386,6 +412,73 @@ function Parties() {
                   />
 
                 </div>
+
+                {/* DELIVERY ADDRESS */}
+
+
+
+
+
+                <h3 className="text-lg font-bold text-[#2F9CAF] mb-2">
+                  Delivery Address
+                </h3>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <input
+                    type="text"
+                    name="deliveryName"
+                    placeholder="Delivery Name"
+                    value={formData.deliveryName}
+                    onChange={handleChange}
+                    className="border p-3 rounded-xl uppercase"
+                  />
+
+                  <input
+                    type="text"
+                    name="deliveryMobile"
+                    placeholder="Delivery Mobile"
+                    value={formData.deliveryMobile}
+                    onChange={handleChange}
+                    className="border p-3 rounded-xl uppercase"
+                  />
+
+                  <input
+                    type="text"
+                    name="deliveryGstin"
+                    placeholder="GSTIN"
+                    value={formData.deliveryGstin}
+                    onChange={handleChange}
+                    className="border p-3 rounded-xl"
+                  />
+
+                  <textarea
+                    name="deliveryAddress"
+                    placeholder="Delivery Address"
+                    value={formData.deliveryAddress}
+                    onChange={handleChange}
+                    className="border p-3 rounded-xl col-span-2 uppercase"
+                  />
+
+                  <input
+                    type="text"
+                    name="deliveryCity"
+                    placeholder="Delivery City"
+                    value={formData.deliveryCity}
+                    onChange={handleChange}
+                    className="border p-3 rounded-xl uppercase"
+                  />
+
+                  <input
+                    type="text"
+                    name="deliveryState"
+                    placeholder="Delivery State"
+                    value={formData.deliveryState}
+                    onChange={handleChange}
+                    className="border p-3 rounded-xl uppercase"
+                  />
+                </div>
+
+
 
                 <div className="flex justify-end gap-3 mt-6">
 

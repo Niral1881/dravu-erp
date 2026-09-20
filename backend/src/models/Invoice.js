@@ -31,6 +31,36 @@ const invoiceSchema = new mongoose.Schema(
 
     partyMobile: String,
 
+    deliveryName: {
+      type: String,
+      default: "",
+    },
+
+    deliveryGstin: {
+      type: String,
+      default: "",
+    },
+
+    deliveryMobile: {
+      type: String,
+      default: "",
+    },
+
+    deliveryAddress: {
+      type: String,
+      default: "",
+    },
+
+    deliveryCity: {
+      type: String,
+      default: "",
+    },
+
+    deliveryState: {
+      type: String,
+      default: "",
+    },
+
     date: String,
 
     paidAmount: {

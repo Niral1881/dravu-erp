@@ -152,7 +152,7 @@ function App() {
           <Route path="payment-history" element={<PaymentHistory />} />
           <Route path="reports" element={<Reports />} />
           <Route path="settings" element={<Settings />} />
-          <Route path="invoice-print/:id" element={<InvoicePrint />} />
+
           <Route path="invoices-history" element={<InvoiceHistory />} />
           <Route path="edit-invoice/:id" element={<EditInvoice />} />
           <Route path="stock-history" element={<StockHistory />} />
@@ -162,6 +162,8 @@ function App() {
           <Route path="purchase-party" element={<PurchaseParty />} />
           <Route path="debit-note-print/:id" element={<DebitNotePrint />} />
         </Route>
+
+        <Route path="/invoice-print/:id" element={<InvoicePrint />} />
 
         {/* Ledger print page without sidebar */}
         <Route path="/ledger-print" element={<LedgerPrint />} />

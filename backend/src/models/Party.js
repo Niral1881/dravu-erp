@@ -19,6 +19,36 @@ const partySchema = new mongoose.Schema(
 
     state: String,
 
+    deliveryName: {
+      type: String,
+      default: "",
+    },
+
+    deliveryGstin: {
+      type: String,
+      default: "",
+    },
+
+    deliveryMobile: {
+      type: String,
+      default: "",
+    },
+
+    deliveryAddress: {
+      type: String,
+      default: "",
+    },
+
+    deliveryCity: {
+      type: String,
+      default: "",
+    },
+
+    deliveryState: {
+      type: String,
+      default: "",
+    },
+
     stateCode: {
       type: String,
       default: "",

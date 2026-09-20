@@ -8,6 +8,8 @@ function Payments() {
   const [parties, setParties] =
     useState([]);
 
+  const [payments, setPayments] = useState([]);
+
   const [invoices, setInvoices] =
     useState([]);
 
@@ -35,34 +37,21 @@ function Payments() {
 
 
 
-  const fetchData =
-    async () => {
+  const fetchData = async () => {
+    try {
+      const [partyRes, invoiceRes, paymentRes] = await Promise.all([
+        axios.get(`${API}/parties`),
+        axios.get(`${API}/invoices`),
+        axios.get(`${API}/payments`),
+      ]);
 
-      try {
-
-        const partyRes =
-          await axios.get(
-            `${API}/parties`
-          );
-
-        const invoiceRes =
-          await axios.get(
-            `${API}/invoices`
-          );
-
-        setParties(
-          partyRes.data
-        );
-
-        setInvoices(
-          invoiceRes.data
-        );
-
-      } catch (error) {
-
-        console.log(error);
-      }
-    };
+      setParties(partyRes.data || []);
+      setInvoices(invoiceRes.data || []);
+      setPayments(paymentRes.data || []);
+    } catch (error) {
+      console.error("FETCH PAYMENT DATA ERROR:", error);
+    }
+  };
 
   useEffect(() => {
 
@@ -74,76 +63,77 @@ function Payments() {
 
   }, []);
 
-  const selectedInvoices =
-    invoices.filter(
-      (inv) =>
-        inv.partyName ===
-        partyName
+  const selectedInvoices = invoices.filter(
+    (invoice) => invoice.partyName === partyName
+  );
+
+  const selectedInvoice = invoices.find(
+    (invoice) =>
+      invoice.invoiceNo === invoiceNo &&
+      invoice.partyName === partyName
+  );
+
+  const invoiceTotal = Number(
+    selectedInvoice?.roundedTotal ??
+    selectedInvoice?.grandTotal ??
+    0
+  );
+
+  const paidAmount = payments
+    .filter((payment) => {
+      const sameInvoice =
+        payment.invoiceId &&
+        selectedInvoice?._id &&
+        String(payment.invoiceId) === String(selectedInvoice._id);
+
+      const sameInvoiceNumber =
+        payment.invoiceNo === selectedInvoice?.invoiceNo &&
+        payment.partyName === selectedInvoice?.partyName;
+
+      return sameInvoice || sameInvoiceNumber;
+    })
+    .reduce(
+      (total, payment) => total + Number(payment.amount || 0),
+      0
     );
 
-  const selectedInvoice =
-    invoices.find(
-      (inv) =>
-        inv.invoiceNo ===
-        invoiceNo
-    );
+  const pendingAmount = Math.max(invoiceTotal - paidAmount, 0);
 
-  const handleSavePayment =
-    async () => {
+  const handleSavePayment = async () => {
+    if (!partyName || !invoiceNo || !amount || Number(amount) <= 0) {
+      alert("Please select party, invoice and enter valid amount");
+      return;
+    }
 
-      try {
+    try {
+      const paymentData = {
+        partyName,
+        invoiceNo,
+        invoiceId: selectedInvoice?._id,
+        amount: Number(amount),
+        paymentMode,
+        paymentDate,
+        note,
+      };
 
-        const paymentData = {
+      await axios.post(`${API}/payments`, paymentData);
 
-          partyName,
+      // Refresh invoices after payment save
+      await fetchData();
 
-          invoiceNo,
+      alert("Payment Added Successfully");
 
-          invoiceId:
-            selectedInvoice?._id,
-
-          amount:
-            Number(amount),
-
-          paymentMode,
-
-          paymentDate,
-
-          note,
-        };
-
-        await axios.post(
-          `${API}/payments`,
-          paymentData
-        );
-
-        alert(
-          "Payment Added Successfully"
-        );
-
-        setPartyName("");
-
-        setInvoiceNo("");
-
-        setAmount("");
-
-        setPaymentMode(
-          "Cash"
-        );
-
-        setNote("");
-
-
-
-      } catch (error) {
-
-        console.log(error);
-
-        alert(
-          "Payment Save Failed"
-        );
-      }
-    };
+      setAmount("");
+      setNote("");
+      setInvoiceNo("");
+      setPaymentMode("Cash");
+    } catch (error) {
+      console.error("PAYMENT SAVE ERROR:", error);
+      alert(
+        error.response?.data?.message || "Payment Save Failed"
+      );
+    }
+  };
 
   return (
 
@@ -184,7 +174,6 @@ function Payments() {
 
               setInvoiceNo("");
             }}
-            className="w-full border border-gray-200 rounded-xl p-3"
           >
 
             <option value="">
@@ -253,11 +242,7 @@ function Payments() {
               Paid Amount :
             </span>
 
-            ₹ {
-              (
-                selectedInvoice?.paidAmount || 0
-              ).toFixed(2)
-            }
+            ₹ {paidAmount.toFixed(2)}
           </p>
 
           <p>
@@ -265,12 +250,7 @@ function Payments() {
               Pending Amount :
             </span>
 
-            ₹ {
-              (
-                selectedInvoice?.pendingAmount ||
-                0
-              ).toFixed(2)
-            }
+            ₹ {pendingAmount.toFixed(2)}
           </p>
 
         </div>
