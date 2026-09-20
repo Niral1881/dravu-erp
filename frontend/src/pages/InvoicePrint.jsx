@@ -1464,14 +1464,25 @@ function InvoicePrint() {
   const handlePrint = () => {
     const oldTitle = document.title;
 
+    const partyName =
+      invoice?.partyName || "Party";
+
     const invoiceNumber =
       invoice?.invoiceNo || "Invoice";
 
-    const safeName = String(invoiceNumber)
+    const safePartyName = String(partyName)
+      .trim()
       .replace(/[<>:"/\\|?*]+/g, "-")
       .replace(/\s+/g, "-");
 
-    document.title = `Invoice-${safeName}`;
+    const safeInvoiceNumber = String(invoiceNumber)
+      .trim()
+      .replace(/[<>:"/\\|?*]+/g, "-")
+      .replace(/\s+/g, "-");
+
+    // PDF filename
+    document.title =
+      `${safePartyName}-${safeInvoiceNumber}`;
 
     window.print();
 
@@ -1594,9 +1605,9 @@ function InvoicePrint() {
               color: " #1686a3",
             }}>{COMPANY.name}</h1>
 
-            <h2>RETAIL / TAX INVOICE</h2>
+            <h2 style={{ fontWeight: 600 }}>RETAIL / TAX INVOICE</h2>
 
-            <p>
+            <p style={{ fontWeight: 500 }}>
               {COMPANY.address}
             </p>
 
@@ -2210,15 +2221,17 @@ function InvoicePrint() {
 
         </section> */}
 
+
+
         <div
-          className="flex justify-between items-end p-2 min-h-[40px]"
+          className="flex justify-between items-end p-2 min-h-[40px] invoice-thanks-divider"
           style={{
             borderTop:
               "1px solid black",
           }}
         >
 
-          <div>
+          <div >
 
             <p className="font-bold">
               Thanks...

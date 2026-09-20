@@ -45,6 +45,14 @@ function Invoices1({ isEdit }) {
   const [selectedParty, setSelectedParty] =
     useState(null);
 
+  // DELIVERY ADDRESS
+  const [deliveryName, setDeliveryName] = useState("");
+  const [deliveryGstin, setDeliveryGstin] = useState("");
+  const [deliveryMobile, setDeliveryMobile] = useState("");
+  const [deliveryAddress, setDeliveryAddress] = useState("");
+  const [deliveryCity, setDeliveryCity] = useState("");
+  const [deliveryState, setDeliveryState] = useState("");
+
 
   const [discountPercent, setDiscountPercent] =
     useState(0);
@@ -129,6 +137,15 @@ function Invoices1({ isEdit }) {
       }
 
       setPartyName(data.partyName);
+
+      // LOAD SAVED DELIVERY ADDRESS
+      setDeliveryName(data.deliveryName || "");
+      setDeliveryGstin(data.deliveryGstin || "");
+      setDeliveryMobile(data.deliveryMobile || "");
+      setDeliveryAddress(data.deliveryAddress || "");
+      setDeliveryCity(data.deliveryCity || "");
+      setDeliveryState(data.deliveryState || "");
+
 
       setInvoiceDate(data.date);
 
@@ -285,58 +302,6 @@ function Invoices1({ isEdit }) {
     roundedTotal -
     (grandTotal || 0);
 
-  const getStateCode = (state) => {
-    const stateCodes = {
-      "JAMMU AND KASHMIR": "01",
-      "HIMACHAL PRADESH": "02",
-      "PUNJAB": "03",
-      "CHANDIGARH": "04",
-      "UTTARAKHAND": "05",
-      "HARYANA": "06",
-      "DELHI": "07",
-      "RAJASTHAN": "08",
-      "UTTAR PRADESH": "09",
-      "BIHAR": "10",
-      "SIKKIM": "11",
-      "ARUNACHAL PRADESH": "12",
-      "NAGALAND": "13",
-      "MANIPUR": "14",
-      "MIZORAM": "15",
-      "TRIPURA": "16",
-      "MEGHALAYA": "17",
-      "ASSAM": "18",
-      "WEST BENGAL": "19",
-      "JHARKHAND": "20",
-      "ODISHA": "21",
-      "CHHATTISGARH": "22",
-      "MADHYA PRADESH": "23",
-      "GUJARAT": "24",
-      "DAMAN AND DIU": "25",
-      "DADRA AND NAGAR HAVELI": "26",
-      "MAHARASHTRA": "27",
-      "KARNATAKA": "29",
-      "GOA": "30",
-      "LAKSHADWEEP": "31",
-      "KERALA": "32",
-      "TAMIL NADU": "33",
-      "PUDUCHERRY": "34",
-      "ANDAMAN AND NICOBAR ISLANDS": "35",
-      "TELANGANA": "36",
-      "ANDHRA PRADESH": "37",
-      "LADAKH": "38",
-    };
-
-    if (!state) return "";
-
-    return (
-      stateCodes[
-      String(state).trim().toUpperCase()
-      ] || ""
-    );
-  };
-
-
-
 
   const handleSaveInvoice = async () => {
 
@@ -367,18 +332,24 @@ function Invoices1({ isEdit }) {
         partyState:
           selectedParty?.state || "",
 
-        partyStateCode:
-          selectedParty?.stateCode ||
-          getStateCode(selectedParty?.state),
 
-        partyPincode:
-          selectedParty?.pincode || "",
+
 
         partyMobile:
           selectedParty?.mobile || "",
 
         partyGstin:
           selectedParty?.gstin || "",
+
+        // =========================
+        // DELIVERY ADDRESS
+        // =========================
+        deliveryName,
+        deliveryGstin,
+        deliveryMobile,
+        deliveryAddress,
+        deliveryCity,
+        deliveryState,
 
         date: invoiceDate,
 
@@ -582,23 +553,6 @@ function Invoices1({ isEdit }) {
 
                   <p>
                     <span className="font-bold">
-                      State Code :
-                    </span>{" "}
-                    {selectedParty.stateCode ||
-                      getStateCode(selectedParty.state)}
-                  </p>
-
-                  <p>
-                    <span className="font-bold">
-                      Pincode :
-                    </span>
-
-                    {" "}
-                    {selectedParty.pincode}
-                  </p>
-
-                  <p>
-                    <span className="font-bold">
                       Mobile :
                     </span>
 
@@ -619,6 +573,127 @@ function Invoices1({ isEdit }) {
                 </div>
               )
             }
+
+          </div>
+
+          {/* =========================
+    DELIVERY ADDRESS
+========================= */}
+
+          <div className="md:col-span-2 lg:col-span-3">
+
+            <div className="bg-[#2F9CAF] text-white p-4 rounded-xl">
+
+              <h2 className="font-bold text-lg mb-4">
+                Delivery Address
+              </h2>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+
+                {/* Delivery Name */}
+                <div>
+                  <label className="block mb-2 font-bold">
+                    Name
+                  </label>
+
+                  <input
+                    type="text"
+                    value={deliveryName}
+                    onChange={(e) =>
+                      setDeliveryName(e.target.value)
+                    }
+                    className="w-full bg-white text-black border border-gray-200 rounded-lg p-3"
+                    placeholder="Delivery Name"
+                  />
+                </div>
+
+                {/* Delivery GSTIN */}
+                <div>
+                  <label className="block mb-2 font-bold">
+                    GSTIN
+                  </label>
+
+                  <input
+                    type="text"
+                    value={deliveryGstin}
+                    onChange={(e) =>
+                      setDeliveryGstin(e.target.value)
+                    }
+                    className="w-full bg-white text-black border border-gray-200 rounded-lg p-3"
+                    placeholder="Delivery GSTIN"
+                  />
+                </div>
+
+                {/* Delivery Mobile */}
+                <div>
+                  <label className="block mb-2 font-bold">
+                    Mobile
+                  </label>
+
+                  <input
+                    type="text"
+                    value={deliveryMobile}
+                    onChange={(e) =>
+                      setDeliveryMobile(e.target.value)
+                    }
+                    className="w-full bg-white text-black border border-gray-200 rounded-lg p-3"
+                    placeholder="Delivery Mobile"
+                  />
+                </div>
+
+                {/* Delivery City */}
+                <div>
+                  <label className="block mb-2 font-bold">
+                    City
+                  </label>
+
+                  <input
+                    type="text"
+                    value={deliveryCity}
+                    onChange={(e) =>
+                      setDeliveryCity(e.target.value)
+                    }
+                    className="w-full bg-white text-black border border-gray-200 rounded-lg p-3"
+                    placeholder="Delivery City"
+                  />
+                </div>
+
+                {/* Delivery State */}
+                <div>
+                  <label className="block mb-2 font-bold">
+                    State
+                  </label>
+
+                  <input
+                    type="text"
+                    value={deliveryState}
+                    onChange={(e) =>
+                      setDeliveryState(e.target.value)
+                    }
+                    className="w-full bg-white text-black border border-gray-200 rounded-lg p-3"
+                    placeholder="Delivery State"
+                  />
+                </div>
+
+                {/* Delivery Address */}
+                <div className="md:col-span-2">
+                  <label className="block mb-2 font-bold">
+                    Address
+                  </label>
+
+                  <textarea
+                    value={deliveryAddress}
+                    onChange={(e) =>
+                      setDeliveryAddress(e.target.value)
+                    }
+                    rows="3"
+                    className="w-full bg-white text-black border border-gray-200 rounded-lg p-3"
+                    placeholder="Delivery Address"
+                  />
+                </div>
+
+              </div>
+            </div>
 
           </div>
 

@@ -124,6 +124,7 @@ body {
   width: 40mm;
   text-align: right;
   font-size: 10px;
+  font-weight: 600;
   line-height: 17px;
 }
 
@@ -135,7 +136,7 @@ body {
 .section-title {
   background: #1686a3;
   color: white;
-  border-bottom: 1px solid #111;
+  /* border-bottom: 1px solid #111; */
   padding: 5px 8px;
   font-size: 13px;
   font-weight: 800;
@@ -232,14 +233,19 @@ body {
 .product-table th {
   background: #1686a3;
   color: white;
-  border: 1px solid #111;
+  border-top: 1px solid #111;
+  border-left: 1px solid #111;
+  border-right: 1px solid #111;
   padding: 6px 4px;
   font-size: 11px;
   font-weight: 800;
 }
 
 .product-table td {
-  border: 1px solid #888;
+  border-bottom: 1px solid #111;
+  border-left: 1px solid #111;
+  border-right: 1px solid #111;
+  /* border: 1px solid #888; */
   padding: 5px 4px;
   font-size: 11px;
   font-weight: 600;
@@ -353,12 +359,18 @@ body {
   min-height: 9mm;
 } */
 
+/* LINE BEFORE THANKS */
+.invoice-thanks-divider {
+  border: 0;
+  border-top: 1px solid #111;
+  margin: 2mm 0 2mm;
+}
 
 /* =========================================
    FOOTER
 ========================================= */
 
-.invoice-footer {
+/* .invoice-footer {
   display: grid;
   grid-template-columns: 65% 35%;
   margin-top: 3mm;
@@ -402,14 +414,14 @@ body {
 
 .signature strong {
   font-size: 11px;
-}
+} */
 
 
 /* =========================================
    RECEIVER
 ========================================= */
 
-.receiver-row {
+/* .receiver-row {
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -422,7 +434,7 @@ body {
   width: 50mm;
   border-bottom: 1px solid #111;
   margin-left: 8px;
-}
+} */
 
 
 /* =========================================
@@ -606,13 +618,13 @@ body {
 
   .product-table th {
     padding: 6px 4px !important;
-    font-size: 11px !important;
+    font-size: 13px !important;
   }
 
   .product-table td {
     padding: 4px 3px !important;
     height: 6mm !important;
-    font-size: 15px !important;
+    font-size: 14px !important;
     font-weight: 600 !important;
   }
 
@@ -628,7 +640,7 @@ body {
 
   /* BANK + TOTAL */
   .bottom-grid {
-    margin-top: 3mm !important;
+    margin-top: 2mm !important;
   }
 
   .bottom-title {
@@ -637,7 +649,7 @@ body {
   }
 
   .bank-content {
-    padding: 8px !important;
+    padding: 7px !important;
     min-height: 42mm !important;
     font-size: 13px !important;
   }
@@ -649,7 +661,7 @@ body {
 
   .total-row {
     min-height: 7mm !important;
-    font-size: 10px !important;
+    font-size: 12px !important;
   }
 
   .total-row>* {
@@ -672,7 +684,7 @@ body {
 
 
   /* FOOTER */
-  .invoice-footer {
+  /* .invoice-footer {
     margin-top: 2mm !important;
     min-height: 27mm !important;
   }
@@ -715,14 +727,14 @@ body {
 
 
   /* RECEIVER */
-  .receiver-row {
+  /*.receiver-row {
     padding: 3px 2px 0 !important;
     font-size: 8px !important;
   }
 
   .receiver-line {
     width: 35mm !important;
-  }
+  } */
 
 
   /*
