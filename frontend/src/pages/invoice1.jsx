@@ -138,6 +138,8 @@ function Invoices1({ isEdit }) {
 
       setPartyName(data.partyName);
 
+
+
       // LOAD SAVED DELIVERY ADDRESS
       setDeliveryName(data.deliveryName || "");
       setDeliveryGstin(data.deliveryGstin || "");
@@ -495,6 +497,17 @@ function Invoices1({ isEdit }) {
                 setPartyName(party.name);
 
                 setSelectedParty(party);
+
+                // ===============================
+                // AUTO LOAD DELIVERY ADDRESS
+                // FROM PARTY
+                // ===============================
+                setDeliveryName(party.deliveryName || "");
+                setDeliveryGstin(party.deliveryGstin || "");
+                setDeliveryMobile(party.deliveryMobile || "");
+                setDeliveryAddress(party.deliveryAddress || "");
+                setDeliveryCity(party.deliveryCity || "");
+                setDeliveryState(party.deliveryState || "");
               }}
               className="w-full border bg-[#2F9CAF] text-white border-gray-200 rounded-xl p-3 outline-none autoFocus focus:border-[#2F9CAF]"
             >

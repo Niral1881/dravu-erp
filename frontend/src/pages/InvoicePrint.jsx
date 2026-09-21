@@ -1565,6 +1565,8 @@ function InvoicePrint() {
     0
   );
 
+  const emptyRows = Math.max(0, 9 - items.length);
+
   return (
     <>
       {/* PRINT BUTTON */}
@@ -1602,10 +1604,10 @@ function InvoicePrint() {
 
           <div className="invoice-company">
             <h1 style={{
-              color: " #1686a3",
+              color: " #2F9CAF",
             }}>{COMPANY.name}</h1>
 
-            <h2 style={{ fontWeight: 600 }}>RETAIL / TAX INVOICE</h2>
+            <h2 style={{ fontWeight: 600 }}>TAX INVOICE</h2>
 
             <p style={{ fontWeight: 500 }}>
               {COMPANY.address}
@@ -1618,7 +1620,7 @@ function InvoicePrint() {
             </p>
           </div>
 
-          <div className="invoice-contact">
+          <div className="invoice-contact" style={{}}>
             <p>
               Cell No: {COMPANY.contact1}
             </p>
@@ -1738,22 +1740,6 @@ function InvoicePrint() {
               </p>
 
               <p>
-                <strong>P.GSTIN</strong>
-                <span>:</span>
-                <span>
-                  {invoice.partyGstin || "-"}
-                </span>
-              </p>
-
-              <p>
-                <strong>Mobile</strong>
-                <span>:</span>
-                <span>
-                  {invoice.partyMobile || "-"}
-                </span>
-              </p>
-
-              <p>
                 <strong>Address</strong>
                 <span>:</span>
                 <span>
@@ -1774,6 +1760,22 @@ function InvoicePrint() {
                 <span>:</span>
                 <span>
                   {invoice.partyState || "-"}
+                </span>
+              </p>
+
+              <p>
+                <strong>Mobile</strong>
+                <span>:</span>
+                <span>
+                  {invoice.partyMobile || "-"}
+                </span>
+              </p>
+
+              <p>
+                <strong>P.GSTIN</strong>
+                <span>:</span>
+                <span>
+                  {invoice.partyGstin || "-"}
                 </span>
               </p>
 
@@ -1815,22 +1817,6 @@ function InvoicePrint() {
               </p>
 
               <p>
-                <strong>P.GSTIN</strong>
-                <span>:</span>
-                <span>
-                  {invoice.deliveryGstin || "-"}
-                </span>
-              </p>
-
-              <p>
-                <strong>Mobile</strong>
-                <span>:</span>
-                <span>
-                  {invoice.deliveryMobile || "-"}
-                </span>
-              </p>
-
-              <p>
                 <strong>Address</strong>
                 <span>:</span>
                 <span>
@@ -1853,6 +1839,26 @@ function InvoicePrint() {
                   {invoice.deliveryState || "-"}
                 </span>
               </p>
+
+              <p>
+                <strong>Mobile</strong>
+                <span>:</span>
+                <span>
+                  {invoice.deliveryMobile || "-"}
+                </span>
+              </p>
+
+
+              <p>
+                <strong>P.GSTIN</strong>
+                <span>:</span>
+                <span>
+                  {invoice.deliveryGstin || "-"}
+                </span>
+              </p>
+
+
+
 
               {/* <p>
                 <strong>Pincode</strong>
@@ -1963,10 +1969,10 @@ function InvoicePrint() {
               })}
 
               {/* EMPTY ROWS */}
-              {Array.from({
+              {/* {Array.from({
                 length: Math.max(
                   0,
-                  8 - items.length
+                  9 - items.length
                 ),
               }).map((_, index) => (
                 <tr
@@ -1979,11 +1985,23 @@ function InvoicePrint() {
                   <td></td>
                   <td></td>
                 </tr>
+              ))} */}
+
+              {Array.from({ length: emptyRows }).map((_, index) => (
+                <tr key={`empty-${index}`} className="empty-product-row">
+                  <td className="sr">
+                    {items.length + index + 1}
+                  </td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                </tr>
               ))}
 
             </tbody>
 
-            <tfoot>
+            <tfoot >
               <tr className="total-qty-row" >
                 <td colSpan="2" className="total-qty-label" style={{
                   textAlign:
@@ -2233,7 +2251,7 @@ function InvoicePrint() {
 
           <div >
 
-            <p className="font-bold">
+            <p className="font-bold" style={{ fontSize: "11px" }}>
               Thanks...
             </p>
 
@@ -2263,15 +2281,16 @@ function InvoicePrint() {
               jurisdiction.
             </p>
 
-            <h3 className="font-bold mt-1">
+            <h3 className="font-bold mt-1" style={{ fontSize: "12px", paddingTop: "5px" }}>
               Receiver Sign
-              ................
+              .......................
             </h3>
 
           </div>
 
           <div
             style={{
+              paddingTop: "2px",
               textAlign: "center",
               width: "180px",
             }}
@@ -2282,7 +2301,7 @@ function InvoicePrint() {
                 color:
                   "#2F9CAF",
                 fontSize:
-                  "15px",
+                  "17px",
                 fontWeight:
                   "700",
                 whiteSpace:
@@ -2293,7 +2312,7 @@ function InvoicePrint() {
               Fashion Hub
             </h2>
 
-            <p className="mt-1">
+            <p className="mt-1" style={{ fontSize: "12px" }}>
               Authorised
               Signatory
             </p>

@@ -27,8 +27,7 @@ function Parties() {
       address: "",
       city: "",
       state: "",
-      stateCode: "",
-      pincode: "",
+
 
       // DELIVERY ADDRESS
       deliveryName: "",
@@ -118,8 +117,7 @@ function Parties() {
         address: "",
         city: "",
         state: "",
-        stateCode: "",
-        pincode: "",
+
         deliveryName: "",
         deliveryGstin: "",
         deliveryMobile: "",
@@ -213,10 +211,6 @@ function Parties() {
                 State
               </th>
 
-
-              <th className="text-left p-4">
-                Pincode
-              </th>
               <th className="text-left p-4">Action</th>
             </tr>
 
@@ -255,10 +249,6 @@ function Parties() {
                   </td>
 
 
-                  <td className="p-4">
-                    {party.pincode}
-                  </td>
-
 
                   <td className="p-4">
 
@@ -276,8 +266,7 @@ function Parties() {
                             address: party.address || "",
                             city: party.city || "",
                             state: party.state || "",
-                            stateCode: party.stateCode || "",
-                            pincode: party.pincode || "",
+
                             deliveryName: party.deliveryName || "",
                             deliveryGstin: party.deliveryGstin || "",
                             deliveryMobile: party.deliveryMobile || "",
@@ -393,31 +382,10 @@ function Parties() {
                     className="border p-3 rounded-xl uppercase"
                   />
 
-                  <input
-                    type="text"
-                    name="stateCode"
-                    placeholder="State Code"
-                    value={formData.stateCode}
-                    onChange={handleChange}
-                    className="border p-3 rounded-xl uppercase"
-                  />
-
-                  <input
-                    type="text"
-                    name="pincode"
-                    placeholder="Pincode"
-                    value={formData.pincode}
-                    onChange={handleChange}
-                    className="border p-3 rounded-xl uppercase"
-                  />
 
                 </div>
 
                 {/* DELIVERY ADDRESS */}
-
-
-
-
 
                 <h3 className="text-lg font-bold text-[#2F9CAF] mb-2">
                   Delivery Address

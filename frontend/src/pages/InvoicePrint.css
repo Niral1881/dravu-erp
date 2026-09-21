@@ -123,7 +123,7 @@ body {
   transform: translateY(-50%);
   width: 40mm;
   text-align: right;
-  font-size: 10px;
+  font-size: 11px;
   font-weight: 600;
   line-height: 17px;
 }
@@ -134,7 +134,7 @@ body {
 ========================================= */
 
 .section-title {
-  background: #1686a3;
+  background: #2F9CAF;
   color: white;
   /* border-bottom: 1px solid #111; */
   padding: 5px 8px;
@@ -191,7 +191,7 @@ body {
 }
 
 .address-title {
-  background: #247b96;
+  background: #2F9CAF;
   color: white;
   padding: 6px 8px;
   font-size: 13px;
@@ -231,7 +231,7 @@ body {
 }
 
 .product-table th {
-  background: #1686a3;
+  background: #2F9CAF;
   color: white;
   border-top: 1px solid #111;
   border-left: 1px solid #111;
@@ -239,6 +239,12 @@ body {
   padding: 6px 4px;
   font-size: 11px;
   font-weight: 800;
+}
+
+.product-table th:first-child,
+.product-table td:first-child {
+  text-align: center !important;
+  vertical-align: middle !important;
 }
 
 .product-table td {
@@ -499,8 +505,8 @@ body {
     display: flex !important;
     justify-content: center !important;
     align-items: center !important;
-    min-height: 42mm !important;
-    max-height: 42mm !important;
+    min-height: 38mm !important;
+    max-height: 38mm !important;
   }
 
   .invoice-logo-area {
@@ -516,12 +522,12 @@ body {
 
   .invoice-logo-area img {
     width: 100% !important;
-    min-width: 225px !important;
+    min-width: 300px !important;
     object-fit: contain !important;
   }
 
   .invoice-company {
-    width: 100% !important;
+    width: 90% !important;
     text-align: center !important;
     padding: 0 42mm !important;
   }
@@ -539,19 +545,20 @@ body {
   }
 
   .invoice-company p {
-    font-size: 13px !important;
+    font-size: 14px !important;
     margin: 2px 0 !important;
   }
 
   .invoice-contact {
     position: absolute;
     right: 5mm !important;
-    top: 50% !important;
+    top: 40% !important;
     transform: translateY(-50%) !important;
     width: 40mm !important;
     text-align: right !important;
-    font-size: 10px !important;
-    line-height: 17px !important;
+    font-size: 12px !important;
+    line-height: 20px !important;
+    font-weight: 700;
   }
 
 
@@ -565,10 +572,11 @@ body {
     grid-template-columns: 1fr 1fr !important;
   }
 
-  /* .section-title {
-    padding: 3px 6px !important;
-    font-size: 10px !important;
-  } */
+  .section-title {
+    /* padding: 3px 6px !important; */
+    font-size: 13px !important;
+
+  }
 
   .detail-row {
     display: grid !important;
@@ -590,6 +598,7 @@ body {
   .address-title {
     padding: 6px 8px !important;
     font-size: 13px !important;
+
   }
 
   .address-content {
@@ -651,12 +660,13 @@ body {
   .bank-content {
     padding: 7px !important;
     min-height: 42mm !important;
-    font-size: 13px !important;
+    font-size: 15px !important;
   }
 
   .bank-content p {
     margin: 5px 0 !important;
-    font-size: 10px !important;
+    font-size: 15px !important;
+    font-weight: 500 !important;
   }
 
   .total-row {
@@ -670,7 +680,7 @@ body {
 
   .net-total {
     min-height: 9mm !important;
-    font-size: 13px !important;
+    font-size: 14px !important;
   }
 
 
