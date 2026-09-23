@@ -900,6 +900,110 @@ function InvoiceHistory() {
   // TOTALS
   // ======================================================
 
+  // const totalSales = useMemo(() => {
+  //   return filteredInvoices.reduce(
+  //     (sum, invoice) =>
+  //       sum +
+  //       Number(
+  //         invoice.roundedTotal ??
+  //         invoice.grandTotal ??
+  //         0
+  //       ),
+  //     0
+  //   );
+  // }, [filteredInvoices]);
+
+  // const totalReceived = useMemo(() => {
+  //   return filteredInvoices.reduce(
+  //     (sum, invoice) =>
+  //       sum + Number(invoice.paidAmount || 0),
+  //     0
+  //   );
+  // }, [filteredInvoices]);
+
+  // const totalOutstanding = useMemo(() => {
+  //   return filteredInvoices.reduce(
+  //     (sum, invoice) =>
+  //       sum + Number(invoice.pendingAmount || 0),
+  //     0
+  //   );
+  // }, [filteredInvoices]);
+
+  // const totalInvoices = filteredInvoices.length;
+
+  // const paidInvoices = filteredInvoices.filter(
+  //   (invoice) =>
+  //     invoice.paymentStatus === "PAID"
+  // ).length;
+
+  // const partialInvoices = filteredInvoices.filter(
+  //   (invoice) =>
+  //     invoice.paymentStatus === "PARTIAL"
+  // ).length;
+
+  // const unpaidInvoices = filteredInvoices.filter(
+  //   (invoice) =>
+  //     invoice.paymentStatus === "UNPAID"
+  // ).length;
+
+  // ======================================================
+  // TOTALS
+  // ======================================================
+
+  // ALL NORMAL INVOICES
+  const normalInvoices = useMemo(() => {
+    return invoices.filter(
+      (invoice) =>
+        invoice.invoiceType === "NORMAL" ||
+        !invoice.invoiceType
+    );
+  }, [invoices]);
+
+  // ALL GST INVOICES
+  const gstInvoices = useMemo(() => {
+    return invoices.filter(
+      (invoice) =>
+        invoice.invoiceType === "GST"
+    );
+  }, [invoices]);
+
+  // NORMAL INVOICE TOTAL
+  const normalInvoiceTotal = useMemo(() => {
+    return normalInvoices.reduce(
+      (sum, invoice) =>
+        sum +
+        Number(
+          invoice.roundedTotal ??
+          invoice.grandTotal ??
+          0
+        ),
+      0
+    );
+  }, [normalInvoices]);
+
+  // GST INVOICE TOTAL
+  const gstInvoiceTotal = useMemo(() => {
+    return gstInvoices.reduce(
+      (sum, invoice) =>
+        sum +
+        Number(
+          invoice.roundedTotal ??
+          invoice.grandTotal ??
+          0
+        ),
+      0
+    );
+  }, [gstInvoices]);
+
+  // COUNTS
+  const normalInvoiceCount =
+    normalInvoices.length;
+
+  const gstInvoiceCount =
+    gstInvoices.length;
+
+
+  // CURRENT FILTERED TOTALS
   const totalSales = useMemo(() => {
     return filteredInvoices.reduce(
       (sum, invoice) =>
@@ -929,22 +1033,26 @@ function InvoiceHistory() {
     );
   }, [filteredInvoices]);
 
-  const totalInvoices = filteredInvoices.length;
+  const totalInvoices =
+    filteredInvoices.length;
 
-  const paidInvoices = filteredInvoices.filter(
-    (invoice) =>
-      invoice.paymentStatus === "PAID"
-  ).length;
+  const paidInvoices =
+    filteredInvoices.filter(
+      (invoice) =>
+        invoice.paymentStatus === "PAID"
+    ).length;
 
-  const partialInvoices = filteredInvoices.filter(
-    (invoice) =>
-      invoice.paymentStatus === "PARTIAL"
-  ).length;
+  const partialInvoices =
+    filteredInvoices.filter(
+      (invoice) =>
+        invoice.paymentStatus === "PARTIAL"
+    ).length;
 
-  const unpaidInvoices = filteredInvoices.filter(
-    (invoice) =>
-      invoice.paymentStatus === "UNPAID"
-  ).length;
+  const unpaidInvoices =
+    filteredInvoices.filter(
+      (invoice) =>
+        invoice.paymentStatus === "UNPAID"
+    ).length;
 
   // ======================================================
   // HELPERS
@@ -1039,11 +1147,11 @@ function InvoiceHistory() {
           SUMMARY CARDS
       ================================================== */}
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4 mb-6">
+      {/* <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4 mb-6"> */}
 
-        {/* TOTAL SALES */}
+      {/* TOTAL SALES */}
 
-        <div className="bg-white rounded-2xl p-5 shadow-sm border border-gray-100">
+      {/* <div className="bg-white rounded-2xl p-5 shadow-sm border border-gray-100">
           <p className="text-sm text-gray-500">
             Total Invoice Amount
           </p>
@@ -1056,12 +1164,12 @@ function InvoiceHistory() {
             {totalInvoices} invoice
             {totalInvoices !== 1 ? "s" : ""}
           </p>
-        </div>
+        </div> */}
 
 
-        {/* RECEIVED */}
+      {/* RECEIVED */}
 
-        <div className="bg-white rounded-2xl p-5 shadow-sm border border-gray-100">
+      {/* <div className="bg-white rounded-2xl p-5 shadow-sm border border-gray-100">
           <p className="text-sm text-gray-500">
             Total Received
           </p>
@@ -1073,12 +1181,12 @@ function InvoiceHistory() {
           <p className="text-xs text-gray-400 mt-2">
             Payments received
           </p>
-        </div>
+        </div> */}
 
 
-        {/* OUTSTANDING */}
+      {/* OUTSTANDING */}
 
-        <div className="bg-white rounded-2xl p-5 shadow-sm border border-gray-100">
+      {/* <div className="bg-white rounded-2xl p-5 shadow-sm border border-gray-100">
           <p className="text-sm text-gray-500">
             Total Outstanding
           </p>
@@ -1090,12 +1198,12 @@ function InvoiceHistory() {
           <p className="text-xs text-gray-400 mt-2">
             Pending customer amount
           </p>
-        </div>
+        </div> */}
 
 
-        {/* INVOICE COUNT */}
+      {/* INVOICE COUNT */}
 
-        <div className="bg-white rounded-2xl p-5 shadow-sm border border-gray-100">
+      {/* <div className="bg-white rounded-2xl p-5 shadow-sm border border-gray-100">
           <p className="text-sm text-gray-500">
             Invoice Status
           </p>
@@ -1115,6 +1223,152 @@ function InvoiceHistory() {
             </span>
 
           </div>
+        </div>
+
+      </div> */}
+
+      {/* ==================================================
+    SUMMARY CARDS
+================================================== */}
+
+      <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4 mb-6">
+
+        {/* NORMAL INVOICES */}
+
+        <div className="bg-white rounded-2xl p-5 shadow-sm border border-blue-100">
+          <div className="flex items-center justify-between">
+            <div>
+              <p className="text-sm text-gray-500">
+                NORMAL Invoice Total
+              </p>
+
+              <h2 className="text-2xl font-bold text-blue-700 mt-2">
+                {formatCurrency(normalInvoiceTotal)}
+              </h2>
+
+              <p className="text-xs text-gray-400 mt-2">
+                {normalInvoiceCount} invoice
+                {normalInvoiceCount !== 1 ? "s" : ""}
+              </p>
+            </div>
+
+            <div className="w-11 h-11 rounded-xl bg-blue-100 text-blue-700 flex items-center justify-center font-bold">
+              N
+            </div>
+          </div>
+
+          <div className="mt-4 text-xs font-semibold text-blue-600">
+            INV-217, INV-218, INV-248, INV-249...
+          </div>
+        </div>
+
+
+        {/* GST INVOICES */}
+
+        <div className="bg-white rounded-2xl p-5 shadow-sm border border-purple-100">
+          <div className="flex items-center justify-between">
+            <div>
+              <p className="text-sm text-gray-500">
+                GST Invoice Total
+              </p>
+
+              <h2 className="text-2xl font-bold text-purple-700 mt-2">
+                {formatCurrency(gstInvoiceTotal)}
+              </h2>
+
+              <p className="text-xs text-gray-400 mt-2">
+                {gstInvoiceCount} invoice
+                {gstInvoiceCount !== 1 ? "s" : ""}
+              </p>
+            </div>
+
+            <div className="w-11 h-11 rounded-xl bg-purple-100 text-purple-700 flex items-center justify-center font-bold">
+              G
+            </div>
+          </div>
+
+          <div className="mt-4 text-xs font-semibold text-purple-600">
+            INV-28, INV-29...
+          </div>
+        </div>
+
+
+        {/* RECEIVED */}
+
+        <div className="bg-white rounded-2xl p-5 shadow-sm border border-green-100">
+
+          <p className="text-sm text-gray-500">
+            Total Received
+          </p>
+
+          <h2 className="text-2xl font-bold text-green-600 mt-2">
+            {formatCurrency(totalReceived)}
+          </h2>
+
+          <p className="text-xs text-gray-400 mt-2">
+            Payments received
+          </p>
+
+        </div>
+
+
+        {/* OUTSTANDING */}
+
+        <div className="bg-white rounded-2xl p-5 shadow-sm border border-red-100">
+
+          <p className="text-sm text-gray-500">
+            Total Outstanding
+          </p>
+
+          <h2 className="text-2xl font-bold text-red-600 mt-2">
+            {formatCurrency(totalOutstanding)}
+          </h2>
+
+          <p className="text-xs text-gray-400 mt-2">
+            Pending customer amount
+          </p>
+
+        </div>
+
+      </div>
+
+
+      {/* PAYMENT STATUS */}
+
+      <div className="bg-white rounded-2xl p-5 shadow-sm border border-gray-100 mb-6">
+
+        <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-3">
+
+          <div>
+            <p className="text-sm text-gray-500">
+              Invoice Status
+            </p>
+
+            <p className="text-xs text-gray-400 mt-1">
+              Based on current filters
+            </p>
+          </div>
+
+          <div className="flex flex-wrap gap-2">
+
+            <span className="px-4 py-2 rounded-full text-xs font-semibold bg-green-100 text-green-700">
+              Paid {paidInvoices}
+            </span>
+
+            <span className="px-4 py-2 rounded-full text-xs font-semibold bg-yellow-100 text-yellow-700">
+              Partial {partialInvoices}
+            </span>
+
+            <span className="px-4 py-2 rounded-full text-xs font-semibold bg-red-100 text-red-700">
+              Unpaid {unpaidInvoices}
+            </span>
+
+            <span className="px-4 py-2 rounded-full text-xs font-semibold bg-gray-100 text-gray-700">
+              Total {totalInvoices}
+            </span>
+
+          </div>
+
         </div>
 
       </div>
