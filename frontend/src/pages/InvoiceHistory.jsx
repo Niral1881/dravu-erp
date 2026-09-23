@@ -946,42 +946,177 @@ function InvoiceHistory() {
   //     invoice.paymentStatus === "UNPAID"
   // ).length;
 
+  // // ======================================================
+  // // TOTALS
+  // // ======================================================
+
+  // // ALL NORMAL INVOICES
+  // const normalInvoices = useMemo(() => {
+  //   return invoices.filter(
+  //     (invoice) =>
+  //       invoice.invoiceType === "NORMAL" ||
+  //       !invoice.invoiceType
+  //   );
+  // }, [invoices]);
+
+  // // ALL GST INVOICES
+  // const gstInvoices = useMemo(() => {
+  //   return invoices.filter(
+  //     (invoice) =>
+  //       invoice.invoiceType === "GST"
+  //   );
+  // }, [invoices]);
+
+  // // NORMAL INVOICE TOTAL
+  // const normalInvoiceTotal = useMemo(() => {
+  //   return normalInvoices.reduce(
+  //     (sum, invoice) =>
+  //       sum +
+  //       Number(
+  //         invoice.roundedTotal ??
+  //         invoice.grandTotal ??
+  //         0
+  //       ),
+  //     0
+  //   );
+  // }, [normalInvoices]);
+
+  // // GST INVOICE TOTAL
+  // const gstInvoiceTotal = useMemo(() => {
+  //   return gstInvoices.reduce(
+  //     (sum, invoice) =>
+  //       sum +
+  //       Number(
+  //         invoice.roundedTotal ??
+  //         invoice.grandTotal ??
+  //         0
+  //       ),
+  //     0
+  //   );
+  // }, [gstInvoices]);
+
+  // // COUNTS
+  // const normalInvoiceCount =
+  //   normalInvoices.length;
+
+  // const gstInvoiceCount =
+  //   gstInvoices.length;
+
+
+  // // CURRENT FILTERED TOTALS
+  // const totalSales = useMemo(() => {
+  //   return filteredInvoices.reduce(
+  //     (sum, invoice) =>
+  //       sum +
+  //       Number(
+  //         invoice.roundedTotal ??
+  //         invoice.grandTotal ??
+  //         0
+  //       ),
+  //     0
+  //   );
+  // }, [filteredInvoices]);
+
+  // const totalReceived = useMemo(() => {
+  //   return filteredInvoices.reduce(
+  //     (sum, invoice) =>
+  //       sum + Number(invoice.paidAmount || 0),
+  //     0
+  //   );
+  // }, [filteredInvoices]);
+
+  // const totalOutstanding = useMemo(() => {
+  //   return filteredInvoices.reduce(
+  //     (sum, invoice) =>
+  //       sum + Number(invoice.pendingAmount || 0),
+  //     0
+  //   );
+  // }, [filteredInvoices]);
+
+  // const totalInvoices =
+  //   filteredInvoices.length;
+
+  // const paidInvoices =
+  //   filteredInvoices.filter(
+  //     (invoice) =>
+  //       invoice.paymentStatus === "PAID"
+  //   ).length;
+
+  // const partialInvoices =
+  //   filteredInvoices.filter(
+  //     (invoice) =>
+  //       invoice.paymentStatus === "PARTIAL"
+  //   ).length;
+
+  // const unpaidInvoices =
+  //   filteredInvoices.filter(
+  //     (invoice) =>
+  //       invoice.paymentStatus === "UNPAID"
+  //   ).length;
+
   // ======================================================
   // TOTALS
   // ======================================================
 
-  // ALL NORMAL INVOICES
-  const normalInvoices = useMemo(() => {
-    return invoices.filter(
-      (invoice) =>
-        invoice.invoiceType === "NORMAL" ||
-        !invoice.invoiceType
-    );
-  }, [invoices]);
+  // ======================================================
+  // GET NUMERIC INVOICE NUMBER
+  // Example: INV-217 -> 217
+  // ======================================================
 
-  // ALL GST INVOICES
+  // ======================================================
+  // GET NUMERIC INVOICE NUMBER
+  // ======================================================
+
+  const getInvoiceNumber = (invoice) => {
+    const match = String(invoice?.invoiceNo || "").match(
+      /^INV-(\d+)$/i
+    );
+
+    return match ? Number(match[1]) : null;
+  };
+
+
+  // ======================================================
+  // GST INVOICES
+  // STARTS FROM INV-13
+  // INV-13, INV-14, ... INV-29, INV-30, INV-31...
+  // ======================================================
+
   const gstInvoices = useMemo(() => {
-    return invoices.filter(
-      (invoice) =>
-        invoice.invoiceType === "GST"
-    );
+    return invoices.filter((invoice) => {
+      const invoiceNumber = getInvoiceNumber(invoice);
+
+      return (
+        invoiceNumber !== null &&
+        invoiceNumber >= 13 &&
+        invoiceNumber < 217
+      );
+    });
   }, [invoices]);
 
-  // NORMAL INVOICE TOTAL
-  const normalInvoiceTotal = useMemo(() => {
-    return normalInvoices.reduce(
-      (sum, invoice) =>
-        sum +
-        Number(
-          invoice.roundedTotal ??
-          invoice.grandTotal ??
-          0
-        ),
-      0
-    );
-  }, [normalInvoices]);
 
+  // ======================================================
+  // NORMAL INVOICES
+  // STARTS FROM INV-217
+  // INV-217, INV-218, ... INV-252, INV-253...
+  // ======================================================
+
+  const normalInvoices = useMemo(() => {
+    return invoices.filter((invoice) => {
+      const invoiceNumber = getInvoiceNumber(invoice);
+
+      return (
+        invoiceNumber !== null &&
+        invoiceNumber >= 217
+      );
+    });
+  }, [invoices]);
+
+
+  // ======================================================
   // GST INVOICE TOTAL
+  // ======================================================
+
   const gstInvoiceTotal = useMemo(() => {
     return gstInvoices.reduce(
       (sum, invoice) =>
@@ -995,15 +1130,73 @@ function InvoiceHistory() {
     );
   }, [gstInvoices]);
 
+
+  // ======================================================
+  // NORMAL INVOICE TOTAL
+  // ======================================================
+
+  const normalInvoiceTotal = useMemo(() => {
+    return normalInvoices.reduce(
+      (sum, invoice) =>
+        sum +
+        Number(
+          invoice.roundedTotal ??
+          invoice.grandTotal ??
+          0
+        ),
+      0
+    );
+  }, [normalInvoices]);
+
+
+  // ======================================================
   // COUNTS
-  const normalInvoiceCount =
-    normalInvoices.length;
+  // ======================================================
 
-  const gstInvoiceCount =
-    gstInvoices.length;
+  const gstInvoiceCount = gstInvoices.length;
+
+  const normalInvoiceCount = normalInvoices.length;
 
 
+  // ======================================================
+  // DYNAMIC FIRST / LAST INVOICE NUMBER
+  // ======================================================
+
+  const gstInvoiceNumbers = gstInvoices
+    .map(getInvoiceNumber)
+    .filter((number) => number !== null);
+
+  const normalInvoiceNumbers = normalInvoices
+    .map(getInvoiceNumber)
+    .filter((number) => number !== null);
+
+
+  const gstFirstInvoice =
+    gstInvoiceNumbers.length > 0
+      ? Math.min(...gstInvoiceNumbers)
+      : null;
+
+  const gstLastInvoice =
+    gstInvoiceNumbers.length > 0
+      ? Math.max(...gstInvoiceNumbers)
+      : null;
+
+
+  const normalFirstInvoice =
+    normalInvoiceNumbers.length > 0
+      ? Math.min(...normalInvoiceNumbers)
+      : null;
+
+  const normalLastInvoice =
+    normalInvoiceNumbers.length > 0
+      ? Math.max(...normalInvoiceNumbers)
+      : null;
+
+
+  // ======================================================
   // CURRENT FILTERED TOTALS
+  // ======================================================
+
   const totalSales = useMemo(() => {
     return filteredInvoices.reduce(
       (sum, invoice) =>
@@ -1017,6 +1210,7 @@ function InvoiceHistory() {
     );
   }, [filteredInvoices]);
 
+
   const totalReceived = useMemo(() => {
     return filteredInvoices.reduce(
       (sum, invoice) =>
@@ -1024,6 +1218,7 @@ function InvoiceHistory() {
       0
     );
   }, [filteredInvoices]);
+
 
   const totalOutstanding = useMemo(() => {
     return filteredInvoices.reduce(
@@ -1033,8 +1228,10 @@ function InvoiceHistory() {
     );
   }, [filteredInvoices]);
 
+
   const totalInvoices =
     filteredInvoices.length;
+
 
   const paidInvoices =
     filteredInvoices.filter(
@@ -1042,11 +1239,13 @@ function InvoiceHistory() {
         invoice.paymentStatus === "PAID"
     ).length;
 
+
   const partialInvoices =
     filteredInvoices.filter(
       (invoice) =>
         invoice.paymentStatus === "PARTIAL"
     ).length;
+
 
   const unpaidInvoices =
     filteredInvoices.filter(
@@ -1235,7 +1434,7 @@ function InvoiceHistory() {
 
         {/* NORMAL INVOICES */}
 
-        <div className="bg-white rounded-2xl p-5 shadow-sm border border-blue-100">
+        {/* <div className="bg-white rounded-2xl p-5 shadow-sm border border-blue-100">
           <div className="flex items-center justify-between">
             <div>
               <p className="text-sm text-gray-500">
@@ -1260,12 +1459,40 @@ function InvoiceHistory() {
           <div className="mt-4 text-xs font-semibold text-blue-600">
             INV-217, INV-218, INV-248, INV-249...
           </div>
+        </div> */}
+
+        <div className="bg-white rounded-2xl p-5 shadow-sm border border-blue-100">
+          <div className="flex items-center justify-between">
+            <div>
+              <p className="text-sm text-gray-500">
+                NORMAL Invoice Total
+              </p>
+
+              <h2 className="text-2xl font-bold text-blue-700 mt-2">
+                {formatCurrency(normalInvoiceTotal)}
+              </h2>
+
+              <p className="text-xs text-gray-400 mt-2">
+                {normalInvoiceCount} invoices
+              </p>
+            </div>
+
+            <div className="w-11 h-11 rounded-xl bg-blue-100 text-blue-700 flex items-center justify-center font-bold">
+              N
+            </div>
+          </div>
+
+          <div className="mt-4 text-xs font-semibold text-blue-600">
+            {normalFirstInvoice !== null && normalLastInvoice !== null
+              ? `INV-${normalFirstInvoice} → INV-${normalLastInvoice}`
+              : "No NORMAL invoices"}
+          </div>
         </div>
 
 
         {/* GST INVOICES */}
 
-        <div className="bg-white rounded-2xl p-5 shadow-sm border border-purple-100">
+        {/* <div className="bg-white rounded-2xl p-5 shadow-sm border border-purple-100">
           <div className="flex items-center justify-between">
             <div>
               <p className="text-sm text-gray-500">
@@ -1289,6 +1516,34 @@ function InvoiceHistory() {
 
           <div className="mt-4 text-xs font-semibold text-purple-600">
             INV-28, INV-29...
+          </div>
+        </div> */}
+
+        <div className="bg-white rounded-2xl p-5 shadow-sm border border-purple-100">
+          <div className="flex items-center justify-between">
+            <div>
+              <p className="text-sm text-gray-500">
+                GST Invoice Total
+              </p>
+
+              <h2 className="text-2xl font-bold text-purple-700 mt-2">
+                {formatCurrency(gstInvoiceTotal)}
+              </h2>
+
+              <p className="text-xs text-gray-400 mt-2">
+                {gstInvoiceCount} invoices
+              </p>
+            </div>
+
+            <div className="w-11 h-11 rounded-xl bg-purple-100 text-purple-700 flex items-center justify-center font-bold">
+              G
+            </div>
+          </div>
+
+          <div className="mt-4 text-xs font-semibold text-purple-600">
+            {gstFirstInvoice !== null && gstLastInvoice !== null
+              ? `INV-${gstFirstInvoice} → INV-${gstLastInvoice}`
+              : "No GST invoices"}
           </div>
         </div>
 
