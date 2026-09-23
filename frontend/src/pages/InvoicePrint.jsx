@@ -1645,20 +1645,25 @@ function InvoicePrint() {
             <div className="detail-column">
 
               <div className="detail-row">
-                <strong>Invoice No</strong>
+                <strong>eWayBill No</strong>
                 <span>:</span>
                 <strong>
-                  {invoice.invoiceNo || "-"}
+                  {invoice.eWayBillNo || "-"}
                 </strong>
               </div>
 
               <div className="detail-row">
-                <strong>Invoice Date</strong>
+                <strong>Date of Supply</strong>
                 <span>:</span>
                 <strong>
-                  {formatDate(invoice.date)}
+                  {formatDate(
+                    invoice.dateOfSupply ||
+                    invoice.date
+                  )}
                 </strong>
               </div>
+
+
 
               {/* <div className="detail-row">
                 <strong>Date of Supply</strong>
@@ -1676,12 +1681,22 @@ function InvoicePrint() {
             <div className="detail-column">
 
               <div className="detail-row">
-                <strong>eWayBill No</strong>
+                <strong>Invoice No</strong>
                 <span>:</span>
                 <strong>
-                  {invoice.eWayBillNo || "-"}
+                  {invoice.invoiceNo || "-"}
                 </strong>
               </div>
+
+              <div className="detail-row">
+                <strong>Invoice Date</strong>
+                <span>:</span>
+                <strong>
+                  {formatDate(invoice.date)}
+                </strong>
+              </div>
+
+
 
               {/* <div className="detail-row">
                 <strong>State Code</strong>
@@ -1691,16 +1706,7 @@ function InvoicePrint() {
                 </span>
               </div> */}
 
-              <div className="detail-row">
-                <strong>Date of Supply</strong>
-                <span>:</span>
-                <strong>
-                  {formatDate(
-                    invoice.dateOfSupply ||
-                    invoice.date
-                  )}
-                </strong>
-              </div>
+
 
               {/* <div className="detail-row">
                 <strong>Due Date</strong>
