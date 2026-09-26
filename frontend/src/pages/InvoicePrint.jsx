@@ -2108,7 +2108,7 @@ function InvoicePrint() {
               </span>
             </div>
 
-            <div className="total-row">
+            {/* <div className="total-row">
               <span>
                 CGST (
                 {invoice.taxType ===
@@ -2123,9 +2123,19 @@ function InvoicePrint() {
               <span>
                 {money(cgstAmount)}
               </span>
-            </div>
+            </div> */}
 
             <div className="total-row">
+              <span>
+                CGST ({(Number(invoice.gstPercent || 0) / 2).toFixed(2)}%)
+              </span>
+
+              <span>
+                {money(cgstAmount)}
+              </span>
+            </div>
+
+            {/* <div className="total-row">
               <span>
                 SGST (
                 {invoice.taxType ===
@@ -2137,6 +2147,16 @@ function InvoicePrint() {
                   : 0}
                 %)
               </span>
+              <span>
+                {money(sgstAmount)}
+              </span>
+            </div> */}
+
+            <div className="total-row">
+              <span>
+                SGST ({(Number(invoice.gstPercent || 0) / 2).toFixed(2)}%)
+              </span>
+
               <span>
                 {money(sgstAmount)}
               </span>
