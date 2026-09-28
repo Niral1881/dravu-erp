@@ -505,8 +505,8 @@ body {
     display: flex !important;
     justify-content: center !important;
     align-items: center !important;
-    min-height: 38mm !important;
-    max-height: 38mm !important;
+    min-height: 35mm !important;
+    max-height: 35mm !important;
   }
 
   .invoice-logo-area {
