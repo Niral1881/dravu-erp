@@ -1595,6 +1595,18 @@ function Invoices1({ isEdit }) {
           <section className="rounded-2xl border border-slate-200 bg-white shadow-sm lg:col-span-2"><div className="border-b border-slate-100 px-5 py-4 sm:px-6"><h2 className="font-bold text-slate-800">GST Invoice Summary</h2><p className="mt-1 text-xs text-slate-400">Final amount calculation</p></div><div className="p-5 sm:p-6"><div className="space-y-4">
             <div className="flex justify-between"><span className="text-sm text-slate-500">Subtotal</span><span className="font-semibold text-slate-800">₹ {subtotal.toFixed(2)}</span></div>
             <div className="flex justify-between"><span className="text-sm text-slate-500">Discount {Number(discountPercent) > 0 && <span className="text-xs text-red-400">({discountPercent}%)</span>}</span><span className="font-semibold text-red-500">- ₹ {discountAmount.toFixed(2)}</span></div>
+
+            {/* TOTAL AMOUNT AFTER DISCOUNT */}
+            <div className="flex justify-between border-t border-slate-100 pt-4">
+              <span className="text-sm font-semibold text-slate-700">
+                Total Amount
+              </span>
+
+              <span className="font-bold text-slate-800">
+                ₹ {afterDiscount.toFixed(2)}
+              </span>
+            </div>
+
             <div className="flex justify-between"><span className="text-sm text-slate-500">CGST ({(Number(gstPercent || 0) / 2).toFixed(2)}%)</span><span className="font-semibold text-slate-800">₹ {cgstAmount.toFixed(2)}</span></div>
             <div className="flex justify-between"><span className="text-sm text-slate-500">SGST ({(Number(gstPercent || 0) / 2).toFixed(2)}%)</span><span className="font-semibold text-slate-800">₹ {sgstAmount.toFixed(2)}</span></div>
             <div className="flex justify-between"><span className="text-sm text-slate-500">IGST</span><span className="font-semibold text-slate-800">₹ {igstAmount.toFixed(2)}</span></div>

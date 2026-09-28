@@ -2258,6 +2258,17 @@ function Invoices({ isEdit }) {
                   </span>
                 </div>
 
+                {/* TOTAL AMOUNT AFTER DISCOUNT */}
+                <div className="flex items-center justify-between border-t border-slate-100 pt-4">
+                  <span className="text-sm font-semibold text-slate-700">
+                    Total Amount
+                  </span>
+
+                  <span className="font-bold text-slate-800">
+                    {money(afterDiscount)}
+                  </span>
+                </div>
+
                 {/* CGST */}
                 <div className="flex items-center justify-between">
                   <span className="text-sm text-slate-500">

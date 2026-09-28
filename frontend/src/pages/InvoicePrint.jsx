@@ -2113,6 +2113,22 @@ function InvoicePrint() {
               </span>
             </div>
 
+            {/* TOTAL AMOUNT AFTER DISCOUNT */}
+            <div
+              className="total-row"
+              style={{
+                fontWeight: "400",
+                // borderTop: "1px solid #ddd",
+                // paddingTop: "4px",
+              }}
+            >
+              <strong>Total Amount</strong>
+
+              <strong>
+                {money(subtotal - discountAmount)}
+              </strong>
+            </div>
+
             {/* <div className="total-row">
               <span>
                 CGST (
