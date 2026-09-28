@@ -1286,6 +1286,7 @@ const COMPANY = {
   gstin: "24AMHPV3134H1Z1",
   contact1: "+91 99092 78815",
   contact2: "+91 97148 44024",
+  contact3: "+91 89801 66322",
   logo: "/logo.png",
 
   bankName: "IDBI BANK",
@@ -1623,6 +1624,10 @@ function InvoicePrint() {
           <div className="invoice-contact" style={{}}>
             <p>
               Cell No: {COMPANY.contact1}
+            </p>
+
+            <p>
+              Cell No: {COMPANY.contact3}
             </p>
 
             <p>
