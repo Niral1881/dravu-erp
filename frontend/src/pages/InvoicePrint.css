@@ -581,7 +581,7 @@ body {
   .detail-row {
     display: grid !important;
     grid-template-columns: 34mm 5mm 1fr !important;
-    min-height: 8mm !important;
+    min-height: 7mm !important;
     font-size: 12px;
     align-items: center !important;
     padding: 3px 7px !important;
@@ -632,9 +632,9 @@ body {
 
   .product-table td {
     padding: 4px 3px !important;
-    height: 6mm !important;
-    font-size: 14px !important;
-    font-weight: 600 !important;
+    height: 4mm !important;
+    font-size: 13px !important;
+    font-weight: 500 !important;
   }
 
   /*
@@ -642,7 +642,7 @@ body {
      Do not create 8 large empty rows.
   */
   .empty-product-row td {
-    height: 7mm !important;
+    height: 5mm !important;
     padding: 1px !important;
   }
 
@@ -670,7 +670,7 @@ body {
   }
 
   .total-row {
-    min-height: 7mm !important;
+    min-height: 6mm !important;
     font-size: 12px !important;
   }
 
