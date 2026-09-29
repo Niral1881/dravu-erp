@@ -136,6 +136,7 @@ import PurchaseParty from "./pages/PurchaseParty";
 import DebitNoteHistory from "./pages/DebitNoteHistory";
 import LedgerPrint from "./pages/LedgerPrint";
 import Labour from "./pages/Labour";
+import LabourWork from "./pages/LabourWork";
 
 function App() {
   return (
@@ -163,6 +164,10 @@ function App() {
           <Route path="purchase-party" element={<PurchaseParty />} />
           <Route path="debit-note-print/:id" element={<DebitNotePrint />} />
           <Route path="/labour" element={<Labour />} />
+          <Route
+            path="/labour-work"
+            element={<LabourWork />}
+          />
         </Route>
 
         <Route path="/invoice-print/:id" element={<InvoicePrint />} />

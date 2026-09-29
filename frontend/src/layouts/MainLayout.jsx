@@ -292,6 +292,24 @@ function MainLayout() {
           </li>
 
           <li>
+
+            <Link
+              to="/labour-work"
+              className={`flex items-center gap-3 p-3 rounded-xl transition ${location.pathname === "/labour-work"
+                ? "bg-[#2F9CAF]"
+                : "hover:bg-[#2F9CAF]"
+                }`}
+            >
+
+              <span className="hidden lg:flex items-center gap-3">
+                🧵 Labour Work
+              </span>
+
+            </Link>
+
+          </li>
+
+          <li>
             <Link
               to="/reports"
               className={`flex items-center gap-3 p-3 rounded-xl transition ${location.pathname === "/reports"

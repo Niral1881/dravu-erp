@@ -12,6 +12,7 @@ import stockHistoryRoutes from "./routes/stockHistory.routes.js";
 import returnRoutes from "./routes/return.routes.js";
 import debitNoteRoutes from "./routes/debitNote.routes.js";
 import labourRoutes from "./routes/labour.routes.js";
+import labourWorkRoutes from "./routes/labourWork.routes.js";
 
 dotenv.config();
 
@@ -41,6 +42,10 @@ app.use(
   debitNoteRoutes
 );
 app.use("/api/labour", labourRoutes);
+app.use(
+  "/api/labour-work",
+  labourWorkRoutes
+);
 
 // Test Route
 app.get("/", (req, res) => {
