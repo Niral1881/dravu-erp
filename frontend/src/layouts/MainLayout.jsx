@@ -257,25 +257,6 @@ function MainLayout() {
 
           </li>
 
-          <li>
-
-            <Link
-              to="/payment-history"
-              className={`flex items-center gap-3 p-3 rounded-xl transition ${location.pathname === "/payment-history"
-                ? "bg-[#2F9CAF]"
-                : "hover:bg-[#2F9CAF]"
-                }`}
-            >
-              <FaMoneyBill className="text-xl" />
-
-              <span className="hidden lg:flex items-center gap-3">
-
-                Payment History
-              </span>
-
-            </Link>
-
-          </li>
 
           <li>
 

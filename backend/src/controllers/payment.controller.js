@@ -1,201 +1,3 @@
-// import mongoose from "mongoose";
-// import Payment from "../models/Payment.js";
-// import Invoice from "../models/Invoice.js";
-
-
-// // CREATE PAYMENT
-// export const createPayment = async (req, res) => {
-//   try {
-//     const {
-//       partyName,
-//       invoiceNo,
-//       invoiceId,
-//       amount,
-//       paymentMode,
-//       paymentDate,
-//       note,
-//     } = req.body;
-
-//     if (!invoiceId) {
-//       return res.status(400).json({
-//         message: "Invoice ID is required",
-//       });
-//     }
-
-//     if (!amount || Number(amount) <= 0) {
-//       return res.status(400).json({
-//         message: "Please enter a valid payment amount",
-//       });
-//     }
-
-//     // Create payment
-//     const payment = await Payment.create({
-//       partyName,
-//       invoiceNo,
-//       invoiceId,
-//       amount: Number(amount),
-//       paymentMode,
-//       paymentDate,
-//       note,
-//     });
-
-//     // Find invoice
-//     const invoice = await Invoice.findById(invoiceId);
-
-//     if (!invoice) {
-//       return res.status(404).json({
-//         message: "Invoice not found",
-//       });
-//     }
-
-//     // Calculate all payments for this invoice
-//     const paymentSummary = await Payment.aggregate([
-//       {
-//         $match: {
-//           invoiceId: invoice._id,
-//         },
-//       },
-//       {
-//         $group: {
-//           _id: null,
-//           totalPaid: {
-//             $sum: "$amount",
-//           },
-//         },
-//       },
-//     ]);
-
-//     const totalPaid = Number(
-//       paymentSummary[0]?.totalPaid || 0
-//     );
-
-//     const invoiceTotal = Number(
-//       invoice.roundedTotal ??
-//       invoice.grandTotal ??
-//       0
-//     );
-
-//     const pendingAmount = Math.max(
-//       invoiceTotal - totalPaid,
-//       0
-//     );
-
-//     // Update invoice payment values
-//     invoice.paidAmount = totalPaid;
-//     invoice.pendingAmount = pendingAmount;
-
-//     await invoice.save();
-
-//     return res.status(201).json({
-//       message: "Payment added successfully",
-//       payment,
-//       paidAmount: totalPaid,
-//       pendingAmount,
-//     });
-//   } catch (error) {
-//     console.error("CREATE PAYMENT ERROR:", error);
-
-//     return res.status(500).json({
-//       message: "Failed to create payment",
-//       error: error.message,
-//     });
-//   }
-// };
-
-// // GET ALL PAYMENTS
-// export const getPayments = async (req, res) => {
-//   try {
-//     const payments = await Payment.find().sort({
-//       createdAt: -1,
-//     });
-
-//     res.status(200).json(payments);
-//   } catch (error) {
-//     console.error("GET PAYMENTS ERROR:", error);
-
-//     res.status(500).json({
-//       message: "Failed to fetch payments",
-//       error: error.message,
-//     });
-//   }
-// };
-
-// // UPDATE PAYMENT
-// export const updatePayment = async (req, res) => {
-//   try {
-//     const { id } = req.params;
-
-//     const updatedPayment = await Payment.findByIdAndUpdate(
-//       id,
-//       req.body,
-//       {
-//         new: true,
-//         runValidators: true,
-//       }
-//     );
-
-//     if (!updatedPayment) {
-//       return res.status(404).json({
-//         message: "Payment not found",
-//       });
-//     }
-
-//     res.status(200).json(updatedPayment);
-//   } catch (error) {
-//     console.error("UPDATE PAYMENT ERROR:", error);
-
-//     res.status(500).json({
-//       message: "Failed to update payment",
-//       error: error.message,
-//     });
-//   }
-// };
-
-// // DELETE PAYMENT
-// // DELETE PAYMENT
-// export const deletePayment = async (req, res) => {
-//   try {
-//     const { id } = req.params;
-
-//     console.log("DELETE REQUEST RECEIVED");
-//     console.log("PAYMENT ID:", id);
-
-//     if (!id) {
-//       return res.status(400).json({
-//         message: "Payment ID is missing",
-//       });
-//     }
-
-//     if (!mongoose.Types.ObjectId.isValid(id)) {
-//       return res.status(400).json({
-//         message: `Invalid Payment ID: ${id}`,
-//       });
-//     }
-
-//     const deletedPayment = await Payment.findByIdAndDelete(id);
-
-//     if (!deletedPayment) {
-//       return res.status(404).json({
-//         message: "Payment not found in database",
-//       });
-//     }
-
-//     console.log("PAYMENT DELETED:", id);
-
-//     return res.status(200).json({
-//       message: "Payment deleted successfully",
-//     });
-//   } catch (error) {
-//     console.error("DELETE PAYMENT BACKEND ERROR:", error);
-
-//     return res.status(500).json({
-//       message: "Backend delete error",
-//       error: error.message,
-//     });
-//   }
-// };
-
-
 import mongoose from "mongoose";
 import Payment from "../models/Payment.js";
 import Invoice from "../models/Invoice.js";
@@ -212,31 +14,35 @@ const recalculateInvoicePayment = async (invoiceId) => {
 
   if (!invoice) return null;
 
-  const paymentSummary = await Payment.aggregate([
-    {
-      $match: {
-        invoiceId: invoice._id,
-      },
-    },
-    {
-      $group: {
-        _id: null,
-        totalPaid: {
-          $sum: "$amount",
-        },
-      },
-    },
-  ]);
-
-  const totalPaid = Number(
-    paymentSummary[0]?.totalPaid || 0
-  );
+  const payments = await Payment.find({
+    invoiceId: invoice._id,
+  });
 
   const invoiceTotal = Number(
     invoice.roundedTotal ??
     invoice.grandTotal ??
     0
   );
+
+  let totalReceived = 0;
+  let totalDiscountAmount = 0;
+
+  payments.forEach((payment) => {
+    const received = Number(payment.amount || 0);
+
+    const discountPercent = Number(
+      payment.discountPercent || 0
+    );
+
+    const discountAmount =
+      (invoiceTotal * discountPercent) / 100;
+
+    totalReceived += received;
+    totalDiscountAmount += discountAmount;
+  });
+
+  const totalPaid =
+    totalReceived + totalDiscountAmount;
 
   const pendingAmount = Math.max(
     invoiceTotal - totalPaid,
@@ -259,6 +65,8 @@ const recalculateInvoicePayment = async (invoiceId) => {
 
   return {
     paidAmount: totalPaid,
+    receivedAmount: totalReceived,
+    discountAmount: totalDiscountAmount,
     pendingAmount,
     paymentStatus,
   };
@@ -275,6 +83,7 @@ export const createPayment = async (req, res) => {
       invoiceNo,
       invoiceId,
       amount,
+      discountPercent,
       paymentMode,
       paymentDate,
       note,
@@ -296,9 +105,25 @@ export const createPayment = async (req, res) => {
       });
     }
 
-    if (!amount || Number(amount) <= 0) {
+    const paymentAmount = Number(amount || 0);
+
+    const discountPercentage = Number(
+      discountPercent || 0
+    );
+
+    if (paymentAmount <= 0) {
       return res.status(400).json({
         message: "Please enter a valid payment amount",
+      });
+    }
+
+    if (
+      discountPercentage < 0 ||
+      discountPercentage > 100
+    ) {
+      return res.status(400).json({
+        message:
+          "Discount percentage must be between 0 and 100",
       });
     }
 
@@ -323,48 +148,59 @@ export const createPayment = async (req, res) => {
     );
 
     /* =========================================
-       CURRENT PAID AMOUNT
+       CURRENT SETTLED AMOUNT
     ========================================= */
 
-    const currentSummary =
-      await Payment.aggregate([
-        {
-          $match: {
-            invoiceId: invoice._id,
-          },
-        },
-        {
-          $group: {
-            _id: null,
-            totalPaid: {
-              $sum: "$amount",
-            },
-          },
-        },
-      ]);
+    const currentPayments = await Payment.find({
+      invoiceId: invoice._id,
+    });
 
-    const currentPaid = Number(
-      currentSummary[0]?.totalPaid || 0
+    let currentReceived = 0;
+    let currentDiscountAmount = 0;
+
+    currentPayments.forEach((payment) => {
+      const received = Number(
+        payment.amount || 0
+      );
+
+      const oldDiscountPercent = Number(
+        payment.discountPercent || 0
+      );
+
+      const oldDiscountAmount =
+        (invoiceTotal * oldDiscountPercent) / 100;
+
+      currentReceived += received;
+      currentDiscountAmount += oldDiscountAmount;
+    });
+
+    const currentPaid =
+      currentReceived + currentDiscountAmount;
+
+    const pendingBeforePayment = Math.max(
+      invoiceTotal - currentPaid,
+      0
     );
 
-    const pendingBeforePayment =
-      Math.max(
-        invoiceTotal - currentPaid,
-        0
-      );
+    /* =========================================
+       CURRENT DISCOUNT AMOUNT
+    ========================================= */
+
+    const discountAmount =
+      (invoiceTotal * discountPercentage) / 100;
+
+    const totalSettlement =
+      paymentAmount + discountAmount;
 
     /* =========================================
        PREVENT OVERPAYMENT
     ========================================= */
 
-    if (
-      Number(amount) >
-      pendingBeforePayment
-    ) {
+    if (totalSettlement > pendingBeforePayment) {
       return res.status(400).json({
-        message: `Payment amount cannot be greater than pending amount ₹${pendingBeforePayment.toFixed(
-          2
-        )}`,
+        message:
+          `Payment + Discount cannot be greater than ` +
+          `pending amount ₹${pendingBeforePayment.toFixed(2)}`,
       });
     }
 
@@ -376,10 +212,14 @@ export const createPayment = async (req, res) => {
       partyName,
       invoiceNo,
       invoiceId,
-      amount: Number(amount),
+
+      amount: paymentAmount,
+
+      discountPercent: discountPercentage,
+
       paymentMode,
       paymentDate,
-      note,
+      note: note || "",
     });
 
     /* =========================================
@@ -392,23 +232,26 @@ export const createPayment = async (req, res) => {
       );
 
     return res.status(201).json({
-      message:
-        "Payment added successfully",
+      message: "Payment added successfully",
 
       payment,
 
       paidAmount:
         paymentSummary?.paidAmount || 0,
 
+      receivedAmount:
+        paymentSummary?.receivedAmount || 0,
+
+      discountAmount:
+        paymentSummary?.discountAmount || 0,
+
       pendingAmount:
-        paymentSummary?.pendingAmount ||
-        0,
+        paymentSummary?.pendingAmount || 0,
 
       paymentStatus:
         paymentSummary?.paymentStatus ||
         "UNPAID",
     });
-
   } catch (error) {
     console.error(
       "CREATE PAYMENT ERROR:",
@@ -422,7 +265,6 @@ export const createPayment = async (req, res) => {
   }
 };
 
-
 /* =========================================================
    GET ALL PAYMENTS
 ========================================================= */
@@ -434,13 +276,13 @@ export const getPayments = async (
   try {
     const payments =
       await Payment.find().sort({
+        paymentDate: -1,
         createdAt: -1,
       });
 
     return res.status(200).json(
       payments
     );
-
   } catch (error) {
     console.error(
       "GET PAYMENTS ERROR:",
@@ -453,7 +295,6 @@ export const getPayments = async (
     });
   }
 };
-
 
 /* =========================================================
    UPDATE PAYMENT
@@ -480,10 +321,6 @@ export const updatePayment = async (
       });
     }
 
-    /* =========================================
-       FIND OLD PAYMENT
-    ========================================= */
-
     const oldPayment =
       await Payment.findById(id);
 
@@ -493,20 +330,114 @@ export const updatePayment = async (
       });
     }
 
-    const oldInvoiceId =
+    const invoiceId =
       oldPayment.invoiceId;
 
+    const invoice =
+      await Invoice.findById(invoiceId);
+
+    if (!invoice) {
+      return res.status(404).json({
+        message: "Invoice not found",
+      });
+    }
+
+    const invoiceTotal = Number(
+      invoice.roundedTotal ??
+      invoice.grandTotal ??
+      0
+    );
+
+    const paymentAmount = Number(
+      req.body.amount || 0
+    );
+
+    const discountPercentage = Number(
+      req.body.discountPercent || 0
+    );
+
+    if (paymentAmount <= 0) {
+      return res.status(400).json({
+        message: "Please enter a valid payment amount",
+      });
+    }
+
+    if (
+      discountPercentage < 0 ||
+      discountPercentage > 100
+    ) {
+      return res.status(400).json({
+        message:
+          "Discount percentage must be between 0 and 100",
+      });
+    }
+
     /* =========================================
-       UPDATE ONLY ALLOWED FIELDS
+       CALCULATE OTHER PAYMENTS
+       Exclude current payment
+    ========================================= */
+
+    const otherPayments =
+      await Payment.find({
+        invoiceId,
+        _id: { $ne: id },
+      });
+
+    let otherReceived = 0;
+    let otherDiscountAmount = 0;
+
+    otherPayments.forEach((payment) => {
+      otherReceived += Number(
+        payment.amount || 0
+      );
+
+      const percentage = Number(
+        payment.discountPercent || 0
+      );
+
+      otherDiscountAmount +=
+        (invoiceTotal * percentage) / 100;
+    });
+
+    const otherSettled =
+      otherReceived +
+      otherDiscountAmount;
+
+    const pendingBeforeUpdate =
+      Math.max(
+        invoiceTotal - otherSettled,
+        0
+      );
+
+    const discountAmount =
+      (invoiceTotal * discountPercentage) / 100;
+
+    const newSettlement =
+      paymentAmount + discountAmount;
+
+    if (
+      newSettlement >
+      pendingBeforeUpdate
+    ) {
+      return res.status(400).json({
+        message:
+          `Payment + Discount cannot be greater than ` +
+          `pending amount ₹${pendingBeforeUpdate.toFixed(2)}`,
+      });
+    }
+
+    /* =========================================
+       UPDATE
     ========================================= */
 
     const updatedPayment =
       await Payment.findByIdAndUpdate(
         id,
         {
-          amount: Number(
-            req.body.amount
-          ),
+          amount: paymentAmount,
+
+          discountPercent:
+            discountPercentage,
 
           paymentMode:
             req.body.paymentMode,
@@ -514,7 +445,7 @@ export const updatePayment = async (
           paymentDate:
             req.body.paymentDate,
 
-          note: req.body.note,
+          note: req.body.note || "",
         },
         {
           new: true,
@@ -523,12 +454,12 @@ export const updatePayment = async (
       );
 
     /* =========================================
-       RECALCULATE OLD INVOICE
+       RECALCULATE
     ========================================= */
 
     const paymentSummary =
       await recalculateInvoicePayment(
-        oldInvoiceId
+        invoiceId
       );
 
     return res.status(200).json({
@@ -541,15 +472,19 @@ export const updatePayment = async (
       paidAmount:
         paymentSummary?.paidAmount || 0,
 
+      receivedAmount:
+        paymentSummary?.receivedAmount || 0,
+
+      discountAmount:
+        paymentSummary?.discountAmount || 0,
+
       pendingAmount:
-        paymentSummary?.pendingAmount ||
-        0,
+        paymentSummary?.pendingAmount || 0,
 
       paymentStatus:
         paymentSummary?.paymentStatus ||
         "UNPAID",
     });
-
   } catch (error) {
     console.error(
       "UPDATE PAYMENT ERROR:",
@@ -563,19 +498,27 @@ export const updatePayment = async (
   }
 };
 
-// DELETE PAYMENT
-export const deletePayment = async (req, res) => {
+/* =========================================================
+   DELETE PAYMENT
+========================================================= */
+
+export const deletePayment = async (
+  req,
+  res
+) => {
   try {
     const { id } = req.params;
 
-    if (!mongoose.Types.ObjectId.isValid(id)) {
+    if (
+      !mongoose.Types.ObjectId.isValid(id)
+    ) {
       return res.status(400).json({
         message: "Invalid payment ID",
       });
     }
 
-    // 1. Find payment first
-    const payment = await Payment.findById(id);
+    const payment =
+      await Payment.findById(id);
 
     if (!payment) {
       return res.status(404).json({
@@ -583,26 +526,44 @@ export const deletePayment = async (req, res) => {
       });
     }
 
-    // Save invoice ID before deleting
-    const invoiceId = payment.invoiceId;
+    const invoiceId =
+      payment.invoiceId;
 
-    // 2. Delete payment
     await Payment.findByIdAndDelete(id);
 
-    // 3. Recalculate invoice outstanding
-    const result = await recalculateInvoicePayment(invoiceId);
+    const result =
+      await recalculateInvoicePayment(
+        invoiceId
+      );
 
     return res.status(200).json({
-      message: "Payment deleted successfully",
+      message:
+        "Payment deleted successfully",
+
       paymentId: id,
       invoiceId,
-      paidAmount: result?.paidAmount || 0,
-      pendingAmount: result?.pendingAmount || 0,
-      paymentStatus: result?.paymentStatus || "UNPAID",
-    });
 
+      paidAmount:
+        result?.paidAmount || 0,
+
+      receivedAmount:
+        result?.receivedAmount || 0,
+
+      discountAmount:
+        result?.discountAmount || 0,
+
+      pendingAmount:
+        result?.pendingAmount || 0,
+
+      paymentStatus:
+        result?.paymentStatus ||
+        "UNPAID",
+    });
   } catch (error) {
-    console.error("Delete Payment Error:", error);
+    console.error(
+      "DELETE PAYMENT ERROR:",
+      error
+    );
 
     return res.status(500).json({
       message: "Failed to delete payment",
@@ -610,109 +571,3 @@ export const deletePayment = async (req, res) => {
     });
   }
 };
-
-
-/* =========================================================
-   DELETE PAYMENT
-========================================================= */
-
-// export const deletePayment = async (
-//   req,
-//   res
-// ) => {
-//   try {
-//     const { id } = req.params;
-
-//     console.log(
-//       "DELETE REQUEST RECEIVED"
-//     );
-
-//     console.log(
-//       "PAYMENT ID:",
-//       id
-//     );
-
-//     /* =========================================
-//        VALIDATION
-//     ========================================= */
-
-//     if (!id) {
-//       return res.status(400).json({
-//         message: "Payment ID is missing",
-//       });
-//     }
-
-//     if (
-//       !mongoose.Types.ObjectId.isValid(id)
-//     ) {
-//       return res.status(400).json({
-//         message:
-//           `Invalid Payment ID: ${id}`,
-//       });
-//     }
-
-//     /* =========================================
-//        FIND PAYMENT FIRST
-//     ========================================= */
-
-//     const payment =
-//       await Payment.findById(id);
-
-//     if (!payment) {
-//       return res.status(404).json({
-//         message:
-//           "Payment not found in database",
-//       });
-//     }
-
-//     const invoiceId =
-//       payment.invoiceId;
-
-//     /* =========================================
-//        DELETE PAYMENT
-//     ========================================= */
-
-//     await Payment.findByIdAndDelete(id);
-
-//     console.log(
-//       "PAYMENT DELETED:",
-//       id
-//     );
-
-//     /* =========================================
-//        RECALCULATE INVOICE
-//     ========================================= */
-
-//     const paymentSummary =
-//       await recalculateInvoicePayment(
-//         invoiceId
-//       );
-
-//     return res.status(200).json({
-//       message:
-//         "Payment deleted successfully",
-
-//       paidAmount:
-//         paymentSummary?.paidAmount || 0,
-
-//       pendingAmount:
-//         paymentSummary?.pendingAmount ||
-//         0,
-
-//       paymentStatus:
-//         paymentSummary?.paymentStatus ||
-//         "UNPAID",
-//     });
-
-//   } catch (error) {
-//     console.error(
-//       "DELETE PAYMENT BACKEND ERROR:",
-//       error
-//     );
-
-//     return res.status(500).json({
-//       message: "Backend delete error",
-//       error: error.message,
-//     });
-//   }
-// };

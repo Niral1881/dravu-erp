@@ -430,6 +430,7 @@ function Payments() {
   const [partyName, setPartyName] = useState("");
   const [invoiceNo, setInvoiceNo] = useState("");
   const [amount, setAmount] = useState("");
+  const [discount, setDiscount] = useState("");
   const [paymentMode, setPaymentMode] = useState("Cash");
 
   const [paymentDate, setPaymentDate] = useState(
@@ -566,27 +567,24 @@ function Payments() {
           String(selectedInvoice._id);
 
         const sameInvoiceNumber =
-          payment.invoiceNo ===
-          selectedInvoice.invoiceNo &&
-          payment.partyName ===
-          selectedInvoice.partyName;
+          payment.invoiceNo === selectedInvoice.invoiceNo &&
+          payment.partyName === selectedInvoice.partyName;
 
-        return (
-          sameInvoice ||
-          sameInvoiceNumber
-        );
+        return sameInvoice || sameInvoiceNumber;
       })
-      .reduce(
-        (total, payment) =>
-          total +
-          Number(payment.amount || 0),
-        0
-      );
-  }, [
-    payments,
-    selectedInvoice,
-  ]);
+      .reduce((total, payment) => {
+        const paymentAmount = Number(payment.amount || 0);
 
+        const discountPercent = Number(
+          payment.discountPercent || 0
+        );
+
+        const discountAmount =
+          (invoiceTotal * discountPercent) / 100;
+
+        return total + paymentAmount + discountAmount;
+      }, 0);
+  }, [payments, selectedInvoice, invoiceTotal]);
   const pendingAmount = Math.max(
     invoiceTotal - paidAmount,
     0
@@ -634,14 +632,12 @@ function Payments() {
   ========================================================= */
 
   const handleSavePayment = async () => {
-    if (
-      !partyName ||
-      !invoiceNo ||
-      !amount ||
-      Number(amount) <= 0
-    ) {
+    const paymentAmount = Number(amount || 0);
+    const discountPercent = Number(discount || 0);
+
+    if (!partyName || !invoiceNo || paymentAmount <= 0) {
       alert(
-        "Please select party, invoice and enter valid amount"
+        "Please select party, invoice and enter valid payment amount"
       );
       return;
     }
@@ -651,9 +647,20 @@ function Payments() {
       return;
     }
 
-    if (Number(amount) > pendingAmount) {
+    if (discountPercent < 0 || discountPercent > 100) {
+      alert("Discount must be between 0% and 100%");
+      return;
+    }
+
+    const discountAmount =
+      (invoiceTotal * discountPercent) / 100;
+
+    const totalSettlement =
+      paymentAmount + discountAmount;
+
+    if (totalSettlement > pendingAmount) {
       alert(
-        `Payment cannot be greater than pending amount ${money(
+        `Payment + Discount cannot be greater than pending amount ${money(
           pendingAmount
         )}`
       );
@@ -665,7 +672,8 @@ function Payments() {
         partyName,
         invoiceNo,
         invoiceId: selectedInvoice?._id,
-        amount: Number(amount),
+        amount: paymentAmount,
+        discountPercent,
         paymentMode,
         paymentDate,
         note,
@@ -681,6 +689,7 @@ function Payments() {
       alert("Payment Added Successfully");
 
       setAmount("");
+      setDiscount("");
       setNote("");
       setInvoiceNo("");
       setPaymentMode("Cash");
@@ -705,6 +714,7 @@ function Payments() {
     setPartyName(value);
     setInvoiceNo("");
     setAmount("");
+    setDiscount("");
   };
 
   /* =========================================================
@@ -714,6 +724,7 @@ function Payments() {
   const handleInvoiceChange = (value) => {
     setInvoiceNo(value);
     setAmount("");
+    setDiscount("");
   };
 
   /* =========================================================
@@ -762,6 +773,35 @@ function Payments() {
       return dateB - dateA;
     })
     .slice(0, 8);
+
+  const totalDiscountAmount = useMemo(() => {
+    if (!selectedInvoice) return 0;
+
+    return payments
+      .filter((payment) => {
+        const sameInvoice =
+          payment.invoiceId &&
+          selectedInvoice._id &&
+          String(payment.invoiceId) ===
+          String(selectedInvoice._id);
+
+        const sameInvoiceNumber =
+          payment.invoiceNo === selectedInvoice.invoiceNo &&
+          payment.partyName === selectedInvoice.partyName;
+
+        return sameInvoice || sameInvoiceNumber;
+      })
+      .reduce((total, payment) => {
+        const percent = Number(
+          payment.discountPercent || 0
+        );
+
+        return (
+          total +
+          (invoiceTotal * percent) / 100
+        );
+      }, 0);
+  }, [payments, selectedInvoice, invoiceTotal]);
 
   /* =========================================================
      UI
@@ -1038,6 +1078,50 @@ function Payments() {
 
               </div>
 
+              {/* DISCOUNT */}
+
+              {/* DISCOUNT % */}
+
+              <div>
+                <label className="block text-sm font-semibold text-gray-600 mb-2">
+                  Discount (%)
+                </label>
+
+                <div className="relative">
+                  <input
+                    type="number"
+                    min="0"
+                    max="100"
+                    step="0.01"
+                    value={discount}
+                    onChange={(e) => {
+                      const value = e.target.value;
+
+                      if (Number(value) <= 100) {
+                        setDiscount(value);
+                      }
+                    }}
+                    placeholder="Enter discount %"
+                    className="w-full border border-gray-200 rounded-xl p-3 pr-10 outline-none focus:border-[#2F9CAF] focus:ring-2 focus:ring-[#2F9CAF]/10"
+                  />
+
+                  <span className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-500 font-semibold">
+                    %
+                  </span>
+                </div>
+
+                {selectedInvoice && Number(discount || 0) > 0 && (
+                  <p className="text-xs text-gray-400 mt-2">
+                    Discount Amount:{" "}
+                    <span className="font-semibold text-orange-600">
+                      {money(
+                        (invoiceTotal * Number(discount || 0)) / 100
+                      )}
+                    </span>
+                  </p>
+                )}
+              </div>
+
               {/* DATE */}
 
               <div>
@@ -1207,7 +1291,6 @@ function Payments() {
                 <div className="space-y-4">
 
                   <div className="flex justify-between">
-
                     <span className="text-sm text-gray-500">
                       Invoice Total
                     </span>
@@ -1215,23 +1298,41 @@ function Payments() {
                     <span className="font-bold text-gray-800">
                       {money(invoiceTotal)}
                     </span>
-
                   </div>
 
                   <div className="flex justify-between">
-
                     <span className="text-sm text-gray-500">
-                      Paid Amount
+                      Payment Received
                     </span>
 
                     <span className="font-bold text-green-600">
-                      {money(paidAmount)}
+                      {money(
+                        paidAmount - totalDiscountAmount
+                      )}
+                    </span>
+                  </div>
+
+                  <div className="flex justify-between">
+                    <span className="text-sm text-gray-500">
+                      Discount / Charge Cut
                     </span>
 
+                    <span className="font-bold text-orange-600">
+                      {money(totalDiscountAmount)}
+                    </span>
+                  </div>
+
+                  <div className="flex justify-between border-t border-gray-100 pt-4">
+                    <span className="text-sm font-semibold text-gray-600">
+                      Total Settled
+                    </span>
+
+                    <span className="font-bold text-[#2F9CAF]">
+                      {money(paidAmount)}
+                    </span>
                   </div>
 
                   <div className="border-t border-gray-100 pt-4 flex justify-between">
-
                     <span className="text-sm font-semibold text-gray-600">
                       Pending Amount
                     </span>
@@ -1239,7 +1340,6 @@ function Payments() {
                     <span className="text-xl font-bold text-red-500">
                       {money(pendingAmount)}
                     </span>
-
                   </div>
 
                 </div>

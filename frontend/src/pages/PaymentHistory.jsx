@@ -503,6 +503,9 @@ function PaymentHistory() {
 
       amount: payment.amount || "",
 
+      discountPercent:
+        payment.discountPercent || "",
+
       paymentMode:
         payment.paymentMode || "",
 
@@ -530,6 +533,18 @@ function PaymentHistory() {
       return;
     }
 
+    const discountPercent = Number(
+      editingPayment.discountPercent || 0
+    );
+
+    if (
+      discountPercent < 0 ||
+      discountPercent > 100
+    ) {
+      alert("Discount must be between 0% and 100%");
+      return;
+    }
+
     if (!editingPayment.paymentMode) {
       alert("Please select payment mode");
       return;
@@ -548,10 +563,13 @@ function PaymentHistory() {
           editingPayment.amount
         ),
 
+        discountPercent,
+
         paymentMode:
           editingPayment.paymentMode,
 
-        note: editingPayment.note,
+        note:
+          editingPayment.note || "",
       };
 
       const res = await axios.put(
@@ -560,15 +578,16 @@ function PaymentHistory() {
       );
 
       setPayments((previousPayments) =>
-        previousPayments.map(
-          (payment) =>
-            payment._id === id
-              ? res.data
-              : payment
+        previousPayments.map((payment) =>
+          payment._id === id
+            ? res.data.payment || res.data
+            : payment
         )
       );
 
       setEditingPayment(null);
+
+      await fetchPayments();
 
       alert("Payment updated successfully");
     } catch (error) {
@@ -1052,6 +1071,45 @@ function PaymentHistory() {
 
               </div>
 
+            </div>
+
+            {/* DISCOUNT */}
+
+            <div>
+              <label className="block mb-2 text-sm font-semibold text-gray-600">
+                Discount (%)
+              </label>
+
+              <div className="relative">
+                <input
+                  type="number"
+                  min="0"
+                  max="100"
+                  step="0.01"
+                  value={
+                    editingPayment.discountPercent ?? ""
+                  }
+                  onChange={(e) => {
+                    const value = e.target.value;
+
+                    if (
+                      value === "" ||
+                      Number(value) <= 100
+                    ) {
+                      setEditingPayment({
+                        ...editingPayment,
+                        discountPercent: value,
+                      });
+                    }
+                  }}
+                  placeholder="Enter discount %"
+                  className="w-full border border-gray-200 rounded-xl p-3 pr-10 outline-none focus:border-[#2F9CAF] focus:ring-2 focus:ring-[#2F9CAF]/10"
+                />
+
+                <span className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-500 font-semibold">
+                  %
+                </span>
+              </div>
             </div>
 
             {/* MODE */}
