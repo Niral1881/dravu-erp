@@ -152,16 +152,16 @@ function LabourWork() {
 
       productId,
 
-      design: product?.design || "",
+      design:
+        product?.design || "",
 
       productName:
         product?.name || "",
 
-      size:
-        product?.size || "",
+      // DO NOT CHANGE MANUAL SIZE
+      size: prev.size || "",
     }));
   };
-
   // =====================================
   // AMOUNT
   // =====================================
@@ -238,6 +238,11 @@ function LabourWork() {
 
     if (!formData.productId) {
       alert("Please select product.");
+      return;
+    }
+
+    if (!formData.size.trim()) {
+      alert("Please enter size.");
       return;
     }
 
@@ -893,7 +898,7 @@ function LabourWork() {
                     <div>
 
                       <label className="block text-sm font-semibold text-gray-700 mb-2">
-                        Size
+                        Size *
                       </label>
 
                       <input
@@ -901,7 +906,13 @@ function LabourWork() {
                         name="size"
                         placeholder="ENTER SIZE"
                         value={formData.size}
-                        onChange={handleChange}
+                        onChange={(e) =>
+                          setFormData((prev) => ({
+                            ...prev,
+                            size: e.target.value.toUpperCase(),
+                          }))
+                        }
+                        required
                         className="w-full border border-gray-200 p-3 rounded-xl outline-none focus:border-[#2F9CAF] focus:ring-2 focus:ring-[#2F9CAF]/10 uppercase"
                       />
 
