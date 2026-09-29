@@ -137,6 +137,7 @@ import DebitNoteHistory from "./pages/DebitNoteHistory";
 import LedgerPrint from "./pages/LedgerPrint";
 import Labour from "./pages/Labour";
 import LabourWork from "./pages/LabourWork";
+import LabourPayment from "./pages/LabourPayment";
 
 function App() {
   return (
@@ -167,6 +168,11 @@ function App() {
           <Route
             path="/labour-work"
             element={<LabourWork />}
+          />
+
+          <Route
+            path="/labour-payment"
+            element={<LabourPayment />}
           />
         </Route>
 

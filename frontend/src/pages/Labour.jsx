@@ -700,305 +700,383 @@ function Labour() {
       </div>
 
       {/* ================================
-          MODAL
-      ================================ */}
+    MODAL
+================================ */}
       {showModal && (
+        <div className="fixed inset-0 z-50 bg-black/50 p-3 sm:p-4">
 
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4">
+          {/* MODAL CONTAINER */}
+          <div className="mx-auto flex h-[95vh] w-full max-w-3xl flex-col overflow-hidden rounded-2xl bg-white shadow-2xl">
 
-          <div className="bg-white w-full max-w-2xl rounded-2xl shadow-2xl overflow-hidden">
+            {/* =================================
+          MODAL HEADER
+      ================================= */}
+            <div className="shrink-0 border-b border-gray-100 bg-white px-5 py-4 sm:px-6 sm:py-5">
 
-            {/* Header */}
-            <div className="flex items-center justify-between px-6 py-5 border-b border-gray-100">
+              <div className="flex items-center gap-3">
 
-              <div>
+                {/* BACK BUTTON */}
+                <button
+                  type="button"
+                  onClick={closeModal}
+                  className="flex h-10 items-center gap-2 rounded-xl bg-gray-100 px-4 text-gray-700 font-semibold hover:bg-gray-200 transition cursor-pointer"
+                >
+                  <span className="text-xl leading-none">
+                    ←
+                  </span>
 
-                <h2 className="text-xl md:text-2xl font-bold text-[#2E3A3F]">
-                  {editingId
-                    ? "Edit Labour"
-                    : "Add Labour"}
-                </h2>
+                  <span>
+                    Back
+                  </span>
+                </button>
 
-                <p className="text-sm text-gray-500 mt-1">
-                  Add karigar or labour details.
-                </p>
+                {/* TITLE */}
+                <div className="flex-1 min-w-0">
+
+                  <h2 className="text-lg sm:text-2xl font-bold text-[#2E3A3F] truncate">
+                    {editingId
+                      ? "Edit Labour"
+                      : "Add Labour"}
+                  </h2>
+
+                  <p className="text-xs sm:text-sm text-gray-500 mt-1">
+                    Add karigar or labour details.
+                  </p>
+
+                </div>
+
+                {/* CLOSE BUTTON */}
+                <button
+                  type="button"
+                  onClick={closeModal}
+                  className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-gray-100 text-gray-600 hover:bg-gray-200 transition cursor-pointer"
+                  aria-label="Close"
+                >
+                  ✕
+                </button>
 
               </div>
 
-              <button
-                type="button"
-                onClick={closeModal}
-                className="w-9 h-9 rounded-lg bg-gray-100 hover:bg-gray-200 text-gray-600 cursor-pointer"
-              >
-                ✕
-              </button>
-
             </div>
 
-            {/* Form */}
+            {/* =================================
+          FORM
+      ================================= */}
             <form
               onSubmit={handleSubmit}
-              className="p-6"
+              className="flex min-h-0 flex-1 flex-col"
             >
 
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              {/* =================================
+            SCROLLABLE CONTENT
+        ================================= */}
+              <div className="min-h-0 flex-1 overflow-y-auto overscroll-contain">
 
-                {/* Name */}
-                <div>
+                <div className="p-5 sm:p-6">
 
-                  <label className="block text-sm font-semibold text-gray-700 mb-2">
-                    Labour Name *
-                  </label>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
 
-                  <input
-                    type="text"
-                    name="name"
-                    placeholder="Enter labour name"
-                    value={formData.name}
-                    onChange={handleChange}
-                    className="w-full border border-gray-200 p-3 rounded-xl outline-none focus:border-[#2F9CAF]"
-                  />
+                    {/* =================================
+                  LABOUR NAME
+              ================================= */}
+                    <div>
+
+                      <label className="block text-sm font-semibold text-gray-700 mb-2">
+                        Labour Name *
+                      </label>
+
+                      <input
+                        type="text"
+                        name="name"
+                        placeholder="ENTER LABOUR NAME"
+                        value={formData.name}
+                        onChange={handleChange}
+                        className="w-full border border-gray-200 p-3 rounded-xl outline-none focus:border-[#2F9CAF] focus:ring-2 focus:ring-[#2F9CAF]/10 uppercase"
+                      />
+
+                    </div>
+
+                    {/* =================================
+                  MOBILE
+              ================================= */}
+                    <div>
+
+                      <label className="block text-sm font-semibold text-gray-700 mb-2">
+                        Mobile Number *
+                      </label>
+
+                      <input
+                        type="tel"
+                        name="mobile"
+                        placeholder="ENTER MOBILE NUMBER"
+                        value={formData.mobile}
+                        onChange={handleChange}
+                        maxLength="10"
+                        className="w-full border border-gray-200 p-3 rounded-xl outline-none focus:border-[#2F9CAF] focus:ring-2 focus:ring-[#2F9CAF]/10"
+                      />
+
+                    </div>
+
+                    {/* =================================
+                  WORK TYPE
+              ================================= */}
+                    <div>
+
+                      <label className="block text-sm font-semibold text-gray-700 mb-2">
+                        Work Type *
+                      </label>
+
+                      <select
+                        name="workType"
+                        value={formData.workType}
+                        onChange={handleChange}
+                        className="w-full border border-gray-200 p-3 rounded-xl outline-none focus:border-[#2F9CAF] focus:ring-2 focus:ring-[#2F9CAF]/10 bg-white uppercase"
+                      >
+
+                        <option value="">
+                          SELECT WORK TYPE
+                        </option>
+
+                        <option value="Stitching">
+                          STITCHING
+                        </option>
+
+                        <option value="Cutting">
+                          CUTTING
+                        </option>
+
+                        <option value="Embroidery">
+                          EMBROIDERY
+                        </option>
+
+                        <option value="Finishing">
+                          FINISHING
+                        </option>
+
+                        <option value="Checking">
+                          CHECKING
+                        </option>
+
+                        <option value="Packing">
+                          PACKING
+                        </option>
+
+                        <option value="Other">
+                          OTHER
+                        </option>
+
+                      </select>
+
+                    </div>
+
+                    {/* =================================
+                  RATE TYPE
+              ================================= */}
+                    <div>
+
+                      <label className="block text-sm font-semibold text-gray-700 mb-2">
+                        Rate Type
+                      </label>
+
+                      <select
+                        name="rateType"
+                        value={formData.rateType}
+                        onChange={handleChange}
+                        className="w-full border border-gray-200 p-3 rounded-xl outline-none focus:border-[#2F9CAF] focus:ring-2 focus:ring-[#2F9CAF]/10 bg-white"
+                      >
+
+                        <option value="PER_PIECE">
+                          PER PIECE
+                        </option>
+
+                        <option value="PER_DOZEN">
+                          PER DOZEN
+                        </option>
+
+                        <option value="PER_DAY">
+                          PER DAY
+                        </option>
+
+                        <option value="FIXED">
+                          FIXED
+                        </option>
+
+                      </select>
+
+                    </div>
+
+                    {/* =================================
+                  DEFAULT RATE
+              ================================= */}
+                    <div>
+
+                      <label className="block text-sm font-semibold text-gray-700 mb-2">
+                        Default Rate
+                      </label>
+
+                      <div className="relative">
+
+                        <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500 font-semibold">
+                          ₹
+                        </span>
+
+                        <input
+                          type="number"
+                          min="0"
+                          step="0.01"
+                          name="defaultRate"
+                          placeholder="ENTER RATE"
+                          value={formData.defaultRate}
+                          onChange={handleChange}
+                          className="w-full border border-gray-200 p-3 pl-9 rounded-xl outline-none focus:border-[#2F9CAF] focus:ring-2 focus:ring-[#2F9CAF]/10"
+                        />
+
+                      </div>
+
+                    </div>
+
+                    {/* =================================
+                  JOINING DATE
+              ================================= */}
+                    <div>
+
+                      <label className="block text-sm font-semibold text-gray-700 mb-2">
+                        Joining Date
+                      </label>
+
+                      <input
+                        type="date"
+                        name="joiningDate"
+                        value={formData.joiningDate}
+                        onChange={handleChange}
+                        className="w-full border border-gray-200 p-3 rounded-xl outline-none focus:border-[#2F9CAF] focus:ring-2 focus:ring-[#2F9CAF]/10"
+                      />
+
+                    </div>
+
+                    {/* =================================
+                  STATUS
+              ================================= */}
+                    <div>
+
+                      <label className="block text-sm font-semibold text-gray-700 mb-2">
+                        Status
+                      </label>
+
+                      <select
+                        name="status"
+                        value={formData.status}
+                        onChange={handleChange}
+                        className="w-full border border-gray-200 p-3 rounded-xl outline-none focus:border-[#2F9CAF] focus:ring-2 focus:ring-[#2F9CAF]/10 bg-white"
+                      >
+
+                        <option value="ACTIVE">
+                          ACTIVE
+                        </option>
+
+                        <option value="INACTIVE">
+                          INACTIVE
+                        </option>
+
+                      </select>
+
+                    </div>
+
+                    {/* =================================
+                  ADDRESS
+              ================================= */}
+                    <div className="md:col-span-2">
+
+                      <label className="block text-sm font-semibold text-gray-700 mb-2">
+                        Address
+                      </label>
+
+                      <textarea
+                        name="address"
+                        rows="3"
+                        placeholder="ENTER ADDRESS"
+                        value={formData.address}
+                        onChange={handleChange}
+                        className="w-full border border-gray-200 p-3 rounded-xl outline-none focus:border-[#2F9CAF] focus:ring-2 focus:ring-[#2F9CAF]/10 resize-none"
+                      />
+
+                    </div>
+
+                    {/* =================================
+                  NOTES
+              ================================= */}
+                    <div className="md:col-span-2">
+
+                      <label className="block text-sm font-semibold text-gray-700 mb-2">
+                        Notes
+                      </label>
+
+                      <textarea
+                        name="notes"
+                        rows="3"
+                        placeholder="ADDITIONAL NOTES..."
+                        value={formData.notes}
+                        onChange={handleChange}
+                        className="w-full border border-gray-200 p-3 rounded-xl outline-none focus:border-[#2F9CAF] focus:ring-2 focus:ring-[#2F9CAF]/10 resize-none"
+                      />
+
+                    </div>
+
+                  </div>
+
+                  {/* BOTTOM SPACE */}
+                  <div className="h-5" />
 
                 </div>
 
-                {/* Mobile */}
-                <div>
+              </div>
 
-                  <label className="block text-sm font-semibold text-gray-700 mb-2">
-                    Mobile Number *
-                  </label>
+              {/* =================================
+            STICKY FOOTER
+        ================================= */}
+              <div className="shrink-0 border-t border-gray-200 bg-white px-5 py-4 sm:px-6">
 
-                  <input
-                    type="tel"
-                    name="mobile"
-                    placeholder="Enter mobile number"
-                    value={formData.mobile}
-                    onChange={handleChange}
-                    maxLength="10"
-                    className="w-full border border-gray-200 p-3 rounded-xl outline-none focus:border-[#2F9CAF]"
-                  />
+                <div className="flex items-center justify-between gap-3">
 
-                </div>
-
-                {/* Work Type */}
-                <div>
-
-                  <label className="block text-sm font-semibold text-gray-700 mb-2">
-                    Work Type *
-                  </label>
-
-                  <select
-                    name="workType"
-                    value={formData.workType}
-                    onChange={handleChange}
-                    className="w-full border border-gray-200 p-3 rounded-xl outline-none focus:border-[#2F9CAF] bg-white"
+                  {/* BACK */}
+                  <button
+                    type="button"
+                    onClick={closeModal}
+                    className="flex items-center gap-2 px-5 py-3 rounded-xl bg-gray-100 hover:bg-gray-200 text-gray-700 font-semibold cursor-pointer transition"
                   >
-
-                    <option value="">
-                      Select Work Type
-                    </option>
-
-                    <option value="Stitching">
-                      Stitching
-                    </option>
-
-                    <option value="Cutting">
-                      Cutting
-                    </option>
-
-                    <option value="Embroidery">
-                      Embroidery
-                    </option>
-
-                    <option value="Finishing">
-                      Finishing
-                    </option>
-
-                    <option value="Checking">
-                      Checking
-                    </option>
-
-                    <option value="Packing">
-                      Packing
-                    </option>
-
-                    <option value="Other">
-                      Other
-                    </option>
-
-                  </select>
-
-                </div>
-
-                {/* Rate Type */}
-                <div>
-
-                  <label className="block text-sm font-semibold text-gray-700 mb-2">
-                    Rate Type
-                  </label>
-
-                  <select
-                    name="rateType"
-                    value={formData.rateType}
-                    onChange={handleChange}
-                    className="w-full border border-gray-200 p-3 rounded-xl outline-none focus:border-[#2F9CAF] bg-white"
-                  >
-
-                    <option value="PER_PIECE">
-                      Per Piece
-                    </option>
-
-                    <option value="PER_DOZEN">
-                      Per Dozen
-                    </option>
-
-                    <option value="PER_DAY">
-                      Per Day
-                    </option>
-
-                    <option value="FIXED">
-                      Fixed
-                    </option>
-
-                  </select>
-
-                </div>
-
-                {/* Default Rate */}
-                <div>
-
-                  <label className="block text-sm font-semibold text-gray-700 mb-2">
-                    Default Rate
-                  </label>
-
-                  <div className="relative">
-
-                    <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500 font-semibold">
-                      ₹
+                    <span className="text-lg">
+                      ←
                     </span>
 
-                    <input
-                      type="number"
-                      min="0"
-                      step="0.01"
-                      name="defaultRate"
-                      placeholder="Enter rate"
-                      value={
-                        formData.defaultRate
-                      }
-                      onChange={handleChange}
-                      className="w-full border border-gray-200 p-3 pl-9 rounded-xl outline-none focus:border-[#2F9CAF]"
-                    />
+                    Back
+                  </button>
+
+                  {/* RIGHT BUTTONS */}
+                  <div className="flex gap-3">
+
+                    <button
+                      type="button"
+                      onClick={closeModal}
+                      className="px-5 py-3 rounded-xl bg-gray-100 hover:bg-gray-200 text-gray-700 font-semibold cursor-pointer transition"
+                    >
+                      Cancel
+                    </button>
+
+                    <button
+                      type="submit"
+                      disabled={loading}
+                      className="px-6 py-3 rounded-xl bg-[#2F9CAF] hover:bg-[#238293] text-white font-semibold cursor-pointer disabled:opacity-60 transition"
+                    >
+                      {loading
+                        ? "Saving..."
+                        : editingId
+                          ? "Update Labour"
+                          : "Save Labour"}
+                    </button>
 
                   </div>
 
                 </div>
-
-                {/* Joining Date */}
-                <div>
-
-                  <label className="block text-sm font-semibold text-gray-700 mb-2">
-                    Joining Date
-                  </label>
-
-                  <input
-                    type="date"
-                    name="joiningDate"
-                    value={
-                      formData.joiningDate
-                    }
-                    onChange={handleChange}
-                    className="w-full border border-gray-200 p-3 rounded-xl outline-none focus:border-[#2F9CAF]"
-                  />
-
-                </div>
-
-                {/* Status */}
-                <div>
-
-                  <label className="block text-sm font-semibold text-gray-700 mb-2">
-                    Status
-                  </label>
-
-                  <select
-                    name="status"
-                    value={formData.status}
-                    onChange={handleChange}
-                    className="w-full border border-gray-200 p-3 rounded-xl outline-none focus:border-[#2F9CAF] bg-white"
-                  >
-
-                    <option value="ACTIVE">
-                      Active
-                    </option>
-
-                    <option value="INACTIVE">
-                      Inactive
-                    </option>
-
-                  </select>
-
-                </div>
-
-                {/* Address */}
-                <div className="md:col-span-2">
-
-                  <label className="block text-sm font-semibold text-gray-700 mb-2">
-                    Address
-                  </label>
-
-                  <textarea
-                    name="address"
-                    rows="2"
-                    placeholder="Enter address"
-                    value={formData.address}
-                    onChange={handleChange}
-                    className="w-full border border-gray-200 p-3 rounded-xl outline-none focus:border-[#2F9CAF] resize-none"
-                  />
-
-                </div>
-
-                {/* Notes */}
-                <div className="md:col-span-2">
-
-                  <label className="block text-sm font-semibold text-gray-700 mb-2">
-                    Notes
-                  </label>
-
-                  <textarea
-                    name="notes"
-                    rows="2"
-                    placeholder="Additional notes..."
-                    value={formData.notes}
-                    onChange={handleChange}
-                    className="w-full border border-gray-200 p-3 rounded-xl outline-none focus:border-[#2F9CAF] resize-none"
-                  />
-
-                </div>
-
-              </div>
-
-              {/* Buttons */}
-              <div className="flex justify-end gap-3 mt-7 pt-5 border-t border-gray-100">
-
-                <button
-                  type="button"
-                  onClick={closeModal}
-                  className="px-5 py-3 rounded-xl bg-gray-100 hover:bg-gray-200 text-gray-700 font-semibold cursor-pointer"
-                >
-                  Cancel
-                </button>
-
-                <button
-                  type="submit"
-                  disabled={loading}
-                  className="px-6 py-3 rounded-xl bg-[#2F9CAF] hover:bg-[#238293] text-white font-semibold cursor-pointer disabled:opacity-60"
-                >
-                  {loading
-                    ? "Saving..."
-                    : editingId
-                      ? "Update Labour"
-                      : "Save Labour"}
-                </button>
 
               </div>
 
@@ -1007,7 +1085,6 @@ function Labour() {
           </div>
 
         </div>
-
       )}
 
     </div>

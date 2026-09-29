@@ -13,6 +13,7 @@ import returnRoutes from "./routes/return.routes.js";
 import debitNoteRoutes from "./routes/debitNote.routes.js";
 import labourRoutes from "./routes/labour.routes.js";
 import labourWorkRoutes from "./routes/labourWork.routes.js";
+import labourPaymentRoutes from "./routes/labourPayment.routes.js";
 
 dotenv.config();
 
@@ -51,6 +52,11 @@ app.use(
 app.get("/", (req, res) => {
   res.send("Dravu Fashion Hub API Running");
 });
+
+app.use(
+  "/api/labour-payments",
+  labourPaymentRoutes
+);
 
 const PORT = process.env.PORT || 5000;
 
