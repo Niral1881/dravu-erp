@@ -723,373 +723,421 @@ function LabourWork() {
       </div>
 
       {/* =================================
-          ADD / EDIT MODAL
-      ================================= */}
+    ADD / EDIT MODAL
+================================= */}
       {showModal && (
+        <div className="fixed inset-0 z-50 bg-black/50 p-3 sm:p-4">
 
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4">
+          {/* MODAL */}
+          <div className="mx-auto flex h-[95vh] w-full max-w-3xl flex-col overflow-hidden rounded-2xl bg-white shadow-2xl">
 
-          <div className="bg-white w-full max-w-2xl rounded-2xl shadow-2xl overflow-hidden">
+            {/* =================================
+          MODAL HEADER
+      ================================= */}
+            <div className="shrink-0 border-b border-gray-100 bg-white px-5 py-4 sm:px-6 sm:py-5">
 
-            {/* Header */}
-            <div className="flex items-center justify-between px-6 py-5 border-b border-gray-100">
+              <div className="flex items-center gap-3">
 
-              <div>
-
-                <h2 className="text-xl md:text-2xl font-bold text-[#2E3A3F]">
-                  {editingId
-                    ? "Edit Labour Work"
-                    : "Add Labour Work"}
-                </h2>
-
-                <p className="text-sm text-gray-500 mt-1">
-                  Record production work completed by labour.
-                </p>
-
-              </div>
-
-              <button
-                type="button"
-                onClick={closeModal}
-                className="w-9 h-9 rounded-lg bg-gray-100 hover:bg-gray-200 cursor-pointer"
-              >
-                ✕
-              </button>
-
-            </div>
-
-            <form
-              onSubmit={handleSubmit}
-              className="p-6"
-            >
-
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-
-                {/* Labour */}
-                <div>
-
-                  <label className="block text-sm font-semibold text-gray-700 mb-2">
-                    Labour *
-                  </label>
-
-                  <select
-                    name="labourId"
-                    value={formData.labourId}
-                    onChange={
-                      handleLabourChange
-                    }
-                    className="w-full border border-gray-200 p-3 rounded-xl outline-none focus:border-[#2F9CAF] bg-white"
-                  >
-
-                    <option value="">
-                      Select Labour
-                    </option>
-
-                    {labours
-                      .filter(
-                        (labour) =>
-                          labour.status ===
-                          "ACTIVE"
-                      )
-                      .map((labour) => (
-                        <option
-                          key={labour._id}
-                          value={labour._id}
-                        >
-                          {labour.name} -{" "}
-                          {
-                            labour.workType
-                          }
-                        </option>
-                      ))}
-
-                  </select>
-
-                </div>
-
-                {/* Product */}
-                <div>
-
-                  <label className="block text-sm font-semibold text-gray-700 mb-2">
-                    Product / Design *
-                  </label>
-
-                  <select
-                    name="productId"
-                    value={
-                      formData.productId
-                    }
-                    onChange={
-                      handleProductChange
-                    }
-                    className="w-full border border-gray-200 p-3 rounded-xl outline-none focus:border-[#2F9CAF] bg-white"
-                  >
-
-                    <option value="">
-                      Select Product
-                    </option>
-
-                    {products.map(
-                      (product) => (
-                        <option
-                          key={
-                            product._id
-                          }
-                          value={
-                            product._id
-                          }
-                        >
-                          {product.design} -{" "}
-                          {product.name}{" "}
-                          {product.size
-                            ? `(${product.size})`
-                            : ""}
-                        </option>
-                      )
-                    )}
-
-                  </select>
-
-                </div>
-
-                {/* Design */}
-                <div>
-
-                  <label className="block text-sm font-semibold text-gray-700 mb-2">
-                    Design No.
-                  </label>
-
-                  <input
-                    type="text"
-                    value={
-                      formData.design
-                    }
-                    readOnly
-                    className="w-full border border-gray-200 bg-gray-50 p-3 rounded-xl text-gray-600"
-                  />
-
-                </div>
-
-                {/* Work Type */}
-                <div>
-
-                  <label className="block text-sm font-semibold text-gray-700 mb-2">
-                    Work Type *
-                  </label>
-
-                  <select
-                    name="workType"
-                    value={
-                      formData.workType
-                    }
-                    onChange={handleChange}
-                    className="w-full border border-gray-200 p-3 rounded-xl outline-none focus:border-[#2F9CAF] bg-white"
-                  >
-
-                    <option value="">
-                      Select Work Type
-                    </option>
-
-                    <option value="Stitching">
-                      Stitching
-                    </option>
-
-                    <option value="Cutting">
-                      Cutting
-                    </option>
-
-                    <option value="Embroidery">
-                      Embroidery
-                    </option>
-
-                    <option value="Finishing">
-                      Finishing
-                    </option>
-
-                    <option value="Checking">
-                      Checking
-                    </option>
-
-                    <option value="Packing">
-                      Packing
-                    </option>
-
-                    <option value="Other">
-                      Other
-                    </option>
-
-                  </select>
-
-                </div>
-
-                {/* Date */}
-                <div>
-
-                  <label className="block text-sm font-semibold text-gray-700 mb-2">
-                    Work Date *
-                  </label>
-
-                  <input
-                    type="date"
-                    name="workDate"
-                    value={
-                      formData.workDate
-                    }
-                    onChange={handleChange}
-                    className="w-full border border-gray-200 p-3 rounded-xl outline-none focus:border-[#2F9CAF]"
-                  />
-
-                </div>
-
-                {/* Quantity */}
-                <div>
-
-                  <label className="block text-sm font-semibold text-gray-700 mb-2">
-                    Quantity *
-                  </label>
-
-                  <input
-                    type="number"
-                    min="1"
-                    name="quantity"
-                    placeholder="Enter quantity"
-                    value={
-                      formData.quantity
-                    }
-                    onChange={handleChange}
-                    className="w-full border border-gray-200 p-3 rounded-xl outline-none focus:border-[#2F9CAF]"
-                  />
-
-                </div>
-
-                {/* Rate */}
-                <div>
-
-                  <label className="block text-sm font-semibold text-gray-700 mb-2">
-                    Rate
-                  </label>
-
-                  <div className="relative">
-
-                    <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500 font-semibold">
-                      ₹
-                    </span>
-
-                    <input
-                      type="number"
-                      min="0"
-                      step="0.01"
-                      name="rate"
-                      value={
-                        formData.rate
-                      }
-                      onChange={handleChange}
-                      className="w-full border border-gray-200 p-3 pl-9 rounded-xl outline-none focus:border-[#2F9CAF]"
-                    />
-
-                  </div>
-
-                </div>
-
-                {/* Amount */}
-                <div>
-
-                  <label className="block text-sm font-semibold text-gray-700 mb-2">
-                    Labour Amount
-                  </label>
-
-                  <div className="w-full bg-green-50 border border-green-200 p-3 rounded-xl text-green-700 font-bold">
-                    ₹{" "}
-                    {formatMoney(amount)}
-                  </div>
-
-                </div>
-
-                {/* Notes */}
-                <div className="md:col-span-2">
-
-                  <label className="block text-sm font-semibold text-gray-700 mb-2">
-                    Notes
-                  </label>
-
-                  <textarea
-                    name="notes"
-                    rows="2"
-                    placeholder="Enter notes..."
-                    value={
-                      formData.notes
-                    }
-                    onChange={handleChange}
-                    className="w-full border border-gray-200 p-3 rounded-xl outline-none focus:border-[#2F9CAF] resize-none"
-                  />
-
-                </div>
-
-              </div>
-
-              {/* Calculation */}
-              <div className="mt-5 bg-gray-50 rounded-xl p-4">
-
-                <div className="flex justify-between text-sm text-gray-600">
-                  <span>
-                    Quantity
-                  </span>
-
-                  <span className="font-semibold">
-                    {quantity} pcs
-                  </span>
-                </div>
-
-                <div className="flex justify-between text-sm text-gray-600 mt-2">
-                  <span>
-                    Rate
-                  </span>
-
-                  <span className="font-semibold">
-                    ₹{" "}
-                    {formatMoney(rate)}
-                  </span>
-                </div>
-
-                <div className="border-t border-gray-200 mt-3 pt-3 flex justify-between">
-
-                  <span className="font-bold text-gray-800">
-                    Total Labour Cost
-                  </span>
-
-                  <span className="font-bold text-green-700">
-                    ₹{" "}
-                    {formatMoney(
-                      amount
-                    )}
-                  </span>
-
-                </div>
-
-              </div>
-
-              {/* Buttons */}
-              <div className="flex justify-end gap-3 mt-6 pt-5 border-t border-gray-100">
-
+                {/* BACK BUTTON */}
                 <button
                   type="button"
                   onClick={closeModal}
-                  className="px-5 py-3 rounded-xl bg-gray-100 hover:bg-gray-200 text-gray-700 font-semibold cursor-pointer"
+                  className="flex h-10 items-center gap-2 rounded-xl bg-gray-100 px-4 text-gray-700 font-semibold hover:bg-gray-200 transition cursor-pointer"
                 >
-                  Cancel
+                  <span className="text-xl leading-none">
+                    ←
+                  </span>
+
+                  <span>
+                    Back
+                  </span>
                 </button>
 
+                {/* TITLE */}
+                <div className="flex-1 min-w-0">
+
+                  <h2 className="text-lg sm:text-2xl font-bold text-[#2E3A3F] truncate">
+                    {editingId
+                      ? "Edit Labour Work"
+                      : "Add Labour Work"}
+                  </h2>
+
+                  <p className="text-xs sm:text-sm text-gray-500 mt-1">
+                    Record production work completed by labour.
+                  </p>
+
+                </div>
+
+                {/* CLOSE BUTTON */}
                 <button
-                  type="submit"
-                  disabled={loading}
-                  className="px-6 py-3 rounded-xl bg-[#2F9CAF] hover:bg-[#238293] text-white font-semibold cursor-pointer disabled:opacity-60"
+                  type="button"
+                  onClick={closeModal}
+                  className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-gray-100 text-gray-600 hover:bg-gray-200 transition cursor-pointer"
+                  aria-label="Close"
                 >
-                  {loading
-                    ? "Saving..."
-                    : editingId
-                      ? "Update Work"
-                      : "Save Work"}
+                  ✕
                 </button>
+
+              </div>
+
+            </div>
+
+            {/* =================================
+          SCROLLABLE FORM AREA
+      ================================= */}
+            <form
+              onSubmit={handleSubmit}
+              className="flex min-h-0 flex-1 flex-col"
+            >
+
+              {/* SCROLL AREA */}
+              <div className="min-h-0 flex-1 overflow-y-auto overscroll-contain">
+
+                <div className="p-5 sm:p-6">
+
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+
+                    {/* =================================
+                  LABOUR
+              ================================= */}
+                    <div>
+
+                      <label className="block text-sm font-semibold text-gray-700 mb-2">
+                        Labour *
+                      </label>
+
+                      <select
+                        name="labourId"
+                        value={formData.labourId}
+                        onChange={handleLabourChange}
+                        className="w-full border border-gray-200 p-3 rounded-xl outline-none focus:border-[#2F9CAF] focus:ring-2 focus:ring-[#2F9CAF]/10 bg-white uppercase"
+                      >
+                        <option value="">
+                          SELECT LABOUR
+                        </option>
+
+                        {labours
+                          .filter(
+                            (labour) =>
+                              labour.status === "ACTIVE"
+                          )
+                          .map((labour) => (
+                            <option
+                              key={labour._id}
+                              value={labour._id}
+                            >
+                              {labour.name} -{" "}
+                              {labour.workType}
+                            </option>
+                          ))}
+                      </select>
+
+                    </div>
+
+                    {/* =================================
+                  PRODUCT
+              ================================= */}
+                    <div>
+
+                      <label className="block text-sm font-semibold text-gray-700 mb-2">
+                        Product / Design *
+                      </label>
+
+                      <select
+                        name="productId"
+                        value={formData.productId}
+                        onChange={handleProductChange}
+                        className="w-full border border-gray-200 p-3 rounded-xl outline-none focus:border-[#2F9CAF] focus:ring-2 focus:ring-[#2F9CAF]/10 bg-white uppercase"
+                      >
+                        <option value="">
+                          SELECT PRODUCT
+                        </option>
+
+                        {products.map((product) => (
+                          <option
+                            key={product._id}
+                            value={product._id}
+                          >
+                            {product.design} -{" "}
+                            {product.name}{" "}
+                            {product.size
+                              ? `(${product.size})`
+                              : ""}
+                          </option>
+                        ))}
+                      </select>
+
+                    </div>
+
+                    {/* =================================
+                  DESIGN
+              ================================= */}
+                    <div>
+
+                      <label className="block text-sm font-semibold text-gray-700 mb-2">
+                        Design No.
+                      </label>
+
+                      <input
+                        type="text"
+                        value={formData.design}
+                        readOnly
+                        className="w-full border border-gray-200 bg-gray-50 p-3 rounded-xl text-gray-600 outline-none"
+                      />
+
+                    </div>
+
+                    {/* =================================
+                  WORK TYPE
+              ================================= */}
+                    <div>
+
+                      <label className="block text-sm font-semibold text-gray-700 mb-2">
+                        Work Type *
+                      </label>
+
+                      <select
+                        name="workType"
+                        value={formData.workType}
+                        onChange={handleChange}
+                        className="w-full border border-gray-200 p-3 rounded-xl outline-none focus:border-[#2F9CAF] focus:ring-2 focus:ring-[#2F9CAF]/10 bg-white uppercase"
+                      >
+                        <option value="">
+                          SELECT WORK TYPE
+                        </option>
+
+                        <option value="Stitching">
+                          STITCHING
+                        </option>
+
+                        <option value="Cutting">
+                          CUTTING
+                        </option>
+
+                        <option value="Embroidery">
+                          EMBROIDERY
+                        </option>
+
+                        <option value="Finishing">
+                          FINISHING
+                        </option>
+
+                        <option value="Checking">
+                          CHECKING
+                        </option>
+
+                        <option value="Packing">
+                          PACKING
+                        </option>
+
+                        <option value="Other">
+                          OTHER
+                        </option>
+                      </select>
+
+                    </div>
+
+                    {/* =================================
+                  WORK DATE
+              ================================= */}
+                    <div>
+
+                      <label className="block text-sm font-semibold text-gray-700 mb-2">
+                        Work Date *
+                      </label>
+
+                      <input
+                        type="date"
+                        name="workDate"
+                        value={formData.workDate}
+                        onChange={handleChange}
+                        className="w-full border border-gray-200 p-3 rounded-xl outline-none focus:border-[#2F9CAF] focus:ring-2 focus:ring-[#2F9CAF]/10"
+                      />
+
+                    </div>
+
+                    {/* =================================
+                  QUANTITY
+              ================================= */}
+                    <div>
+
+                      <label className="block text-sm font-semibold text-gray-700 mb-2">
+                        Quantity *
+                      </label>
+
+                      <input
+                        type="number"
+                        min="1"
+                        name="quantity"
+                        placeholder="ENTER QUANTITY"
+                        value={formData.quantity}
+                        onChange={handleChange}
+                        className="w-full border border-gray-200 p-3 rounded-xl outline-none focus:border-[#2F9CAF] focus:ring-2 focus:ring-[#2F9CAF]/10"
+                      />
+
+                    </div>
+
+                    {/* =================================
+                  RATE
+              ================================= */}
+                    <div>
+
+                      <label className="block text-sm font-semibold text-gray-700 mb-2">
+                        Rate
+                      </label>
+
+                      <div className="relative">
+
+                        <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500 font-semibold">
+                          ₹
+                        </span>
+
+                        <input
+                          type="number"
+                          min="0"
+                          step="0.01"
+                          name="rate"
+                          placeholder="ENTER RATE"
+                          value={formData.rate}
+                          onChange={handleChange}
+                          className="w-full border border-gray-200 p-3 pl-9 rounded-xl outline-none focus:border-[#2F9CAF] focus:ring-2 focus:ring-[#2F9CAF]/10"
+                        />
+
+                      </div>
+
+                    </div>
+
+                    {/* =================================
+                  LABOUR AMOUNT
+              ================================= */}
+                    <div>
+
+                      <label className="block text-sm font-semibold text-gray-700 mb-2">
+                        Labour Amount
+                      </label>
+
+                      <div className="w-full bg-green-50 border border-green-200 p-3 rounded-xl text-green-700 font-bold">
+                        ₹ {formatMoney(amount)}
+                      </div>
+
+                    </div>
+
+                    {/* =================================
+                  NOTES
+              ================================= */}
+                    <div className="md:col-span-2">
+
+                      <label className="block text-sm font-semibold text-gray-700 mb-2">
+                        Notes
+                      </label>
+
+                      <textarea
+                        name="notes"
+                        rows="3"
+                        placeholder="ENTER NOTES..."
+                        value={formData.notes}
+                        onChange={handleChange}
+                        className="w-full border border-gray-200 p-3 rounded-xl outline-none focus:border-[#2F9CAF] focus:ring-2 focus:ring-[#2F9CAF]/10 resize-none"
+                      />
+
+                    </div>
+
+                  </div>
+
+                  {/* =================================
+                CALCULATION SUMMARY
+            ================================= */}
+                  <div className="mt-5 bg-gray-50 rounded-xl p-4">
+
+                    <div className="flex justify-between text-sm text-gray-600">
+                      <span>
+                        Quantity
+                      </span>
+
+                      <span className="font-semibold">
+                        {quantity} pcs
+                      </span>
+                    </div>
+
+                    <div className="flex justify-between text-sm text-gray-600 mt-2">
+
+                      <span>
+                        Rate
+                      </span>
+
+                      <span className="font-semibold">
+                        ₹ {formatMoney(rate)}
+                      </span>
+
+                    </div>
+
+                    <div className="border-t border-gray-200 mt-3 pt-3 flex justify-between">
+
+                      <span className="font-bold text-gray-800">
+                        Total Labour Cost
+                      </span>
+
+                      <span className="font-bold text-green-700">
+                        ₹ {formatMoney(amount)}
+                      </span>
+
+                    </div>
+
+                  </div>
+
+                  {/* EXTRA BOTTOM SPACE FOR MOBILE SCROLL */}
+                  <div className="h-4" />
+
+                </div>
+
+              </div>
+
+              {/* =================================
+            STICKY FOOTER
+        ================================= */}
+              <div className="shrink-0 border-t border-gray-200 bg-white px-5 py-4 sm:px-6">
+
+                <div className="flex items-center justify-between gap-3">
+
+                  {/* BACK */}
+                  <button
+                    type="button"
+                    onClick={closeModal}
+                    className="flex items-center gap-2 px-5 py-3 rounded-xl bg-gray-100 hover:bg-gray-200 text-gray-700 font-semibold cursor-pointer transition"
+                  >
+                    <span className="text-lg">
+                      ←
+                    </span>
+
+                    Back
+                  </button>
+
+                  {/* RIGHT BUTTONS */}
+                  <div className="flex gap-3">
+
+                    <button
+                      type="button"
+                      onClick={closeModal}
+                      className="px-5 py-3 rounded-xl bg-gray-100 hover:bg-gray-200 text-gray-700 font-semibold cursor-pointer transition"
+                    >
+                      Cancel
+                    </button>
+
+                    <button
+                      type="submit"
+                      disabled={loading}
+                      className="px-6 py-3 rounded-xl bg-[#2F9CAF] hover:bg-[#238293] text-white font-semibold cursor-pointer disabled:opacity-60 transition"
+                    >
+                      {loading
+                        ? "Saving..."
+                        : editingId
+                          ? "Update Work"
+                          : "Save Work"}
+                    </button>
+
+                  </div>
+
+                </div>
 
               </div>
 
@@ -1098,7 +1146,6 @@ function LabourWork() {
           </div>
 
         </div>
-
       )}
 
     </div>
