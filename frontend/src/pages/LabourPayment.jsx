@@ -132,48 +132,140 @@ function LabourPayment() {
   };
 
   // =====================================
-  // LABOUR SUMMARY
+  // LABOUR SUMMARY BY DATE RANGE
   // =====================================
-  const getLabourSummary = (labourId) => {
+  const getLabourSummary = (
+    labourId,
+    startDate,
+    endDate,
+    excludePaymentId = null
+  ) => {
+    if (!labourId) {
+      return {
+        totalWork: 0,
+        totalPaid: 0,
+        pending: 0,
+      };
+    }
+
+    const start = startDate
+      ? new Date(`${startDate}T00:00:00`)
+      : null;
+
+    const end = endDate
+      ? new Date(`${endDate}T23:59:59`)
+      : null;
+
+    // =====================================
+    // WORK AMOUNT FOR SELECTED DATE RANGE
+    // =====================================
     const totalWork = works
-      .filter(
-        (work) =>
-          String(work.labourId) ===
+      .filter((work) => {
+        if (
+          String(work.labourId) !==
           String(labourId)
-      )
+        ) {
+          return false;
+        }
+
+        if (!start || !end) {
+          return true;
+        }
+
+        if (!work.workDate) {
+          return false;
+        }
+
+        const workDate = new Date(
+          `${work.workDate}T00:00:00`
+        );
+
+        return (
+          workDate >= start &&
+          workDate <= end
+        );
+      })
       .reduce(
         (sum, work) =>
-          sum +
-          Number(work.amount || 0),
+          sum + Number(work.amount || 0),
         0
       );
 
+    // =====================================
+    // PAID AMOUNT FOR SELECTED DATE RANGE
+    // =====================================
     const totalPaid = payments
-      .filter(
-        (payment) =>
-          String(payment.labourId) ===
+      .filter((payment) => {
+        if (
+          String(payment.labourId) !==
           String(labourId)
-      )
+        ) {
+          return false;
+        }
+
+        // Don't count the payment being edited
+        if (
+          excludePaymentId &&
+          String(payment._id) ===
+          String(excludePaymentId)
+        ) {
+          return false;
+        }
+
+        const paymentStart =
+          payment.startDate ||
+          payment.paymentDate;
+
+        const paymentEnd =
+          payment.endDate ||
+          payment.paymentDate;
+
+        if (!paymentStart || !paymentEnd) {
+          return false;
+        }
+
+        if (!start || !end) {
+          return true;
+        }
+
+        const pStart = new Date(
+          `${paymentStart}T00:00:00`
+        );
+
+        const pEnd = new Date(
+          `${paymentEnd}T23:59:59`
+        );
+
+        // Payment period overlaps selected period
+        return (
+          pStart <= end &&
+          pEnd >= start
+        );
+      })
       .reduce(
         (sum, payment) =>
-          sum +
-          Number(payment.amount || 0),
+          sum + Number(payment.amount || 0),
         0
       );
+
+    const pending = Math.max(
+      totalWork - totalPaid,
+      0
+    );
 
     return {
       totalWork,
       totalPaid,
-      pending: Math.max(
-        totalWork - totalPaid,
-        0
-      ),
+      pending,
     };
   };
 
   const selectedSummary =
     getLabourSummary(
-      formData.labourId
+      formData.labourId,
+      formData.startDate,
+      formData.endDate,
+      editingId
     );
 
   // =====================================
@@ -253,6 +345,26 @@ function LabourPayment() {
     if (amount <= 0) {
       alert(
         "Payment amount must be greater than 0."
+      );
+      return;
+    }
+
+    if (!formData.startDate) {
+      alert("Please select Start Date.");
+      return;
+    }
+
+    if (!formData.endDate) {
+      alert("Please select End Date.");
+      return;
+    }
+
+    if (
+      new Date(formData.startDate) >
+      new Date(formData.endDate)
+    ) {
+      alert(
+        "End Date cannot be before Start Date."
       );
       return;
     }
@@ -525,126 +637,7 @@ function LabourPayment() {
 
       </div>
 
-      {/* =================================
-          LABOUR BALANCE TABLE
-      ================================= */}
-      <div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
 
-        <div className="px-5 py-4 border-b border-gray-100">
-
-          <h2 className="font-bold text-lg text-[#2E3A3F]">
-            Labour Balance
-          </h2>
-
-          <p className="text-sm text-gray-500 mt-1">
-            Total work, paid amount and pending amount.
-          </p>
-
-        </div>
-
-        <div className="overflow-x-auto">
-
-          <table className="min-w-[850px] w-full">
-
-            <thead className="bg-[#F7F9FA]">
-
-              <tr>
-
-                <th className="text-left px-5 py-4 text-xs font-bold text-gray-500 uppercase">
-                  Labour
-                </th>
-
-                <th className="text-right px-5 py-4 text-xs font-bold text-gray-500 uppercase">
-                  Work Amount
-                </th>
-
-                <th className="text-right px-5 py-4 text-xs font-bold text-gray-500 uppercase">
-                  Paid
-                </th>
-
-                <th className="text-right px-5 py-4 text-xs font-bold text-gray-500 uppercase">
-                  Pending
-                </th>
-
-                <th className="text-center px-5 py-4 text-xs font-bold text-gray-500 uppercase">
-                  Status
-                </th>
-
-              </tr>
-
-            </thead>
-
-            <tbody>
-
-              {labours.map((labour) => {
-
-                const summary =
-                  getLabourSummary(
-                    labour._id
-                  );
-
-                return (
-                  <tr
-                    key={labour._id}
-                    className="border-b border-gray-100 hover:bg-gray-50"
-                  >
-
-                    <td className="px-5 py-4">
-
-                      <div className="font-bold text-gray-800">
-                        {labour.name}
-                      </div>
-
-                      <div className="text-xs text-gray-400 mt-1">
-                        {labour.workType}
-                      </div>
-
-                    </td>
-
-                    <td className="px-5 py-4 text-right font-semibold">
-                      ₹ {formatMoney(summary.totalWork)}
-                    </td>
-
-                    <td className="px-5 py-4 text-right font-semibold text-green-600">
-                      ₹ {formatMoney(summary.totalPaid)}
-                    </td>
-
-                    <td className="px-5 py-4 text-right font-bold text-orange-600">
-                      ₹ {formatMoney(summary.pending)}
-                    </td>
-
-                    <td className="px-5 py-4 text-center">
-
-                      <span
-                        className={`px-3 py-1 rounded-full text-xs font-bold ${summary.pending <= 0 &&
-                          summary.totalWork > 0
-                          ? "bg-green-100 text-green-700"
-                          : summary.totalPaid > 0
-                            ? "bg-blue-100 text-blue-700"
-                            : "bg-orange-100 text-orange-700"
-                          }`}
-                      >
-                        {summary.pending <= 0 &&
-                          summary.totalWork > 0
-                          ? "PAID"
-                          : summary.totalPaid > 0
-                            ? "PARTIAL"
-                            : "PENDING"}
-                      </span>
-
-                    </td>
-
-                  </tr>
-                );
-              })}
-
-            </tbody>
-
-          </table>
-
-        </div>
-
-      </div>
 
       {/* =================================
           SEARCH
@@ -840,6 +833,127 @@ function LabourPayment() {
       </div>
 
       {/* =================================
+          LABOUR BALANCE TABLE
+      ================================= */}
+      <div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
+
+        <div className="px-5 py-4 border-b border-gray-100">
+
+          <h2 className="font-bold text-lg text-[#2E3A3F]">
+            Labour Balance
+          </h2>
+
+          <p className="text-sm text-gray-500 mt-1">
+            Total work, paid amount and pending amount.
+          </p>
+
+        </div>
+
+        <div className="overflow-x-auto">
+
+          <table className="min-w-[850px] w-full">
+
+            <thead className="bg-[#F7F9FA]">
+
+              <tr>
+
+                <th className="text-left px-5 py-4 text-xs font-bold text-gray-500 uppercase">
+                  Labour
+                </th>
+
+                <th className="text-right px-5 py-4 text-xs font-bold text-gray-500 uppercase">
+                  Work Amount
+                </th>
+
+                <th className="text-right px-5 py-4 text-xs font-bold text-gray-500 uppercase">
+                  Paid
+                </th>
+
+                <th className="text-right px-5 py-4 text-xs font-bold text-gray-500 uppercase">
+                  Pending
+                </th>
+
+                <th className="text-center px-5 py-4 text-xs font-bold text-gray-500 uppercase">
+                  Status
+                </th>
+
+              </tr>
+
+            </thead>
+
+            <tbody>
+
+              {labours.map((labour) => {
+
+                const summary =
+                  getLabourSummary(
+                    labour._id
+                  );
+
+                return (
+                  <tr
+                    key={labour._id}
+                    className="border-b border-gray-100 hover:bg-gray-50"
+                  >
+
+                    <td className="px-5 py-4">
+
+                      <div className="font-bold text-gray-800">
+                        {labour.name}
+                      </div>
+
+                      <div className="text-xs text-gray-400 mt-1">
+                        {labour.workType}
+                      </div>
+
+                    </td>
+
+                    <td className="px-5 py-4 text-right font-semibold">
+                      ₹ {formatMoney(summary.totalWork)}
+                    </td>
+
+                    <td className="px-5 py-4 text-right font-semibold text-green-600">
+                      ₹ {formatMoney(summary.totalPaid)}
+                    </td>
+
+                    <td className="px-5 py-4 text-right font-bold text-orange-600">
+                      ₹ {formatMoney(summary.pending)}
+                    </td>
+
+                    <td className="px-5 py-4 text-center">
+
+                      <span
+                        className={`px-3 py-1 rounded-full text-xs font-bold ${summary.pending <= 0 &&
+                          summary.totalWork > 0
+                          ? "bg-green-100 text-green-700"
+                          : summary.totalPaid > 0
+                            ? "bg-blue-100 text-blue-700"
+                            : "bg-orange-100 text-orange-700"
+                          }`}
+                      >
+                        {summary.pending <= 0 &&
+                          summary.totalWork > 0
+                          ? "PAID"
+                          : summary.totalPaid > 0
+                            ? "PARTIAL"
+                            : "PENDING"}
+                      </span>
+
+                    </td>
+
+                  </tr>
+                );
+              })}
+
+            </tbody>
+
+          </table>
+
+        </div>
+
+      </div>
+
+      {/* =================================
           PAYMENT MODAL
       ================================= */}
       {showModal && (
@@ -972,16 +1086,7 @@ function LabourPayment() {
                         </p>
 
                         <p className="text-lg font-bold text-orange-800 mt-1">
-                          ₹{" "}
-                          {formatMoney(
-                            editingId
-                              ? selectedSummary.pending +
-                              Number(
-                                formData.amount ||
-                                0
-                              )
-                              : selectedSummary.pending
-                          )}
+                          ₹ {formatMoney(selectedSummary.pending)}
                         </p>
 
                       </div>

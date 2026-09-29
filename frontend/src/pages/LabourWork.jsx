@@ -15,6 +15,7 @@ function LabourWork() {
     productId: "",
     design: "",
     productName: "",
+    size: "",
     workType: "",
     workDate: new Date()
       .toISOString()
@@ -155,6 +156,9 @@ function LabourWork() {
 
       productName:
         product?.name || "",
+
+      size:
+        product?.size || "",
     }));
   };
 
@@ -190,6 +194,10 @@ function LabourWork() {
       design: work.design || "",
       productName:
         work.productName || "",
+
+      size:
+        work.size || "",
+
       workType:
         work.workType || "",
       workDate:
@@ -273,6 +281,9 @@ function LabourWork() {
 
         productName:
           formData.productName,
+
+        size:
+          formData.size,
 
         workType:
           formData.workType,
@@ -557,7 +568,7 @@ function LabourWork() {
                 </th>
 
                 <th className="text-left px-5 py-4 text-xs font-bold text-gray-500 uppercase">
-                  Design
+                  Size
                 </th>
 
                 <th className="text-left px-5 py-4 text-xs font-bold text-gray-500 uppercase">
@@ -638,22 +649,29 @@ function LabourWork() {
                         {work.labourName}
                       </td>
 
-                      <td className="px-5 py-4">
-
-                        <span className="font-bold text-[#2F9CAF]">
-                          {work.design}
-                        </span>
-
+                      {/* SIZE */}
+                      <td className="px-5 py-4 font-semibold text-[#2F9CAF]">
+                        {work.size || "-"}
                       </td>
 
+                      {/* PRODUCT */}
                       <td className="px-5 py-4 text-gray-700">
-                        {work.productName}
+                        <div className="font-semibold">
+                          {work.productName || "-"}
+                        </div>
+
+                        {work.design && (
+                          <div className="text-xs text-gray-400 mt-1">
+                            Design: {work.design}
+                          </div>
+                        )}
                       </td>
 
+                      {/* WORK */}
                       <td className="px-5 py-4">
 
                         <span className="px-3 py-1 rounded-lg bg-blue-50 text-blue-700 text-sm font-semibold">
-                          {work.workType}
+                          {work.workType || "-"}
                         </span>
 
                       </td>
@@ -870,19 +888,21 @@ function LabourWork() {
                     </div>
 
                     {/* =================================
-                  DESIGN
-              ================================= */}
+    SIZE
+================================= */}
                     <div>
 
                       <label className="block text-sm font-semibold text-gray-700 mb-2">
-                        Design No.
+                        Size
                       </label>
 
                       <input
                         type="text"
-                        value={formData.design}
-                        readOnly
-                        className="w-full border border-gray-200 bg-gray-50 p-3 rounded-xl text-gray-600 outline-none"
+                        name="size"
+                        placeholder="ENTER SIZE"
+                        value={formData.size}
+                        onChange={handleChange}
+                        className="w-full border border-gray-200 p-3 rounded-xl outline-none focus:border-[#2F9CAF] focus:ring-2 focus:ring-[#2F9CAF]/10 uppercase"
                       />
 
                     </div>

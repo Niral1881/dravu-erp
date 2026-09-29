@@ -32,6 +32,12 @@ const labourWorkSchema = new mongoose.Schema(
       trim: true,
     },
 
+    size: {
+      type: String,
+      default: "",
+      trim: true,
+    },
+
     workType: {
       type: String,
       required: true,
