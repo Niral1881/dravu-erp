@@ -8,9 +8,13 @@ import {
   FaMoneyBill,
   FaChartBar,
   FaBook,
+  FaBookOpen,
   FaCog,
   FaUndo,
   FaHistory,
+  FaUserTie,
+  FaTools,
+  FaMoneyCheckAlt,
 } from "react-icons/fa";
 
 function MainLayout() {
@@ -283,8 +287,10 @@ function MainLayout() {
                 }`}
             >
 
+              <FaUserTie className="text-xl" />
+
               <span className="hidden lg:flex items-center gap-3">
-                👷 Labour
+                Labour
               </span>
 
             </Link>
@@ -301,8 +307,10 @@ function MainLayout() {
                 }`}
             >
 
+              <FaTools className="text-xl" />
+
               <span className="hidden lg:flex items-center gap-3">
-                🧵 Labour Work
+                Labour Work
               </span>
 
             </Link>
@@ -319,8 +327,10 @@ function MainLayout() {
                 }`}
             >
 
+              <FaMoneyCheckAlt className="text-xl" />
+
               <span className="hidden lg:flex items-center gap-3">
-                💰 Labour Payment
+                Labour Payment
               </span>
 
             </Link>
@@ -337,8 +347,10 @@ function MainLayout() {
                 }`}
             >
 
+              <FaBookOpen className="text-xl" />
+
               <span className="hidden lg:flex items-center gap-3">
-                📒 Labour Ledger
+                Labour Ledger
               </span>
 
             </Link>
