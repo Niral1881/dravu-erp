@@ -573,23 +573,28 @@ function Payments() {
         return sameInvoice || sameInvoiceNumber;
       })
       .reduce((total, payment) => {
-        const paymentAmount = Number(payment.amount || 0);
+        const paymentAmount =
+          Number(payment.amount || 0);
 
-        const discountPercent = Number(
-          payment.discountPercent || 0
-        );
+        const discountPercent =
+          Number(payment.discountPercent || 0);
 
         const discountAmount =
           (invoiceTotal * discountPercent) / 100;
 
+        // Discount reduces the invoice settlement
         return total + paymentAmount + discountAmount;
       }, 0);
-  }, [payments, selectedInvoice, invoiceTotal]);
+  }, [
+    payments,
+    selectedInvoice,
+    invoiceTotal,
+  ]);
+
   const pendingAmount = Math.max(
     invoiceTotal - paidAmount,
     0
   );
-
   /* =========================================================
      TOTAL PAYMENT
   ========================================================= */
@@ -633,9 +638,15 @@ function Payments() {
 
   const handleSavePayment = async () => {
     const paymentAmount = Number(amount || 0);
-    const discountPercent = Number(discount || 0);
 
-    if (!partyName || !invoiceNo || paymentAmount <= 0) {
+    const discountPercent =
+      Number(discount || 0);
+
+    if (
+      !partyName ||
+      !invoiceNo ||
+      paymentAmount <= 0
+    ) {
       alert(
         "Please select party, invoice and enter valid payment amount"
       );
@@ -647,21 +658,40 @@ function Payments() {
       return;
     }
 
-    if (discountPercent < 0 || discountPercent > 100) {
-      alert("Discount must be between 0% and 100%");
+    if (
+      discountPercent < 0 ||
+      discountPercent > 100
+    ) {
+      alert(
+        "Discount must be between 0% and 100%"
+      );
       return;
     }
 
     const discountAmount =
       (invoiceTotal * discountPercent) / 100;
 
+    const maximumPayment = Math.max(
+      pendingAmount - discountAmount,
+      0
+    );
+
+    if (paymentAmount > maximumPayment) {
+      alert(
+        `Maximum payment after ${discountPercent}% discount is ${money(
+          maximumPayment
+        )}`
+      );
+      return;
+    }
+
     const totalSettlement =
       paymentAmount + discountAmount;
 
-    if (totalSettlement > pendingAmount) {
+    if (totalSettlement > invoiceTotal) {
       alert(
-        `Payment + Discount cannot be greater than pending amount ${money(
-          pendingAmount
+        `Payment + Discount cannot be greater than invoice total ${money(
+          invoiceTotal
         )}`
       );
       return;
@@ -671,9 +701,14 @@ function Payments() {
       const paymentData = {
         partyName,
         invoiceNo,
-        invoiceId: selectedInvoice?._id,
+        invoiceId: selectedInvoice._id,
+
+        // Actual money received
         amount: paymentAmount,
+
+        // Discount percentage
         discountPercent,
+
         paymentMode,
         paymentDate,
         note,
@@ -705,7 +740,6 @@ function Payments() {
       );
     }
   };
-
   /* =========================================================
      PARTY CHANGE
   ========================================================= */
@@ -1052,15 +1086,43 @@ function Payments() {
                     step="0.01"
                     value={amount}
                     max={
-                      pendingAmount > 0
-                        ? pendingAmount
+                      selectedInvoice
+                        ? Math.max(
+                          pendingAmount -
+                          (invoiceTotal *
+                            Number(discount || 0)) /
+                          100,
+                          0
+                        )
                         : undefined
                     }
-                    onChange={(e) =>
-                      setAmount(
-                        e.target.value
-                      )
-                    }
+                    onChange={(e) => {
+                      const value = e.target.value;
+
+                      if (!selectedInvoice) {
+                        setAmount(value);
+                        return;
+                      }
+
+                      const maximumPayment = Math.max(
+                        pendingAmount -
+                        (invoiceTotal *
+                          Number(discount || 0)) /
+                        100,
+                        0
+                      );
+
+                      if (Number(value || 0) > maximumPayment) {
+                        setAmount(
+                          maximumPayment > 0
+                            ? maximumPayment.toFixed(2)
+                            : ""
+                        );
+                        return;
+                      }
+
+                      setAmount(value);
+                    }}
                     placeholder="Enter amount"
                     className="w-full border border-gray-200 rounded-xl p-3 pl-9 outline-none focus:border-[#2F9CAF] focus:ring-2 focus:ring-[#2F9CAF]/10"
                   />
@@ -1069,9 +1131,17 @@ function Payments() {
 
                 {selectedInvoice && (
                   <p className="text-xs text-gray-400 mt-2">
-                    Maximum payment:{" "}
+                    Maximum payment after discount:{" "}
                     <span className="font-semibold text-gray-600">
-                      {money(pendingAmount)}
+                      {money(
+                        Math.max(
+                          pendingAmount -
+                          (invoiceTotal *
+                            Number(discount || 0)) /
+                          100,
+                          0
+                        )
+                      )}
                     </span>
                   </p>
                 )}
@@ -1097,8 +1167,32 @@ function Payments() {
                     onChange={(e) => {
                       const value = e.target.value;
 
-                      if (Number(value) <= 100) {
+                      if (value === "" || Number(value) <= 100) {
                         setDiscount(value);
+
+                        if (selectedInvoice) {
+                          const discountPercent = Number(value || 0);
+
+                          const discountAmount =
+                            (invoiceTotal * discountPercent) / 100;
+
+                          const maximumPayment = Math.max(
+                            pendingAmount - discountAmount,
+                            0
+                          );
+
+                          // Automatically adjust payment amount
+                          // if current amount is greater than allowed amount
+                          if (
+                            Number(amount || 0) > maximumPayment
+                          ) {
+                            setAmount(
+                              maximumPayment > 0
+                                ? maximumPayment.toFixed(2)
+                                : ""
+                            );
+                          }
+                        }
                       }
                     }}
                     placeholder="Enter discount %"
@@ -1234,6 +1328,10 @@ function Payments() {
             INVOICE SUMMARY
         =================================================== */}
 
+        {/* ===================================================
+    INVOICE SUMMARY
+=================================================== */}
+
         <div className="bg-white rounded-2xl border border-gray-100 shadow-sm">
 
           <div className="p-5 border-b border-gray-100">
@@ -1272,6 +1370,8 @@ function Payments() {
 
               <div>
 
+                {/* INVOICE INFO */}
+
                 <div className="bg-[#f5f7f9] rounded-xl p-4 mb-5">
 
                   <p className="text-xs text-gray-400 uppercase font-bold">
@@ -1288,9 +1388,15 @@ function Payments() {
 
                 </div>
 
+
+                {/* PAYMENT SUMMARY */}
+
                 <div className="space-y-4">
 
-                  <div className="flex justify-between">
+                  {/* INVOICE TOTAL */}
+
+                  <div className="flex justify-between items-center">
+
                     <span className="text-sm text-gray-500">
                       Invoice Total
                     </span>
@@ -1298,21 +1404,35 @@ function Payments() {
                     <span className="font-bold text-gray-800">
                       {money(invoiceTotal)}
                     </span>
+
                   </div>
 
-                  <div className="flex justify-between">
+
+                  {/* PAYMENT RECEIVED */}
+
+                  <div className="flex justify-between items-center">
+
                     <span className="text-sm text-gray-500">
                       Payment Received
                     </span>
 
                     <span className="font-bold text-green-600">
                       {money(
-                        paidAmount - totalDiscountAmount
+                        Math.max(
+                          paidAmount -
+                          totalDiscountAmount,
+                          0
+                        )
                       )}
                     </span>
+
                   </div>
 
-                  <div className="flex justify-between">
+
+                  {/* DISCOUNT */}
+
+                  <div className="flex justify-between items-center">
+
                     <span className="text-sm text-gray-500">
                       Discount / Charge Cut
                     </span>
@@ -1320,9 +1440,14 @@ function Payments() {
                     <span className="font-bold text-orange-600">
                       {money(totalDiscountAmount)}
                     </span>
+
                   </div>
 
-                  <div className="flex justify-between border-t border-gray-100 pt-4">
+
+                  {/* TOTAL SETTLED */}
+
+                  <div className="flex justify-between items-center border-t border-gray-100 pt-4">
+
                     <span className="text-sm font-semibold text-gray-600">
                       Total Settled
                     </span>
@@ -1330,9 +1455,14 @@ function Payments() {
                     <span className="font-bold text-[#2F9CAF]">
                       {money(paidAmount)}
                     </span>
+
                   </div>
 
-                  <div className="border-t border-gray-100 pt-4 flex justify-between">
+
+                  {/* PENDING */}
+
+                  <div className="border-t border-gray-100 pt-4 flex justify-between items-center">
+
                     <span className="text-sm font-semibold text-gray-600">
                       Pending Amount
                     </span>
@@ -1340,9 +1470,13 @@ function Payments() {
                     <span className="text-xl font-bold text-red-500">
                       {money(pendingAmount)}
                     </span>
+
                   </div>
 
                 </div>
+
+
+                {/* PAYMENT PROGRESS */}
 
                 <div className="mt-6">
 
@@ -1366,10 +1500,11 @@ function Payments() {
 
                   </div>
 
+
                   <div className="h-2 bg-gray-100 rounded-full overflow-hidden">
 
                     <div
-                      className="h-full bg-green-500 rounded-full"
+                      className="h-full bg-green-500 rounded-full transition-all duration-300"
                       style={{
                         width: `${invoiceTotal > 0
                           ? Math.min(
@@ -1381,11 +1516,14 @@ function Payments() {
                           : 0
                           }%`,
                       }}
-                    ></div>
+                    />
 
                   </div>
 
                 </div>
+
+
+                {/* STATUS */}
 
                 <div className="mt-6">
 
