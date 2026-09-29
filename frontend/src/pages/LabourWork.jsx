@@ -141,25 +141,13 @@ function LabourWork() {
   // PRODUCT SELECT
   // =====================================
   const handleProductChange = (e) => {
-    const productId = e.target.value;
-
-    const product = products.find(
-      (item) => item._id === productId
-    );
+    const value = e.target.value.toUpperCase();
 
     setFormData((prev) => ({
       ...prev,
-
-      productId,
-
-      design:
-        product?.design || "",
-
-      productName:
-        product?.name || "",
-
-      // DO NOT CHANGE MANUAL SIZE
-      size: prev.size || "",
+      productId: value,
+      productName: value,
+      design: value,
     }));
   };
   // =====================================
@@ -236,8 +224,8 @@ function LabourWork() {
       return;
     }
 
-    if (!formData.productId) {
-      alert("Please select product.");
+    if (!formData.productName.trim()) {
+      alert("Please enter product.");
       return;
     }
 
@@ -278,14 +266,9 @@ function LabourWork() {
         labourName:
           labour?.name || "",
 
-        productId:
-          formData.productId,
-
-        design:
-          formData.design,
-
-        productName:
-          formData.productName,
+        productId: null,
+        design: formData.productName.trim().toUpperCase(),
+        productName: formData.productName.trim().toUpperCase(),
 
         size:
           formData.size,
@@ -858,38 +841,31 @@ function LabourWork() {
                     </div>
 
                     {/* =================================
-                  PRODUCT
-              ================================= */}
+    PRODUCT / DESIGN
+================================= */}
                     <div>
-
                       <label className="block text-sm font-semibold text-gray-700 mb-2">
                         Product / Design *
                       </label>
 
-                      <select
-                        name="productId"
-                        value={formData.productId}
-                        onChange={handleProductChange}
-                        className="w-full border border-gray-200 p-3 rounded-xl outline-none focus:border-[#2F9CAF] focus:ring-2 focus:ring-[#2F9CAF]/10 bg-white uppercase"
-                      >
-                        <option value="">
-                          SELECT PRODUCT
-                        </option>
+                      <input
+                        type="text"
+                        name="productName"
+                        placeholder="ENTER PRODUCT / DESIGN"
+                        value={formData.productName}
+                        onChange={(e) => {
+                          const value = e.target.value.toUpperCase();
 
-                        {products.map((product) => (
-                          <option
-                            key={product._id}
-                            value={product._id}
-                          >
-                            {product.design} -{" "}
-                            {product.name}{" "}
-                            {product.size
-                              ? `(${product.size})`
-                              : ""}
-                          </option>
-                        ))}
-                      </select>
-
+                          setFormData((prev) => ({
+                            ...prev,
+                            productName: value,
+                            design: value,
+                            productId: "",
+                          }));
+                        }}
+                        required
+                        className="w-full border border-gray-200 p-3 rounded-xl outline-none focus:border-[#2F9CAF] focus:ring-2 focus:ring-[#2F9CAF]/10 uppercase"
+                      />
                     </div>
 
                     {/* =================================

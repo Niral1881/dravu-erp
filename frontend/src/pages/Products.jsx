@@ -400,8 +400,6 @@ function Products() {
   const emptyForm = {
     design: "",
     name: "",
-    size: "",
-    color: "",
     stock: "",
     rate: "",
   };
@@ -480,16 +478,6 @@ function Products() {
       return;
     }
 
-    if (!formData.size) {
-      alert("Please select Size.");
-      return;
-    }
-
-    if (!formData.color.trim()) {
-      alert("Please enter Color.");
-      return;
-    }
-
     if (formData.stock === "" || Number(formData.stock) < 0) {
       alert("Please enter valid Stock.");
       return;
@@ -539,8 +527,6 @@ function Products() {
     setFormData({
       design: product.design || "",
       name: product.name || "",
-      size: product.size || "",
-      color: product.color || "",
       stock: product.stock ?? "",
       rate: product.rate ?? "",
     });
@@ -878,14 +864,6 @@ function Products() {
                 </th>
 
                 <th className="text-left px-5 py-4 text-xs font-bold text-gray-500 uppercase tracking-wide">
-                  Size
-                </th>
-
-                <th className="text-left px-5 py-4 text-xs font-bold text-gray-500 uppercase tracking-wide">
-                  Color
-                </th>
-
-                <th className="text-left px-5 py-4 text-xs font-bold text-gray-500 uppercase tracking-wide">
                   Stock
                 </th>
 
@@ -966,24 +944,6 @@ function Products() {
                         <div className="font-semibold text-gray-800">
                           {product.name || "-"}
                         </div>
-
-                      </td>
-
-                      {/* Size */}
-                      <td className="px-5 py-4">
-
-                        <span className="inline-flex px-3 py-1 rounded-lg bg-gray-100 text-gray-700 text-sm font-semibold">
-                          {product.size || "-"}
-                        </span>
-
-                      </td>
-
-                      {/* Color */}
-                      <td className="px-5 py-4">
-
-                        <span className="text-gray-700">
-                          {product.color || "-"}
-                        </span>
 
                       </td>
 
@@ -1131,56 +1091,6 @@ function Products() {
                     name="name"
                     placeholder="Enter product name"
                     value={formData.name}
-                    onChange={handleChange}
-                    className="w-full border border-gray-200 p-3 rounded-xl outline-none focus:border-[#2F9CAF] focus:ring-2 focus:ring-[#2F9CAF]/10"
-                  />
-
-                </div>
-
-                {/* Size */}
-                <div>
-
-                  <label className="block text-sm font-semibold text-gray-700 mb-2">
-                    Size
-                  </label>
-
-                  <select
-                    name="size"
-                    value={formData.size}
-                    onChange={handleChange}
-                    className="w-full border border-gray-200 p-3 rounded-xl outline-none focus:border-[#2F9CAF] bg-white"
-                  >
-
-                    <option value="">
-                      Select Size
-                    </option>
-
-                    <option value="XS">XS</option>
-                    <option value="S">S</option>
-                    <option value="M">M</option>
-                    <option value="L">L</option>
-                    <option value="XL">XL</option>
-                    <option value="XXL">XXL</option>
-                    <option value="3XL">3XL</option>
-                    <option value="4XL">4XL</option>
-                    <option value="5XL">5XL</option>
-
-                  </select>
-
-                </div>
-
-                {/* Color */}
-                <div>
-
-                  <label className="block text-sm font-semibold text-gray-700 mb-2">
-                    Color
-                  </label>
-
-                  <input
-                    type="text"
-                    name="color"
-                    placeholder="e.g. Wine"
-                    value={formData.color}
                     onChange={handleChange}
                     className="w-full border border-gray-200 p-3 rounded-xl outline-none focus:border-[#2F9CAF] focus:ring-2 focus:ring-[#2F9CAF]/10"
                   />
