@@ -507,10 +507,10 @@ function LabourPayment() {
       .sort(
         (a, b) =>
           new Date(
-            b.endDate || b.paymentDate
+            b.paymentDate || b.endDate
           ) -
           new Date(
-            a.endDate || a.paymentDate
+            a.paymentDate || a.endDate
           )
       );
   }, [payments, search]);
@@ -746,35 +746,6 @@ function LabourPayment() {
                             "en-IN"
                           )
                           : "-"}
-                      </td> */}
-
-                      {/* <td className="px-5 py-4 text-gray-600 whitespace-nowrap">
-
-                        <div className="font-semibold">
-                          {payment.startDate
-                            ? new Date(
-                              payment.startDate
-                            ).toLocaleDateString("en-IN")
-                            : payment.paymentDate
-                              ? new Date(
-                                payment.paymentDate
-                              ).toLocaleDateString("en-IN")
-                              : "-"}
-                        </div>
-
-                        <div className="text-xs text-gray-400 mt-1">
-                          to{" "}
-                          {payment.endDate
-                            ? new Date(
-                              payment.endDate
-                            ).toLocaleDateString("en-IN")
-                            : payment.paymentDate
-                              ? new Date(
-                                payment.paymentDate
-                              ).toLocaleDateString("en-IN")
-                              : "-"}
-                        </div>
-
                       </td> */}
 
                       <td className="px-5 py-4 text-gray-600 whitespace-nowrap">
