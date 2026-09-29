@@ -285,8 +285,12 @@ export const updateLabourPayment =
       const finalEndDate =
         endDate ||
         payment.endDate ||
+        payment.paymentDate;
+
+      const finalPaymentDate =
+        paymentDate ||
         payment.paymentDate ||
-        paymentDate;
+        finalEndDate;
 
       const dateError =
         validateDateRange(
@@ -398,7 +402,7 @@ export const updateLabourPayment =
 
       // Keep old field synchronized
       payment.paymentDate =
-        finalEndDate;
+        finalPaymentDate;
 
       payment.note = note || "";
 
