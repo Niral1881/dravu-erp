@@ -14,6 +14,7 @@ import debitNoteRoutes from "./routes/debitNote.routes.js";
 import labourRoutes from "./routes/labour.routes.js";
 import labourWorkRoutes from "./routes/labourWork.routes.js";
 import labourPaymentRoutes from "./routes/labourPayment.routes.js";
+import labourLedgerRoutes from "./routes/labourLedger.routes.js";
 
 dotenv.config();
 
@@ -46,6 +47,11 @@ app.use("/api/labour", labourRoutes);
 app.use(
   "/api/labour-work",
   labourWorkRoutes
+);
+
+app.use(
+  "/api/labour-ledger",
+  labourLedgerRoutes
 );
 
 // Test Route
