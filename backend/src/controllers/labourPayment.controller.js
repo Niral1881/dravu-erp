@@ -27,7 +27,6 @@ export const getLabourPayments = async (
   try {
     const payments =
       await LabourPayment.find().sort({
-        endDate: -1,
         paymentDate: -1,
         createdAt: -1,
       });
@@ -225,7 +224,6 @@ export const createLabourPayment = async (
 
         // Keep old field for compatibility
         paymentDate:
-          endDate ||
           paymentDate ||
           "",
 
