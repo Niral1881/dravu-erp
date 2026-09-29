@@ -32,6 +32,16 @@ const labourPaymentSchema = new mongoose.Schema(
       default: "CASH",
     },
 
+    startDate: {
+      type: String,
+      required: true,
+    },
+
+    endDate: {
+      type: String,
+      required: true,
+    },
+
     paymentDate: {
       type: String,
       required: true,

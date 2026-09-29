@@ -3,6 +3,21 @@ import Labour from "../models/Labour.js";
 import LabourWork from "../models/LabourWork.js";
 
 // =====================================
+// DATE VALIDATION
+// =====================================
+const validateDateRange = (startDate, endDate) => {
+  if (!startDate || !endDate) {
+    return "Start Date and End Date are required";
+  }
+
+  if (new Date(startDate) > new Date(endDate)) {
+    return "End Date cannot be before Start Date";
+  }
+
+  return null;
+};
+
+// =====================================
 // GET ALL LABOUR PAYMENTS
 // =====================================
 export const getLabourPayments = async (
@@ -11,11 +26,11 @@ export const getLabourPayments = async (
 ) => {
   try {
     const payments =
-      await LabourPayment.find()
-        .sort({
-          paymentDate: -1,
-          createdAt: -1,
-        });
+      await LabourPayment.find().sort({
+        endDate: -1,
+        paymentDate: -1,
+        createdAt: -1,
+      });
 
     res.status(200).json(payments);
   } catch (error) {
@@ -41,6 +56,7 @@ export const getLabourPaymentsByLabour =
         await LabourPayment.find({
           labourId: req.params.labourId,
         }).sort({
+          endDate: -1,
           paymentDate: -1,
           createdAt: -1,
         });
@@ -73,19 +89,23 @@ export const createLabourPayment = async (
       labourName,
       amount,
       paymentMode,
+      startDate,
+      endDate,
       paymentDate,
       note,
     } = req.body;
 
+    // -------------------------------------
+    // VALIDATE LABOUR
+    // -------------------------------------
     if (!labourId) {
       return res.status(400).json({
         message: "Labour is required",
       });
     }
 
-    const labour = await Labour.findById(
-      labourId
-    );
+    const labour =
+      await Labour.findById(labourId);
 
     if (!labour) {
       return res.status(404).json({
@@ -93,7 +113,26 @@ export const createLabourPayment = async (
       });
     }
 
-    const paymentAmount = Number(amount || 0);
+    // -------------------------------------
+    // VALIDATE DATE RANGE
+    // -------------------------------------
+    const dateError =
+      validateDateRange(
+        startDate,
+        endDate
+      );
+
+    if (dateError) {
+      return res.status(400).json({
+        message: dateError,
+      });
+    }
+
+    // -------------------------------------
+    // VALIDATE AMOUNT
+    // -------------------------------------
+    const paymentAmount =
+      Number(amount || 0);
 
     if (paymentAmount <= 0) {
       return res.status(400).json({
@@ -109,8 +148,7 @@ export const createLabourPayment = async (
       await LabourWork.aggregate([
         {
           $match: {
-            labourId:
-              labour._id,
+            labourId: labour._id,
           },
         },
         {
@@ -134,8 +172,7 @@ export const createLabourPayment = async (
       await LabourPayment.aggregate([
         {
           $match: {
-            labourId:
-              labour._id,
+            labourId: labour._id,
           },
         },
         {
@@ -167,19 +204,31 @@ export const createLabourPayment = async (
       });
     }
 
+    // -------------------------------------
+    // CREATE PAYMENT
+    // -------------------------------------
     const payment =
       await LabourPayment.create({
         labourId,
+
         labourName:
           labourName || labour.name,
+
         amount: paymentAmount,
+
         paymentMode:
           paymentMode || "CASH",
+
+        startDate,
+
+        endDate,
+
+        // Keep old field for compatibility
         paymentDate:
+          endDate ||
           paymentDate ||
-          new Date()
-            .toISOString()
-            .split("T")[0],
+          "",
+
         note: note || "",
       });
 
@@ -207,10 +256,15 @@ export const updateLabourPayment =
       const {
         amount,
         paymentMode,
+        startDate,
+        endDate,
         paymentDate,
         note,
       } = req.body;
 
+      // -------------------------------------
+      // FIND PAYMENT
+      // -------------------------------------
       const payment =
         await LabourPayment.findById(
           req.params.id
@@ -222,7 +276,37 @@ export const updateLabourPayment =
         });
       }
 
-      const newAmount = Number(amount || 0);
+      // -------------------------------------
+      // VALIDATE DATE RANGE
+      // -------------------------------------
+      const finalStartDate =
+        startDate ||
+        payment.startDate ||
+        payment.paymentDate;
+
+      const finalEndDate =
+        endDate ||
+        payment.endDate ||
+        payment.paymentDate ||
+        paymentDate;
+
+      const dateError =
+        validateDateRange(
+          finalStartDate,
+          finalEndDate
+        );
+
+      if (dateError) {
+        return res.status(400).json({
+          message: dateError,
+        });
+      }
+
+      // -------------------------------------
+      // VALIDATE AMOUNT
+      // -------------------------------------
+      const newAmount =
+        Number(amount || 0);
 
       if (newAmount <= 0) {
         return res.status(400).json({
@@ -232,7 +316,7 @@ export const updateLabourPayment =
       }
 
       // -------------------------------------
-      // TOTAL WORK
+      // CALCULATE TOTAL WORK
       // -------------------------------------
       const workSummary =
         await LabourWork.aggregate([
@@ -257,7 +341,7 @@ export const updateLabourPayment =
       );
 
       // -------------------------------------
-      // OTHER PAYMENTS
+      // CALCULATE OTHER PAYMENTS
       // -------------------------------------
       const paymentSummary =
         await LabourPayment.aggregate([
@@ -265,6 +349,7 @@ export const updateLabourPayment =
             $match: {
               labourId:
                 payment.labourId,
+
               _id: {
                 $ne: payment._id,
               },
@@ -287,6 +372,9 @@ export const updateLabourPayment =
       const maximum =
         totalWork - otherPaid;
 
+      // -------------------------------------
+      // PREVENT OVER PAYMENT
+      // -------------------------------------
       if (newAmount > maximum) {
         return res.status(400).json({
           message: `Maximum payable amount is ₹${Math.max(
@@ -296,14 +384,23 @@ export const updateLabourPayment =
         });
       }
 
+      // -------------------------------------
+      // UPDATE PAYMENT
+      // -------------------------------------
       payment.amount = newAmount;
 
       payment.paymentMode =
         paymentMode || "CASH";
 
+      payment.startDate =
+        finalStartDate;
+
+      payment.endDate =
+        finalEndDate;
+
+      // Keep old field synchronized
       payment.paymentDate =
-        paymentDate ||
-        payment.paymentDate;
+        finalEndDate;
 
       payment.note = note || "";
 

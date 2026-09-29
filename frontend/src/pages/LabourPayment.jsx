@@ -10,13 +10,16 @@ function LabourPayment() {
     import.meta.env.VITE_API_URL ||
     "http://localhost:5000/api";
 
+  const today = new Date()
+    .toISOString()
+    .split("T")[0];
+
   const emptyForm = {
     labourId: "",
     amount: "",
     paymentMode: "CASH",
-    paymentDate: new Date()
-      .toISOString()
-      .split("T")[0],
+    startDate: today,
+    endDate: today,
     note: "",
   };
 
@@ -179,11 +182,14 @@ function LabourPayment() {
   const openAddModal = () => {
     setEditingId(null);
 
+    const today = new Date()
+      .toISOString()
+      .split("T")[0];
+
     setFormData({
       ...emptyForm,
-      paymentDate: new Date()
-        .toISOString()
-        .split("T")[0],
+      startDate: today,
+      endDate: today,
     });
 
     setShowModal(true);
@@ -195,20 +201,27 @@ function LabourPayment() {
   const handleEdit = (payment) => {
     setEditingId(payment._id);
 
+    const defaultDate =
+      payment.paymentDate ||
+      new Date()
+        .toISOString()
+        .split("T")[0];
+
     setFormData({
-      labourId:
-        payment.labourId || "",
-      amount:
-        payment.amount ?? "",
+      labourId: payment.labourId || "",
+      amount: payment.amount ?? "",
       paymentMode:
         payment.paymentMode || "CASH",
-      paymentDate:
-        payment.paymentDate ||
-        new Date()
-          .toISOString()
-          .split("T")[0],
-      note:
-        payment.note || "",
+
+      startDate:
+        payment.startDate ||
+        defaultDate,
+
+      endDate:
+        payment.endDate ||
+        defaultDate,
+
+      note: payment.note || "",
     });
 
     setShowModal(true);
@@ -253,8 +266,7 @@ function LabourPayment() {
       );
 
       const payload = {
-        labourId:
-          formData.labourId,
+        labourId: formData.labourId,
 
         labourName:
           labour?.name || "",
@@ -264,8 +276,15 @@ function LabourPayment() {
         paymentMode:
           formData.paymentMode,
 
+        startDate:
+          formData.startDate,
+
+        endDate:
+          formData.endDate,
+
+        // Keep old field for compatibility
         paymentDate:
-          formData.paymentDate,
+          formData.endDate,
 
         note:
           formData.note,
@@ -367,9 +386,11 @@ function LabourPayment() {
       .sort(
         (a, b) =>
           new Date(
-            b.paymentDate
+            b.endDate || b.paymentDate
           ) -
-          new Date(a.paymentDate)
+          new Date(
+            a.endDate || a.paymentDate
+          )
       );
   }, [payments, search]);
 
@@ -664,7 +685,7 @@ function LabourPayment() {
               <tr>
 
                 <th className="text-left px-5 py-4 text-xs font-bold text-gray-500 uppercase">
-                  Date
+                  Payment Period
                 </th>
 
                 <th className="text-left px-5 py-4 text-xs font-bold text-gray-500 uppercase">
@@ -715,7 +736,7 @@ function LabourPayment() {
                       className="border-b border-gray-100 hover:bg-gray-50"
                     >
 
-                      <td className="px-5 py-4 text-gray-600">
+                      {/* <td className="px-5 py-4 text-gray-600">
                         {payment.paymentDate
                           ? new Date(
                             payment.paymentDate
@@ -723,6 +744,35 @@ function LabourPayment() {
                             "en-IN"
                           )
                           : "-"}
+                      </td> */}
+
+                      <td className="px-5 py-4 text-gray-600 whitespace-nowrap">
+
+                        <div className="font-semibold">
+                          {payment.startDate
+                            ? new Date(
+                              payment.startDate
+                            ).toLocaleDateString("en-IN")
+                            : payment.paymentDate
+                              ? new Date(
+                                payment.paymentDate
+                              ).toLocaleDateString("en-IN")
+                              : "-"}
+                        </div>
+
+                        <div className="text-xs text-gray-400 mt-1">
+                          to{" "}
+                          {payment.endDate
+                            ? new Date(
+                              payment.endDate
+                            ).toLocaleDateString("en-IN")
+                            : payment.paymentDate
+                              ? new Date(
+                                payment.paymentDate
+                              ).toLocaleDateString("en-IN")
+                              : "-"}
+                        </div>
+
                       </td>
 
                       <td className="px-5 py-4 font-bold text-gray-800">
@@ -1007,22 +1057,42 @@ function LabourPayment() {
 
                   </div>
 
-                  {/* DATE */}
-                  <div>
+                  {/* DATE RANGE */}
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
 
-                    <label className="block text-sm font-semibold text-gray-700 mb-2">
-                      Payment Date *
-                    </label>
+                    {/* START DATE */}
+                    <div>
+                      <label className="block text-sm font-semibold text-gray-700 mb-2">
+                        Start Date *
+                      </label>
 
-                    <input
-                      type="date"
-                      name="paymentDate"
-                      value={
-                        formData.paymentDate
-                      }
-                      onChange={handleChange}
-                      className="w-full border border-gray-200 rounded-xl p-3 outline-none focus:border-[#2F9CAF]"
-                    />
+                      <input
+                        type="date"
+                        name="startDate"
+                        value={formData.startDate}
+                        onChange={handleChange}
+                        max={formData.endDate || undefined}
+                        required
+                        className="w-full border border-gray-200 rounded-xl p-3 outline-none focus:border-[#2F9CAF]"
+                      />
+                    </div>
+
+                    {/* END DATE */}
+                    <div>
+                      <label className="block text-sm font-semibold text-gray-700 mb-2">
+                        End Date *
+                      </label>
+
+                      <input
+                        type="date"
+                        name="endDate"
+                        value={formData.endDate}
+                        onChange={handleChange}
+                        min={formData.startDate || undefined}
+                        required
+                        className="w-full border border-gray-200 rounded-xl p-3 outline-none focus:border-[#2F9CAF]"
+                      />
+                    </div>
 
                   </div>
 
