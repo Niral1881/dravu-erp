@@ -20,6 +20,7 @@ function LabourPayment() {
     paymentMode: "CASH",
     startDate: today,
     endDate: today,
+    paymentDate: today,
     note: "",
   };
 
@@ -313,6 +314,10 @@ function LabourPayment() {
         payment.endDate ||
         defaultDate,
 
+      paymentDate:
+        payment.paymentDate ||
+        defaultDate,
+
       note: payment.note || "",
     });
 
@@ -359,6 +364,11 @@ function LabourPayment() {
       return;
     }
 
+    if (!formData.paymentDate) {
+      alert("Please select Payment Date.");
+      return;
+    }
+
     if (
       new Date(formData.startDate) >
       new Date(formData.endDate)
@@ -395,8 +405,7 @@ function LabourPayment() {
           formData.endDate,
 
         // Keep old field for compatibility
-        paymentDate:
-          formData.endDate,
+        paymentDate: formData.paymentDate,
 
         note:
           formData.note,
@@ -678,7 +687,7 @@ function LabourPayment() {
               <tr>
 
                 <th className="text-left px-5 py-4 text-xs font-bold text-gray-500 uppercase">
-                  Payment Period
+                  Payment Date
                 </th>
 
                 <th className="text-left px-5 py-4 text-xs font-bold text-gray-500 uppercase">
@@ -739,7 +748,7 @@ function LabourPayment() {
                           : "-"}
                       </td> */}
 
-                      <td className="px-5 py-4 text-gray-600 whitespace-nowrap">
+                      {/* <td className="px-5 py-4 text-gray-600 whitespace-nowrap">
 
                         <div className="font-semibold">
                           {payment.startDate
@@ -766,6 +775,14 @@ function LabourPayment() {
                               : "-"}
                         </div>
 
+                      </td> */}
+
+                      <td className="px-5 py-4 text-gray-600 whitespace-nowrap">
+                        <div className="font-semibold">
+                          {payment.paymentDate
+                            ? new Date(payment.paymentDate).toLocaleDateString("en-IN")
+                            : "-"}
+                        </div>
                       </td>
 
                       <td className="px-5 py-4 font-bold text-gray-800">
@@ -1194,6 +1211,22 @@ function LabourPayment() {
                         value={formData.endDate}
                         onChange={handleChange}
                         min={formData.startDate || undefined}
+                        required
+                        className="w-full border border-gray-200 rounded-xl p-3 outline-none focus:border-[#2F9CAF]"
+                      />
+                    </div>
+
+                    {/* PAYMENT DATE */}
+                    <div>
+                      <label className="block text-sm font-semibold text-gray-700 mb-2">
+                        Payment Date *
+                      </label>
+
+                      <input
+                        type="date"
+                        name="paymentDate"
+                        value={formData.paymentDate}
+                        onChange={handleChange}
                         required
                         className="w-full border border-gray-200 rounded-xl p-3 outline-none focus:border-[#2F9CAF]"
                       />
