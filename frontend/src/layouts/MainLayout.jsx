@@ -256,15 +256,35 @@ function MainLayout() {
           <li>
 
             <Link
-              to="/stock-history"
-              className={`flex items-center gap-3 p-3 rounded-xl transition ${location.pathname === "/stock-history"
+              to="/payment-history"
+              className={`flex items-center gap-3 p-3 rounded-xl transition ${location.pathname === "/payment-history"
                 ? "bg-[#2F9CAF]"
                 : "hover:bg-[#2F9CAF]"
                 }`}
             >
-              <FaHistory className="text-xl" />
+              <FaMoneyBill className="text-xl" />
+
               <span className="hidden lg:flex items-center gap-3">
-                Stock History
+
+                Payment History
+              </span>
+
+            </Link>
+
+          </li>
+
+          <li>
+
+            <Link
+              to="/labour"
+              className={`flex items-center gap-3 p-3 rounded-xl transition ${location.pathname === "/labour"
+                ? "bg-[#2F9CAF]"
+                : "hover:bg-[#2F9CAF]"
+                }`}
+            >
+
+              <span className="hidden lg:flex items-center gap-3">
+                👷 Labour
               </span>
 
             </Link>
