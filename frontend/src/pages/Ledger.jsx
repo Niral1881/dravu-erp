@@ -103,14 +103,53 @@ function Ledger() {
         // -----------------------------------------------------
         const payments = (paymentResponse.data || [])
           .filter((payment) => payment.partyName === partyName)
-          .map((payment) => ({
-            id: payment._id,
-            date: payment.paymentDate,
-            type: "Payment",
-            invoiceNo: payment.invoiceNo || "-",
-            debit: 0,
-            credit: Number(payment.amount || 0),
-          }));
+          .map((payment) => {
+            // Find the related invoice
+            const invoice = (invoiceResponse.data || []).find(
+              (item) =>
+                payment.invoiceId &&
+                String(item._id) === String(payment.invoiceId)
+            );
+
+            const invoiceTotal = Number(
+              invoice?.roundedTotal ??
+              invoice?.grandTotal ??
+              0
+            );
+
+            const paymentAmount = Number(
+              payment.amount || 0
+            );
+
+            const discountPercent = Number(
+              payment.discountPercent || 0
+            );
+
+            // Percentage discount / charge amount
+            const discountAmount =
+              (invoiceTotal * discountPercent) / 100;
+
+            // Total amount settled against invoice
+            const totalSettled =
+              paymentAmount + discountAmount;
+
+            return {
+              id: payment._id,
+              date: payment.paymentDate,
+              type: "Payment",
+              invoiceNo: payment.invoiceNo || "-",
+
+              debit: 0,
+
+              // Credit = actual payment + discount
+              credit: totalSettled,
+
+              // Keep these for display / future use
+              paymentAmount,
+              discountPercent,
+              discountAmount,
+            };
+          });
 
         // -----------------------------------------------------
         // ALL TRANSACTIONS
@@ -1304,6 +1343,14 @@ function Ledger() {
                   </th>
 
                   <th className="text-right p-4">
+                    Received
+                  </th>
+
+                  <th className="text-right p-4">
+                    Discount
+                  </th>
+
+                  <th className="text-right p-4">
                     Credit
                   </th>
 
@@ -1320,7 +1367,7 @@ function Ledger() {
                   ledger.length === 0 ? (
                   <tr>
                     <td
-                      colSpan="6"
+                      colSpan="8"
                       className="p-10 text-center text-gray-500"
                     >
                       No transactions found for this period.
@@ -1329,7 +1376,7 @@ function Ledger() {
                 ) : !selectedParty ? (
                   <tr>
                     <td
-                      colSpan="6"
+                      colSpan="8"
                       className="p-10 text-center text-gray-500"
                     >
                       Select a party to view the ledger.
@@ -1338,102 +1385,158 @@ function Ledger() {
                 ) : (
                   <>
                     {/* OPENING BALANCE ROW */}
-                    <tr className="bg-gray-50 font-semibold">
-                      <td className="p-4">
+                    {/* <tr className="bg-gray-50 font-semibold"> */}
+
+                    {/* DATE */}
+                    {/* <td className="p-4">
                         {fromDate
                           ? formatDate(fromDate)
                           : "-"}
-                      </td>
+                      </td> */}
 
-                      <td className="p-4">
+                    {/* TYPE */}
+                    {/* <td className="p-4">
                         Opening
-                      </td>
+                      </td> */}
 
-                      <td className="p-4">
+                    {/* INVOICE */}
+                    {/* <td className="p-4">
                         Balance B/F
-                      </td>
+                      </td> */}
 
-                      <td className="p-4 text-right">
+                    {/* DEBIT */}
+                    {/* <td className="p-4 text-right">
                         -
-                      </td>
+                      </td> */}
 
-                      <td className="p-4 text-right">
+                    {/* RECEIVED */}
+                    {/* <td className="p-4 text-right">
                         -
+                      </td> */}
+
+                    {/* DISCOUNT */}
+                    {/* <td className="p-4 text-right">
+                        -
+                      </td> */}
+
+                    {/* CREDIT */}
+                    {/* <td className="p-4 text-right">
+                        -
+                      </td> */}
+
+                    {/* RUNNING BALANCE */}
+                    {/* <td className="p-4 text-right font-bold">
+                        {money(summary.openingBalance)}
                       </td>
 
-                      <td className="p-4 text-right font-bold">
-                        {money(
-                          summary.openingBalance
-                        )}
-                      </td>
-                    </tr>
+                    </tr> */}
 
-                    {ledger.map(
-                      (item, index) => (
-                        <tr
-                          key={
-                            item.id ||
-                            `${item.invoiceNo}-${index}`
-                          }
-                          className="border-b hover:bg-gray-50"
-                        >
+                    {ledger.map((item, index) => (
+                      <tr
+                        key={
+                          item.id ||
+                          `${item.invoiceNo}-${index}`
+                        }
+                        className="border-b hover:bg-gray-50"
+                      >
 
-                          <td className="p-4">
-                            {formatDate(
-                              item.date
-                            )}
-                          </td>
+                        {/* DATE */}
 
-                          <td className="p-4">
+                        <td className="p-4">
+                          {formatDate(item.date)}
+                        </td>
 
-                            <span
-                              className={
-                                item.type ===
-                                  "Invoice"
-                                  ? "font-bold text-red-600"
-                                  : "font-bold text-green-600"
-                              }
-                            >
-                              {item.type}
-                            </span>
 
-                          </td>
+                        {/* TYPE */}
 
-                          <td className="p-4">
-                            {item.invoiceNo}
-                          </td>
+                        <td className="p-4">
 
-                          <td className="p-4 text-right font-semibold text-red-600">
-                            {item.debit > 0
-                              ? money(item.debit)
-                              : "-"}
-                          </td>
+                          <span
+                            className={
+                              item.type === "Invoice"
+                                ? "font-bold text-red-600"
+                                : "font-bold text-green-600"
+                            }
+                          >
+                            {item.type}
+                          </span>
 
-                          <td className="p-4 text-right font-semibold text-green-600">
-                            {item.credit > 0
-                              ? money(item.credit)
-                              : "-"}
-                          </td>
+                        </td>
 
-                          <td className="p-4 text-right font-bold">
-                            <span
-                              className={
-                                item.balance > 0
-                                  ? "text-red-600"
-                                  : item.balance < 0
-                                    ? "text-green-600"
-                                    : "text-gray-700"
-                              }
-                            >
-                              {money(
-                                item.balance
-                              )}
-                            </span>
-                          </td>
 
-                        </tr>
-                      )
-                    )}
+                        {/* INVOICE */}
+
+                        <td className="p-4">
+                          {item.invoiceNo}
+                        </td>
+
+
+                        {/* DEBIT */}
+
+                        <td className="p-4 text-right font-semibold text-red-600">
+
+                          {item.debit > 0
+                            ? money(item.debit)
+                            : "-"}
+
+                        </td>
+
+
+                        {/* RECEIVED */}
+
+                        <td className="p-4 text-right font-semibold text-green-600">
+
+                          {item.type === "Payment" &&
+                            item.paymentAmount > 0
+                            ? money(item.paymentAmount)
+                            : "-"}
+
+                        </td>
+
+
+                        {/* DISCOUNT */}
+
+                        <td className="p-4 text-right font-semibold text-orange-600">
+
+                          {item.type === "Payment" &&
+                            item.discountAmount > 0
+                            ? money(item.discountAmount)
+                            : "-"}
+
+                        </td>
+
+
+                        {/* CREDIT / TOTAL SETTLED */}
+
+                        <td className="p-4 text-right font-semibold text-green-600">
+
+                          {item.credit > 0
+                            ? money(item.credit)
+                            : "-"}
+
+                        </td>
+
+
+                        {/* RUNNING BALANCE */}
+
+                        <td className="p-4 text-right font-bold">
+
+                          <span
+                            className={
+                              item.balance > 0
+                                ? "text-red-600"
+                                : item.balance < 0
+                                  ? "text-green-600"
+                                  : "text-gray-700"
+                            }
+                          >
+                            {money(item.balance)}
+                          </span>
+
+                        </td>
+
+                      </tr>
+                    ))}
                   </>
                 )}
 
@@ -1445,6 +1548,8 @@ function Ledger() {
 
                     <tr className="bg-gray-100 font-bold">
 
+                      {/* LABEL */}
+
                       <td
                         colSpan="3"
                         className="p-4 text-right"
@@ -1452,22 +1557,57 @@ function Ledger() {
                         Total
                       </td>
 
-                      <td className="p-4 text-left text-red-600">
+
+                      {/* TOTAL DEBIT */}
+
+                      <td className="p-4 text-right text-red-600">
+                        {money(summary.totalDebit)}
+                      </td>
+
+
+                      {/* TOTAL RECEIVED */}
+
+                      <td className="p-4 text-right text-green-600">
                         {money(
-                          summary.totalDebit
+                          ledger.reduce(
+                            (total, item) =>
+                              total +
+                              Number(
+                                item.paymentAmount || 0
+                              ),
+                            0
+                          )
                         )}
                       </td>
 
-                      <td className="p-4 text-left text-green-600">
+
+                      {/* TOTAL DISCOUNT */}
+
+                      <td className="p-4 text-right text-orange-600">
                         {money(
-                          summary.totalCredit
+                          ledger.reduce(
+                            (total, item) =>
+                              total +
+                              Number(
+                                item.discountAmount || 0
+                              ),
+                            0
+                          )
                         )}
                       </td>
+
+
+                      {/* TOTAL CREDIT */}
+
+                      <td className="p-4 text-right text-green-600">
+                        {money(summary.totalCredit)}
+                      </td>
+
+
+                      {/* CLOSING BALANCE */}
 
                       <td className="p-4 text-right text-[#2F9CAF]">
-                        {money(
-                          summary.closingBalance
-                        )}
+                        {money(summary.closingBalance)}
                       </td>
 
                     </tr>

@@ -257,6 +257,8 @@ const LedgerPrint = forwardRef((props, ref) => {
                 <th className="type-column">Type</th>
                 <th className="invoice-column">Invoice No.</th>
                 <th className="amount-column">Debit</th>
+                <th className="amount-column">Received</th>
+                <th className="amount-column">Discount</th>
                 <th className="amount-column">Credit</th>
                 <th className="amount-column">Running Balance</th>
               </tr>
@@ -265,7 +267,7 @@ const LedgerPrint = forwardRef((props, ref) => {
             <tbody>
               {rows.length === 0 ? (
                 <tr>
-                  <td colSpan="6" className="empty-row">
+                  <td colSpan="8" className="empty-row">
                     No transactions found
                   </td>
                 </tr>
@@ -295,15 +297,47 @@ const LedgerPrint = forwardRef((props, ref) => {
 
                     <td>{row.invoiceNo || "-"}</td>
 
-                    <td className="debit-cell">
-                      {row.debit > 0 ? money(row.debit) : "-"}
+                    {/* DEBIT */}
+
+                    <td className="debit-cell" style={{ textAlign: "center" }}>
+                      {row.debit > 0
+                        ? money(row.debit)
+                        : "-"}
                     </td>
 
-                    <td className="credit-cell">
-                      {row.credit > 0 ? money(row.credit) : "-"}
+
+                    {/* RECEIVED */}
+
+                    <td className="received-cell" style={{ textAlign: "center" }}>
+                      {row.type === "Payment" &&
+                        Number(row.paymentAmount || 0) > 0
+                        ? money(row.paymentAmount)
+                        : "-"}
                     </td>
 
-                    <td className="balance-cell">
+
+                    {/* DISCOUNT */}
+
+                    <td className="discount-cell" style={{ textAlign: "center" }}>
+                      {row.type === "Payment" &&
+                        Number(row.discountAmount || 0) > 0
+                        ? money(row.discountAmount)
+                        : "-"}
+                    </td>
+
+
+                    {/* TOTAL CREDIT / SETTLED */}
+
+                    <td className="credit-cell" style={{ textAlign: "center" }}>
+                      {row.credit > 0
+                        ? money(row.credit)
+                        : "-"}
+                    </td>
+
+
+                    {/* RUNNING BALANCE */}
+
+                    <td className="balance-cell" style={{ textAlign: "center" }}>
                       {money(row.balance)}
                     </td>
                   </tr>
@@ -313,21 +347,67 @@ const LedgerPrint = forwardRef((props, ref) => {
 
             <tfoot>
               <tr>
-                <td colSpan="3" className="total-label">
+
+                <td
+                  colSpan="3"
+                  className="total-label"
+                >
                   Total
                 </td>
 
-                <td className="debit-cell total-cell">
+
+                {/* TOTAL DEBIT */}
+
+                <td className="debit-cell total-cell" style={{ textAlign: "center" }}>
                   {money(totalDebit)}
                 </td>
 
-                <td className="credit-cell total-cell">
+
+                {/* TOTAL RECEIVED */}
+
+                <td className="received-cell total-cell">
+                  {money(
+                    transactions.reduce(
+                      (total, transaction) =>
+                        total +
+                        Number(
+                          transaction.paymentAmount || 0
+                        ),
+                      0
+                    )
+                  )}
+                </td>
+
+
+                {/* TOTAL DISCOUNT */}
+
+                <td className="discount-cell total-cell" style={{ textAlign: "center" }}>
+                  {money(
+                    transactions.reduce(
+                      (total, transaction) =>
+                        total +
+                        Number(
+                          transaction.discountAmount || 0
+                        ),
+                      0
+                    )
+                  )}
+                </td>
+
+
+                {/* TOTAL CREDIT */}
+
+                <td className="credit-cell total-cell" style={{ textAlign: "center" }}>
                   {money(totalCredit)}
                 </td>
 
-                <td className="balance-cell total-cell">
+
+                {/* CLOSING BALANCE */}
+
+                <td className="balance-cell total-cell" style={{ textAlign: "center" }}>
                   {money(closingBalance)}
                 </td>
+
               </tr>
             </tfoot>
           </table>

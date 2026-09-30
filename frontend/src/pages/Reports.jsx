@@ -580,11 +580,77 @@ function Reports() {
     0
   );
 
-  const totalPending = filteredInvoices.reduce(
-    (sum, invoice) =>
-      sum + Number(invoice.pendingAmount || 0),
-    0
-  );
+  const totalDiscount = useMemo(() => {
+    return filteredPayments.reduce((sum, payment) => {
+      const invoice = invoices.find(
+        (item) =>
+          payment.invoiceId &&
+          String(item._id) === String(payment.invoiceId)
+      );
+
+      if (!invoice) {
+        return sum;
+      }
+
+      const invoiceTotal = getInvoiceAmount(invoice);
+
+      const discountPercent = Number(
+        payment.discountPercent || 0
+      );
+
+      const discountAmount =
+        (invoiceTotal * discountPercent) / 100;
+
+      return sum + discountAmount;
+    }, 0);
+  }, [filteredPayments, invoices]);
+
+  const totalPending = useMemo(() => {
+    return filteredInvoices.reduce((sum, invoice) => {
+      const invoiceTotal = getInvoiceAmount(invoice);
+
+      const invoicePayments = payments.filter((payment) => {
+        const sameInvoice =
+          payment.invoiceId &&
+          invoice._id &&
+          String(payment.invoiceId) ===
+          String(invoice._id);
+
+        const sameInvoiceNumber =
+          payment.invoiceNo === invoice.invoiceNo &&
+          payment.partyName === invoice.partyName;
+
+        return (
+          sameInvoice ||
+          sameInvoiceNumber
+        );
+      });
+
+      let totalSettled = 0;
+
+      invoicePayments.forEach((payment) => {
+        const paymentAmount =
+          Number(payment.amount || 0);
+
+        const discountPercent =
+          Number(payment.discountPercent || 0);
+
+        const discountAmount =
+          (invoiceTotal * discountPercent) / 100;
+
+        totalSettled +=
+          paymentAmount + discountAmount;
+      });
+
+      return (
+        sum +
+        Math.max(
+          invoiceTotal - totalSettled,
+          0
+        )
+      );
+    }, 0);
+  }, [filteredInvoices, payments]);
 
   const totalReturns = returns.reduce(
     (sum, item) => sum + Number(item?.qty || 0),
@@ -1014,6 +1080,10 @@ function Reports() {
 
           <p className="text-xs text-green-600 font-medium">
             Payments received
+          </p>
+
+          <p className="text-xs text-orange-600 font-medium mt-1">
+            Discount / Charge Cut: {money(totalDiscount)}
           </p>
 
         </div>

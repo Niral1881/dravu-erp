@@ -837,6 +837,37 @@ function Payments() {
       }, 0);
   }, [payments, selectedInvoice, invoiceTotal]);
 
+  const currentDiscountAmount =
+    selectedInvoice
+      ? (invoiceTotal * Number(discount || 0)) / 100
+      : 0;
+
+  const currentPaymentAmount =
+    Number(amount || 0);
+
+  const previewSettledAmount =
+    currentPaymentAmount +
+    currentDiscountAmount;
+
+  const previewPendingAmount =
+    Math.max(
+      pendingAmount - previewSettledAmount,
+      0
+    );
+
+  const previewPaymentReceived =
+    paidAmount -
+    totalDiscountAmount +
+    currentPaymentAmount;
+
+  const previewDiscountAmount =
+    totalDiscountAmount +
+    currentDiscountAmount;
+
+  const previewTotalSettled =
+    paidAmount +
+    previewSettledAmount;
+
   /* =========================================================
      UI
   ========================================================= */
@@ -1417,13 +1448,7 @@ function Payments() {
                     </span>
 
                     <span className="font-bold text-green-600">
-                      {money(
-                        Math.max(
-                          paidAmount -
-                          totalDiscountAmount,
-                          0
-                        )
-                      )}
+                      {money(previewPaymentReceived)}
                     </span>
 
                   </div>
@@ -1438,7 +1463,7 @@ function Payments() {
                     </span>
 
                     <span className="font-bold text-orange-600">
-                      {money(totalDiscountAmount)}
+                      {money(previewDiscountAmount)}
                     </span>
 
                   </div>
@@ -1453,7 +1478,7 @@ function Payments() {
                     </span>
 
                     <span className="font-bold text-[#2F9CAF]">
-                      {money(paidAmount)}
+                      {money(previewTotalSettled)}
                     </span>
 
                   </div>
@@ -1467,8 +1492,13 @@ function Payments() {
                       Pending Amount
                     </span>
 
-                    <span className="text-xl font-bold text-red-500">
-                      {money(pendingAmount)}
+                    <span
+                      className={`text-xl font-bold ${previewPendingAmount <= 0
+                        ? "text-green-600"
+                        : "text-red-500"
+                        }`}
+                    >
+                      {money(previewPendingAmount)}
                     </span>
 
                   </div>
@@ -1490,7 +1520,7 @@ function Payments() {
                       {invoiceTotal > 0
                         ? Math.min(
                           100,
-                          (paidAmount /
+                          (previewTotalSettled /
                             invoiceTotal) *
                           100
                         ).toFixed(0)
@@ -1509,7 +1539,7 @@ function Payments() {
                         width: `${invoiceTotal > 0
                           ? Math.min(
                             100,
-                            (paidAmount /
+                            (previewTotalSettled /
                               invoiceTotal) *
                             100
                           )
@@ -1527,7 +1557,7 @@ function Payments() {
 
                 <div className="mt-6">
 
-                  {pendingAmount <= 0 ? (
+                  {previewPendingAmount <= 0 ? (
 
                     <div className="bg-green-50 text-green-600 rounded-xl p-3 text-center text-sm font-bold">
                       ✓ Invoice Fully Paid
@@ -1550,7 +1580,6 @@ function Payments() {
           </div>
 
         </div>
-
       </div>
 
       {/* =====================================================
