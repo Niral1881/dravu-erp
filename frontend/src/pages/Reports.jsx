@@ -387,7 +387,7 @@
 
 
 
-import { useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import axios from "axios";
 
 function Reports() {
@@ -404,7 +404,7 @@ function Reports() {
   const [fromDate, setFromDate] = useState("");
   const [toDate, setToDate] = useState("");
 
-  const fetchData = async () => {
+  const fetchData = useCallback(async () => {
     try {
       setLoading(true);
 
@@ -432,11 +432,14 @@ function Reports() {
     } finally {
       setLoading(false);
     }
-  };
+  }, [API]);
 
   useEffect(() => {
-    fetchData();
-  }, []);
+    const loadData = async () => {
+      await fetchData();
+    };
+    loadData();
+  }, [fetchData]);
 
   /* =========================================================
      HELPERS

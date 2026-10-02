@@ -91,20 +91,17 @@ const LedgerPrint = forwardRef((props, ref) => {
   const rows = useMemo(() => {
     let runningBalance = openingBalance;
 
-    const openingRow = {
-      date: "-",
-      type: "Opening",
-      invoiceNo: "Balance B/F",
-      debit: 0,
-      credit: 0,
-      balance: openingBalance,
-    };
+    return transactions.map((transaction) => {
+      const debit = Number(
+        transaction.debit || 0
+      );
 
-    const transactionRows = transactions.map((transaction) => {
-      const debit = Number(transaction.debit || 0);
-      const credit = Number(transaction.credit || 0);
+      const credit = Number(
+        transaction.credit || 0
+      );
 
-      runningBalance += debit - credit;
+      runningBalance +=
+        debit - credit;
 
       return {
         ...transaction,
@@ -113,8 +110,6 @@ const LedgerPrint = forwardRef((props, ref) => {
         balance: runningBalance,
       };
     });
-
-    return [openingRow, ...transactionRows];
   }, [transactions, openingBalance]);
 
   const handlePrint = () => {
@@ -275,11 +270,6 @@ const LedgerPrint = forwardRef((props, ref) => {
                 rows.map((row, index) => (
                   <tr
                     key={`${row.invoiceNo || "row"}-${index}`}
-                    className={
-                      row.type === "Opening"
-                        ? "opening-row"
-                        : ""
-                    }
                   >
                     <td>{formatDate(row.date)}</td>
 

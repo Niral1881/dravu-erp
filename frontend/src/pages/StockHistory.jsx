@@ -1,4 +1,5 @@
 import {
+  useCallback,
   useEffect,
   useState,
 } from "react";
@@ -15,7 +16,7 @@ function StockHistory() {
 
 
   const fetchHistory =
-    async () => {
+    useCallback(async () => {
 
       try {
 
@@ -32,7 +33,7 @@ function StockHistory() {
 
         console.log(error);
       }
-    };
+    }, [API]);
 
   useEffect(() => {
 
@@ -42,7 +43,7 @@ function StockHistory() {
 
     loadProducts();
 
-  }, []);
+  }, [fetchHistory]);
 
   return (
 

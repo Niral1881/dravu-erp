@@ -50,7 +50,10 @@ function Ledger() {
   }, [API]);
 
   useEffect(() => {
-    fetchParties();
+    const loadParties = async () => {
+      await fetchParties();
+    };
+    loadParties();
   }, [fetchParties]);
 
   // =========================================================
@@ -255,8 +258,12 @@ function Ledger() {
 
   // Reload when filters change
   useEffect(() => {
+
     if (selectedParty) {
-      fetchLedger(selectedParty);
+      const loadLedger = async () => {
+        await fetchLedger(selectedParty);
+      };
+      loadLedger();
     }
   }, [selectedParty, fromDate, toDate, fetchLedger]);
 

@@ -1670,6 +1670,7 @@
 
 
 import {
+  useCallback,
   useEffect,
   useMemo,
   useState,
@@ -1753,7 +1754,7 @@ function Returns() {
   // FETCH DATA
   // =====================================================
 
-  const fetchData = async () => {
+  const fetchData = useCallback(async () => {
 
     try {
 
@@ -1800,7 +1801,7 @@ function Returns() {
 
     }
 
-  };
+  }, [API]);
 
 
   // =====================================================
@@ -1809,9 +1810,15 @@ function Returns() {
 
   useEffect(() => {
 
-    fetchData();
+    const fetchInitialData = async () => {
 
-  }, []);
+      await fetchData();
+
+    };
+
+    fetchInitialData();
+
+  }, [fetchData]);
 
 
   // =====================================================
