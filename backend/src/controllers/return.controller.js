@@ -186,3 +186,40 @@ export const getReturnById = async (
   }
 
 };
+
+// =====================================================
+// DELETE RETURN
+// =====================================================
+
+export const deleteReturn = async (req, res) => {
+  try {
+
+    const returned =
+      await Return.findByIdAndDelete(
+        req.params.id
+      );
+
+    if (!returned) {
+      return res.status(404).json({
+        message: "Return not found",
+      });
+    }
+
+    res.json({
+      message: "Return deleted successfully",
+      deletedReturn: returned,
+    });
+
+  } catch (error) {
+
+    console.error(
+      "DELETE RETURN ERROR:",
+      error
+    );
+
+    res.status(500).json({
+      message: error.message,
+    });
+
+  }
+};
