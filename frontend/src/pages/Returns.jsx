@@ -1685,6 +1685,7 @@ import {
   FaTrash,
   FaTimes,
   FaBoxes,
+  FaPrint,
 } from "react-icons/fa";
 
 
@@ -2922,6 +2923,22 @@ function Returns() {
                       <td className="p-4">
 
                         <div className="flex justify-center">
+
+                          {/* PRINT */}
+
+                          <button
+                            type="button"
+                            title="Print Return"
+                            onClick={() =>
+                              window.open(
+                                `/return-print/${item._id}`,
+                                "_blank"
+                              )
+                            }
+                            className="w-9 h-9 flex items-center justify-center rounded-lg bg-cyan-100 text-cyan-700 hover:bg-cyan-200 transition"
+                          >
+                            <FaPrint />
+                          </button>
 
                           <button
                             type="button"

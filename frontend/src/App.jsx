@@ -139,6 +139,7 @@ import Labour from "./pages/Labour";
 import LabourWork from "./pages/LabourWork";
 import LabourPayment from "./pages/LabourPayment";
 import LabourLedger from "./pages/LabourLedger";
+import ReturnPrint from "./pages/ReturnPrint";
 
 function App() {
   return (
@@ -152,6 +153,10 @@ function App() {
           <Route path="invoices" element={<Invoices />} />
           <Route path="payments" element={<Payments />} />
           <Route path="returns" element={<Returns />} />
+          <Route
+            path="/return-print/:id"
+            element={<ReturnPrint />}
+          />
           <Route path="ledger" element={<Ledger />} />
           <Route path="payment-history" element={<PaymentHistory />} />
           <Route path="reports" element={<Reports />} />
