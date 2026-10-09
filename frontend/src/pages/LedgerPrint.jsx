@@ -249,7 +249,7 @@ const LedgerPrint = forwardRef((props, ref) => {
             <thead>
               <tr>
                 <th className="date-column">Date</th>
-                <th className="type-column">Type</th>
+                <th className="type-column">Mode</th>
                 <th className="invoice-column">Invoice No.</th>
                 <th className="amount-column">Debit</th>
                 <th className="amount-column">Received</th>
@@ -282,7 +282,9 @@ const LedgerPrint = forwardRef((props, ref) => {
                             : ""
                       }
                     >
-                      {row.type || "-"}
+                      {row.type === "Invoice"
+                        ? "Invoice"
+                        : row.paymentMode || "Payment"}
                     </td>
 
                     <td>{row.invoiceNo || "-"}</td>

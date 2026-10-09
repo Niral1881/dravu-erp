@@ -140,6 +140,7 @@ function Ledger() {
               id: payment._id,
               date: payment.paymentDate,
               type: "Payment",
+              paymentMode: payment.paymentMode || "-",
               invoiceNo: payment.invoiceNo || "-",
 
               debit: 0,
@@ -1338,7 +1339,7 @@ function Ledger() {
                   </th>
 
                   <th className="text-left p-4">
-                    Type
+                    Mode
                   </th>
 
                   <th className="text-left p-4">
@@ -1454,10 +1455,9 @@ function Ledger() {
                         </td>
 
 
-                        {/* TYPE */}
+                        {/* MODE */}
 
-                        <td className="p-4">
-
+                        {/* <td className="p-4">
                           <span
                             className={
                               item.type === "Invoice"
@@ -1465,9 +1465,20 @@ function Ledger() {
                                 : "font-bold text-green-600"
                             }
                           >
-                            {item.type}
+                            {item.type === "Invoice" ? "Invoice" : item.paymentMode || "Payment"}
                           </span>
+                        </td> */}
 
+                        <td className="p-4">
+                          {item.type === "Invoice" ? (
+                            <span className="font-bold text-red-600">
+                              Invoice
+                            </span>
+                          ) : (
+                            <span className="font-bold text-green-600">
+                              {item.paymentMode || "Payment"}
+                            </span>
+                          )}
                         </td>
 
 
