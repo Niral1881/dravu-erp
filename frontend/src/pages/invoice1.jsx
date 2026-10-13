@@ -1138,32 +1138,55 @@ function Invoices1({ isEdit }) {
       // GST SERIES: INV-13, INV-14, INV-15...
       // ======================================================
 
+      // const invoices = (invoiceRes.data || [])
+      //   .filter((inv) => inv.invoiceType === "GST")
+      //   .sort((a, b) => {
+      //     const aNo =
+      //       Number(String(a.invoiceNo || "").replace("INV-", "")) || 0;
+
+      //     const bNo =
+      //       Number(String(b.invoiceNo || "").replace("INV-", "")) || 0;
+
+      //     return aNo - bNo;
+      //   });
+
+      // if (!isEdit) {
+      //   if (invoices.length > 0) {
+      //     const lastInvoice = invoices[invoices.length - 1];
+
+      //     const lastNumber =
+      //       Number(
+      //         String(lastInvoice.invoiceNo || "")
+      //           .replace("INV-", "")
+      //       ) || 12;
+
+      //     setInvoiceNo(`INV-${lastNumber + 1}`);
+      //   } else {
+      //     setInvoiceNo("INV-13");
+      //   }
+      // }
+
+      // GST INVOICE NUMBER GENERATION
       const invoices = (invoiceRes.data || [])
         .filter((inv) => inv.invoiceType === "GST")
         .sort((a, b) => {
           const aNo =
             Number(String(a.invoiceNo || "").replace("INV-", "")) || 0;
-
           const bNo =
             Number(String(b.invoiceNo || "").replace("INV-", "")) || 0;
 
-          return aNo - bNo;
+          return bNo - aNo;
         });
 
       if (!isEdit) {
-        if (invoices.length > 0) {
-          const lastInvoice = invoices[invoices.length - 1];
+        const highestNumber = invoices.reduce((max, inv) => {
+          const number =
+            Number(String(inv.invoiceNo || "").replace("INV-", "")) || 0;
 
-          const lastNumber =
-            Number(
-              String(lastInvoice.invoiceNo || "")
-                .replace("INV-", "")
-            ) || 12;
+          return Math.max(max, number);
+        }, 12);
 
-          setInvoiceNo(`INV-${lastNumber + 1}`);
-        } else {
-          setInvoiceNo("INV-13");
-        }
+        setInvoiceNo(`INV-${highestNumber + 1}`);
       }
 
       setParties(partyRes.data);
@@ -1365,6 +1388,7 @@ function Invoices1({ isEdit }) {
     roundedTotal -
     (grandTotal || 0);
 
+  const savedInvoiceNo = invoiceNo;
 
   const handleSaveInvoice = async () => {
 
@@ -1380,7 +1404,7 @@ function Invoices1({ isEdit }) {
 
       const invoiceData = {
 
-        invoiceNo,
+        invoiceNo: savedInvoiceNo,
 
         invoiceType: "GST",
 
@@ -1394,9 +1418,6 @@ function Invoices1({ isEdit }) {
 
         partyState:
           selectedParty?.state || "",
-
-
-
 
         partyMobile:
           selectedParty?.mobile || "",

@@ -144,13 +144,105 @@ export const getSingleInvoice = async (
   }
 };
 
+// export const updateInvoice = async (req, res) => {
+//   try {
+//     const invoice = await Invoice.findByIdAndUpdate(
+//       req.params.id,
+//       {
+//         invoiceNo: req.body.invoiceNo,
+//         invoiceType: req.body.invoiceType || "NORMAL",
+
+//         partyName: req.body.partyName,
+//         partyAddress: req.body.partyAddress || "",
+//         partyGstin: req.body.partyGstin || "",
+//         partyCity: req.body.partyCity || "",
+//         partyState: req.body.partyState || "",
+//         partyMobile: req.body.partyMobile || "",
+
+//         // =========================
+//         // DELIVERY ADDRESS
+//         // =========================
+//         deliveryName: req.body.deliveryName || "",
+//         deliveryGstin: req.body.deliveryGstin || "",
+//         deliveryMobile: req.body.deliveryMobile || "",
+//         deliveryAddress: req.body.deliveryAddress || "",
+//         deliveryCity: req.body.deliveryCity || "",
+//         deliveryState: req.body.deliveryState || "",
+
+//         date: req.body.date,
+//         dateOfSupply: req.body.dateOfSupply,
+
+//         items: req.body.items || [],
+
+//         subtotal: req.body.subtotal || 0,
+//         discountPercent: req.body.discountPercent || 0,
+//         gstPercent: req.body.gstPercent || 0,
+//         discountAmount: req.body.discountAmount || 0,
+
+//         cgstAmount: req.body.cgstAmount || 0,
+//         sgstAmount: req.body.sgstAmount || 0,
+//         igstAmount: req.body.igstAmount || 0,
+//         gstAmount: req.body.gstAmount || 0,
+
+//         roundOff: req.body.roundOff || 0,
+//         roundedTotal: req.body.roundedTotal || 0,
+//         grandTotal: req.body.grandTotal || 0,
+
+//         paidAmount: req.body.paidAmount || 0,
+//         pendingAmount: req.body.pendingAmount || 0,
+//         paymentStatus: req.body.paymentStatus || "UNPAID",
+//       },
+//       {
+//         new: true,
+//         runValidators: true,
+//       }
+//     );
+
+//     if (!invoice) {
+//       return res.status(404).json({
+//         message: "Invoice not found",
+//       });
+//     }
+
+//     console.log("========= UPDATED DELIVERY =========");
+//     console.log({
+//       deliveryName: invoice.deliveryName,
+//       deliveryGstin: invoice.deliveryGstin,
+//       deliveryMobile: invoice.deliveryMobile,
+//       deliveryAddress: invoice.deliveryAddress,
+//       deliveryCity: invoice.deliveryCity,
+//       deliveryState: invoice.deliveryState,
+//     });
+
+//     res.json(invoice);
+
+//   } catch (error) {
+//     console.error("UPDATE INVOICE ERROR:", error);
+
+//     res.status(500).json({
+//       message: error.message,
+//     });
+//   }
+// };
+
+
 export const updateInvoice = async (req, res) => {
   try {
+    // Find the existing invoice first
+    const existingInvoice = await Invoice.findById(req.params.id);
+
+    if (!existingInvoice) {
+      return res.status(404).json({
+        message: "Invoice not found",
+      });
+    }
+
+    // Preserve the original invoice number and type
     const invoice = await Invoice.findByIdAndUpdate(
       req.params.id,
       {
-        invoiceNo: req.body.invoiceNo,
-        invoiceType: req.body.invoiceType || "NORMAL",
+        invoiceNo: existingInvoice.invoiceNo,
+        invoiceType: existingInvoice.invoiceType || "NORMAL",
 
         partyName: req.body.partyName,
         partyAddress: req.body.partyAddress || "",
@@ -159,9 +251,7 @@ export const updateInvoice = async (req, res) => {
         partyState: req.body.partyState || "",
         partyMobile: req.body.partyMobile || "",
 
-        // =========================
         // DELIVERY ADDRESS
-        // =========================
         deliveryName: req.body.deliveryName || "",
         deliveryGstin: req.body.deliveryGstin || "",
         deliveryMobile: req.body.deliveryMobile || "",
@@ -174,23 +264,24 @@ export const updateInvoice = async (req, res) => {
 
         items: req.body.items || [],
 
-        subtotal: req.body.subtotal || 0,
-        discountPercent: req.body.discountPercent || 0,
-        gstPercent: req.body.gstPercent || 0,
-        discountAmount: req.body.discountAmount || 0,
+        subtotal: req.body.subtotal ?? 0,
+        discountPercent: req.body.discountPercent ?? 0,
+        gstPercent: req.body.gstPercent ?? 0,
+        discountAmount: req.body.discountAmount ?? 0,
 
-        cgstAmount: req.body.cgstAmount || 0,
-        sgstAmount: req.body.sgstAmount || 0,
-        igstAmount: req.body.igstAmount || 0,
-        gstAmount: req.body.gstAmount || 0,
+        cgstAmount: req.body.cgstAmount ?? 0,
+        sgstAmount: req.body.sgstAmount ?? 0,
+        igstAmount: req.body.igstAmount ?? 0,
+        gstAmount: req.body.gstAmount ?? 0,
 
-        roundOff: req.body.roundOff || 0,
-        roundedTotal: req.body.roundedTotal || 0,
-        grandTotal: req.body.grandTotal || 0,
+        roundOff: req.body.roundOff ?? 0,
+        roundedTotal: req.body.roundedTotal ?? 0,
+        grandTotal: req.body.grandTotal ?? 0,
 
-        paidAmount: req.body.paidAmount || 0,
-        pendingAmount: req.body.pendingAmount || 0,
-        paymentStatus: req.body.paymentStatus || "UNPAID",
+        // Preserve existing payment information during invoice edits
+        paidAmount: existingInvoice.paidAmount ?? 0,
+        pendingAmount: existingInvoice.pendingAmount ?? 0,
+        paymentStatus: existingInvoice.paymentStatus || "UNPAID",
       },
       {
         new: true,
@@ -198,24 +289,12 @@ export const updateInvoice = async (req, res) => {
       }
     );
 
-    if (!invoice) {
-      return res.status(404).json({
-        message: "Invoice not found",
-      });
-    }
-
-    console.log("========= UPDATED DELIVERY =========");
-    console.log({
-      deliveryName: invoice.deliveryName,
-      deliveryGstin: invoice.deliveryGstin,
-      deliveryMobile: invoice.deliveryMobile,
-      deliveryAddress: invoice.deliveryAddress,
-      deliveryCity: invoice.deliveryCity,
-      deliveryState: invoice.deliveryState,
+    console.log("INVOICE UPDATED SUCCESSFULLY:", {
+      invoiceNo: invoice.invoiceNo,
+      invoiceType: invoice.invoiceType,
     });
 
     res.json(invoice);
-
   } catch (error) {
     console.error("UPDATE INVOICE ERROR:", error);
 
@@ -224,6 +303,7 @@ export const updateInvoice = async (req, res) => {
     });
   }
 };
+
 
 export const deleteInvoice = async (req, res) => {
   try {
